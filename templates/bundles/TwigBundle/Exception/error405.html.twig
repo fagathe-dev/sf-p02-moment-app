@@ -1,0 +1,8 @@
+{% extends 'layouts/error.html.twig' %}
+
+{% block title %}Méthode non autorisée (405){% endblock %}
+{% block error_code %}405{% endblock %}
+{% block error_message %}Action non permise{% endblock %}
+{% block error_details %}
+  La méthode HTTP utilisée n'est pas supportée pour cette page.
+{% endblock %}

@@ -1,0 +1,12 @@
+twig:
+    file_name_pattern: '*.twig'
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
+    globals:
+        APP_LOGO: '%env(LOGO_PATH)%'
+        APP_LOGO_PNG: '%env(LOGO_PNG_PATH)%'
+        APP_FAVICON: '%env(FAVICON_PATH)%'
+        APP_NAME: '%env(APP_NAME)%'
+when@test:
+    twig:
+        strict_variables: true

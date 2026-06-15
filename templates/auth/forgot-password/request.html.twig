@@ -1,0 +1,22 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block auth_header %}
+  <div class="text-center mt-2">
+    <h5 class="text-primary">Mot de passe oublié !</h5>
+  </div>
+{% endblock %}
+
+{% block auth_content %}
+  
+  {{ form(form) }}
+  
+{% endblock %}
+
+{% block auth_footer %}
+  <div class="mt-4 text-center">
+    <p class="mb-0">
+      Je me souviens de mon mot de passe !
+      <a href="{{ url('auth_login') }}" class="fw-semibold text-primary text-decoration-underline">Se connecter</a>
+    </p>
+  </div>
+{% endblock %}

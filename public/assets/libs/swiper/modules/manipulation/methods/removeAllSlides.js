@@ -1,0 +1,1 @@
+export default function removeAllSlides(){const e=this,l=[];for(let t=0;t<e.slides.length;t+=1)l.push(t);e.removeSlide(l)}

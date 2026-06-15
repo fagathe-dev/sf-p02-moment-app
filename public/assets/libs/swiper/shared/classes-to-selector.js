@@ -1,0 +1,1 @@
+export default function classesToSelector(e=""){return`.${e.trim().replace(/([\.:!+\/])/g,"\\$1").replace(/ /g,".")}`}

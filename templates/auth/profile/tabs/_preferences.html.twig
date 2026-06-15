@@ -1,0 +1,12 @@
+<div class="row mb-3">
+  <div class="col-md-6">
+    <label for="form-theme-preference">Thème</label>
+  </div>
+  <div class="col-md-6">
+    <select id="form-theme-preference" name="theme" class="form-select form-select-sm ">
+      {% for theme, label in themePreferences %}
+        <option value="{{ theme }}" {% if theme == get_preference('theme', 'auto') %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>

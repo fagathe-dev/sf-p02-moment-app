@@ -1,0 +1,37 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-body p-4">
+      <div class="col-xl-2 col-lg-4 col-md-6">
+        <div class="text-center">
+          <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+            {% if app.user.avatar %}
+              <img src="{{ asset(app.user.avatar) }}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+            {% else %}
+              <div class="avatar-xl shadow rounded-circle">
+                <div class="avatar-title rounded-circle bg-primary-subtle text-primary fs-22">{{ app.user.username|first|upper }}</div>
+              </div>
+            {% endif %}
+            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+              <input id="profile-img-file-input" type="file" class="profile-img-file-input"> <!-- TODO: Handle file upload using `onchange` event -->
+              <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                <span class="avatar-title rounded-circle bg-light text-body shadow">
+                  <i class="ri-camera-fill"></i>
+                </span>
+              </label>
+            </div>
+          </div>
+          <h5 class="fs-16 mb-1">@{{ app.user.username }}</h5>
+          {# <p class="text-muted mb-0">{{ app.user.role }}</p> #}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'auth/profile/tabs/index.html.twig' %}
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/auth/profile.js') }}"></script>
+{% endblock %}

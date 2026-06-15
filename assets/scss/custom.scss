@@ -1,0 +1,40 @@
+.layout-wrapper.landing {
+  min-height: 100vh;
+  height: auto;
+}
+
+.landing .navbar .navbar-toggler {
+  border: none;
+  outline: 0;
+  i {
+    font-size: 30px;
+  }
+  &:focus {
+    border: none;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+[type=email], [type=number], [type=tel], [type=url] {
+    direction: ltr;
+}
+
+.page-title-box .breadcrumb {
+  margin-block-end: 0;
+}
+
+.form-group {
+  margin-block-end: 1rem;
+}
+
+.jumbotron {
+  padding: 1.5rem 1rem;
+  box-shadow: var(--vz-box-shadow);
+  border-radius: .3rem;
+  background-color: #f3f4f6;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--vz-dark);
+  margin-block-end: .5rem;
+}

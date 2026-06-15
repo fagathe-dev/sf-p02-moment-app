@@ -1,0 +1,1 @@
+export default function setTransition(t,s){const i=this;i.params.cssMode||(i.wrapperEl.style.transitionDuration=`${t}ms`),i.emit("setTransition",t,s)}

@@ -1,0 +1,59 @@
+{#
+  Template d'email de vérification d'adresse email
+
+  Variables requises:
+    - confirmation_url: URL de confirmation de l'email
+#}
+{% extends 'layouts/email.html.twig' %}
+
+{% set subject = 'Vérifiez votre adresse email' %}
+{% set preheader = 'Confirmez votre adresse email pour commencer à utiliser votre compte' %}
+
+{% block content %}
+  {# Titre principal #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'h1',
+    content: 'Vérifiez votre adresse email',
+    color: '#212529',
+    align: 'center',
+    custom_style: 'margin-bottom: 10px;'
+  } %}
+
+  {# Sous-texte #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'Oui, nous savons — un email pour vérifier un email.',
+    align: 'center'
+  } %}
+
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'Veuillez valider votre adresse email afin de pouvoir commencer à utiliser le produit.',
+    align: 'center',
+    custom_style: 'margin-bottom: 20px;'
+  } %}
+
+  {# Bouton CTA #}
+  {% include 'emails/components/_button.html.twig' with {
+    url: confirmation_url|default('#'),
+    label: 'Vérifier mon email',
+    custom_style: 'margin: 10px auto; text-align: center;'
+  } %}
+
+  {% include 'emails/components/_divider.html.twig' %}
+
+  {# Lien alternatif #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'small',
+    content: 'Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :',
+    color: '#6c757d',
+    align: 'center',
+    custom_style: 'margin: 10px 0;'
+  } %}
+
+  {% include 'emails/components/_box.html.twig' with {
+    background: '#f8f9fa',
+    padding: '10px 15px',
+    content: '<a href="' ~ confirmation_url|default('#') ~ '" style="color: #0066ff; font-size: 12px; word-break: break-all;">' ~ confirmation_url|default('#') ~ '</a>'
+  } %}
+{% endblock %}

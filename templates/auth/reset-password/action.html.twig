@@ -1,0 +1,15 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block auth_header %}
+  <div class="text-center mt-2">
+    <h5 class="text-primary">Réinitialiser votre mot de passe !</h5>
+  </div>
+{% endblock %}
+
+{% block auth_content %}
+  
+  {{ form(form) }}
+  
+{% endblock %}
+
+{% block auth_footer %}{% endblock %}

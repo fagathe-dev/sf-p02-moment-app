@@ -1,0 +1,22 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block title %}Créer un utilisateur - {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col">
+      <h1 class="h4 d-flex align-items-center">
+        Créer un utilisateur
+      </h1>
+      <p class="text-muted">Rajouter un utilisateur dans le système.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      {{ form(form) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

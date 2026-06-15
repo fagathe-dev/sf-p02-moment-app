@@ -1,0 +1,57 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block title %}Log - {{ filename }} - {{ date }}{% endblock %}
+
+{% block stylesheets %}
+  <style>
+    .log-content {
+      overflow-x: auto;
+    }
+    .log-content table {
+      font-size: 0.875rem;
+      white-space: nowrap;
+    }
+    .log-content pre {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 0.5rem;
+      margin: 0;
+      max-width: 400px;
+      overflow-x: auto;
+    }
+    .log-content td {
+      vertical-align: top;
+      max-width: 500px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="h3 mb-3">
+          <i class="ds ds-file-text"></i>
+          {{ filename|replace({'.': ' / '}) }}
+        </h1>
+        <p class="text-muted">
+          <i class="ds ds-calendar"></i>
+          Date : {{ date }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="accordion">
+          {% for log in logs %}
+            {{ generate_log(log) }}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

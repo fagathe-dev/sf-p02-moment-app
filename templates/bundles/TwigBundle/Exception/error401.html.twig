@@ -1,0 +1,8 @@
+{% extends 'layouts/error.html.twig' %}
+
+{% block title %}Authentification requise (401){% endblock %}
+{% block error_code %}401{% endblock %}
+{% block error_message %}Accès non autorisé{% endblock %}
+{% block error_details %}
+  Vous devez être connecté pour accéder à cette ressource. Veuillez vérifier vos identifiants.
+{% endblock %}

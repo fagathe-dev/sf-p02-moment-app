@@ -1,0 +1,18 @@
+<!-- p-3 sur mobile, p-md-4 sur tablette/PC -->
+<header class="p-3 p-md-4 d-flex justify-content-between align-items-center">
+  <!-- fs-5 sur mobile (plus petit), fs-4 sur tablette/PC -->
+  <a href="{{ path('app_default_index') }}" class="text-white text-decoration-none fw-bold fs-5 fs-md-4 d-flex align-items-center text-truncate">
+    <img src="{{ asset(APP_LOGO) }}" alt="{{ APP_NAME }} Logo" class="me-2" style="height: 30px;"> 
+    <span class="text-truncate">{{ APP_NAME | default('Spase App') }}</span>
+  </a>
+  
+  <!-- Actions conditionnelles -->
+  <div class="ms-2 flex-shrink-0 d-flex align-items-center">
+    {% block auth_actions %}
+      <!-- On cache le texte "Pas encore de compte ?" sur mobile (d-none d-sm-inline) -->
+      <a class="me-3" href="{{ path('auth_login') }}">Se connecter</a>
+      <!-- Bouton légèrement plus compact sur mobile -->
+      <a href="{{ path('auth_registration_index') }}" class="btn btn-primary btn-sm px-3 py-2">S'inscrire</a>
+    {% endblock %}
+  </div>
+</header>

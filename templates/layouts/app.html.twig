@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  <!--Swiper slider css-->
+  <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  {% block css %} {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+  <!--Swiper slider js-->
+  <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
+  <!--job landing init -->
+  <script src="{{ asset('assets/js/pages/job-lading.init.js') }}"></script>
+  {% block js %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+  
+    <!-- Begin page -->
+    <div class="layout-wrapper landing">
+        
+      {% include 'fragments/_navbar_app.html.twig' %}
+
+      {# Start Hero section #}
+      {% block hero %}{% endblock %}
+      {# End Hero section #}
+
+      {# Start Main content #}
+      {% block content %}
+        <section class="section" style="min-height: 50vh;"></section>
+      {% endblock %}
+      {# End Main content #}
+
+      {% include 'fragments/_footer_app.html.twig' %}
+      
+      {% include 'fragments/_top_button.html.twig' %}
+
+    </div>
+    <!-- end layout wrapper -->
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block title %}Logs du {{ date }} - {% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="h3 mb-3">
+          <i class="ds ds-calendar me-2"></i>
+          Logs du {{ date }}
+        </h1>
+      </div>
+    </div>
+
+    {% if items is empty %}
+      <div class="alert alert-info">
+        <i class="ds ds-info-circle me-2"></i>
+        Aucun fichier de log pour cette date.
+      </div>
+    {% else %}
+      <div class="row">
+        <ul class="list-group list-group-flush">
+          {% for key, item in items %}
+            {% if item is iterable and key is not same as(0) %}
+              {# C'est un dossier (navigation récursive) #}
+              {% set newPath = currentPath ? currentPath ~ '.' ~ key : key %}
+              <a href="{{ url('admin_log_show_date_path', {date: date, path: newPath}) }}" class="list-group-item">
+                <i class="far fa-folder me-2"></i>
+                <strong>{{ key }}</strong>
+                <span class="badge badge-primary">{{ item|length }} élément(s)</span>
+              </a>
+            {% else %}
+              {# C'est un fichier #}
+              {% set filePath = currentPath ? currentPath ~ '.' ~ item : item %}
+              <a href="{{ url('admin_log_view', {date: date, filePath: filePath}) }}"  class="list-group-item">
+                <div>
+                  <i class="far fa-file-lines me-2"></i>
+                  {{ item }}
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="mt-4">
+      <a href="{{ url('admin_log_index') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-1"></i>
+        Retour aux dates
+      </a>
+    </div>
+  </div>
+{% endblock %}

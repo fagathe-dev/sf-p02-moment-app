@@ -1,0 +1,1 @@
+import{createDuration}from"./create";function addSubtract(t,r,a,n){var e=createDuration(r,a);return t._milliseconds+=n*e._milliseconds,t._days+=n*e._days,t._months+=n*e._months,t._bubble()}export function add(t,r){return addSubtract(this,t,r,1)}export function subtract(t,r){return addSubtract(this,t,r,-1)}

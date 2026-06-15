@@ -1,0 +1,7 @@
+//! author : Zeno Zeng : https://github.com/zenozeng
+
+//! author : suupic : https://github.com/suupic
+
+//! locale : Chinese (China) [zh-cn]
+
+//! moment.js locale configuration

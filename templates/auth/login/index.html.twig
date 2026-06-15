@@ -1,0 +1,34 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block auth_header %}
+  <div class="text-center mt-2">
+    <h5 class="text-primary">Bon retour !</h5>
+    <p class="text-muted">Connectez-vous à {{ APP_NAME }}.</p>
+  </div>
+{% endblock %}
+
+{% block auth_content %}
+  
+  {% if error %}
+    <div class="alert alert-danger">
+      {{ error.messageKey|trans(error.messageData, 'security') }}
+    </div>
+  {% endif %}
+
+  {{ form(form) }}
+
+{% endblock %}
+
+{% block auth_footer %}
+  <div class="mt-4 text-center">
+    <p class="mb-0">
+      Pas encore de compte ? 
+      <a href="{{ url('auth_registration_index') }}" class="fw-semibold text-primary text-decoration-underline">S'inscrire</a>
+    </p>
+    <p class="mb-0">
+      <a href="{{ url('auth_forgot_password_request') }}" class="fw-semibold text-primary text-decoration-underline">
+        Mot de passe oublié ?
+      </a>
+    </p>
+  </div>
+{% endblock %}

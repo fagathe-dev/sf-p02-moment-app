@@ -1,0 +1,1 @@
+import hasOwnProp from"./has-own-prop";export default function extend(r,o){for(var n in o)hasOwnProp(o,n)&&(r[n]=o[n]);return hasOwnProp(o,"toString")&&(r.toString=o.toString),hasOwnProp(o,"valueOf")&&(r.valueOf=o.valueOf),r}

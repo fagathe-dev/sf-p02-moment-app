@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {% block css %}{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+  <!-- App js -->
+  <script src="{{ asset('assets/js/app.js') }}"></script>
+  {% block js %}{% endblock %}
+{% endblock %}
+  
+{% block body %}
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+    {% include 'fragments/_navbar_dashboard.html.twig' %}
+    {% include 'fragments/_sidebar_dashboard.html.twig' %}
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+      <div class="page-content">
+        <div class="container-fluid">
+          {% include 'fragments/_breadcrumb.html.twig' with {pagetitle: 'Pages', title: 'Starter'} %}
+          {% include 'fragments/_flash_messages.html.twig' %}
+          {% block content %}{% endblock %}
+          {% include 'fragments/_top_button.html.twig' %}
+        </div>
+        <!-- container-fluid -->
+      </div>
+      <!-- End Page-content -->
+      {% include 'fragments/_footer_dashboard.html.twig' %}
+    </div>
+    <!-- end main content-->
+
+  </div>
+  <!-- END layout-wrapper -->
+{% endblock %}

@@ -1,0 +1,117 @@
+{#
+  Template d'email de confirmation de compte
+  
+  Variables requises:
+    - user: Objet utilisateur avec les propriétés firstname, username, email
+    - confirmationUrl: URL de confirmation du compte
+    - expires_in: Durée de validité du lien (optionnel, défaut: "24 heures")
+  
+  Variables optionnelles:
+    - preview: Si true, on est en mode preview (pas d'envoi réel)
+#}
+{% extends 'layouts/email.html.twig' %}
+
+{% set subject = 'Confirmez votre compte ' ~ app_name %}
+{% set preheader = 'Cliquez pour activer votre compte et commencer à utiliser ' ~ app_name %}
+
+{% block content %}
+  {# Titre principal #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'h1',
+    content: 'Bienvenue sur ' ~ app_name ~ ' !',
+    color: '#212529',
+    custom_style: 'margin-bottom:20px'
+  } %}
+
+  {# Texte d'introduction #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher utilisateur'))) ~ '</strong>,',
+    color: '#495057'
+  } %}
+
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'Merci de vous être inscrit sur <strong>' ~ app_name ~ '</strong>. Pour finaliser la création de votre compte, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :',
+    color: '#495057'
+  } %}
+
+  {# Bouton de confirmation #}
+  {% include 'emails/components/_button.html.twig' with {
+    url: confirmationUrl,
+    label: 'Confirmer mon compte',
+    custom_style: 'margin: 10px auto; text-align: center;'
+  } %}
+
+  {# Alerte d'expiration #}
+  {% include 'emails/components/_alert.html.twig' with {
+    type: 'warning',
+    title: 'Lien à durée limitée',
+    content: 'Ce lien expire dans <strong>' ~ (expires_in|default('24 heures')) ~ '</strong>. Passé ce délai, vous devrez vous réinscrire.',
+    custom_style: 'margin: 10px auto;'
+  } %}
+
+  {% include 'emails/components/_divider.html.twig' %}
+
+  {# Récapitulatif du compte #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'h3',
+    content: 'Récapitulatif de votre compte :',
+    color: '#212529',
+  } %}
+
+  {% include 'emails/components/_card.html.twig' with {
+    content: '
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 14px;">
+        <tr>
+          <td style="padding: 8px 0; color: #6c757d; width: 140px;"><strong>Nom d\'utilisateur :</strong></td>
+          <td style="padding: 8px 0; color: #212529;">' ~ user.username ~ '</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #6c757d;"><strong>Email :</strong></td>
+          <td style="padding: 8px 0; color: #212529;">' ~ user.email ~ '</td>
+        </tr>
+      </table>
+    ',
+    custom_style: 'margin: 20px auto;'
+  } %}
+
+  {% include 'emails/components/_divider.html.twig' %}
+
+  {# Lien alternatif #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'small',
+    content: 'Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :',
+    color: '#6c757d',
+    custom_style: 'margin: 10px 0;'
+  } %}
+
+  {% include 'emails/components/_box.html.twig' with {
+    background: '#f8f9fa',
+    padding: '10px 15px',
+    content: '<a href="' ~ confirmationUrl ~ '" style="color: #0066ff; font-size: 12px; word-break: break-all;">' ~ confirmationUrl ~ '</a>'
+  } %}
+
+  {% include 'emails/components/_divider.html.twig' %}
+
+  {# Alerte de sécurité #}
+  {% include 'emails/components/_alert.html.twig' with {
+    type: 'info',
+    title: 'Vous n\'avez pas créé ce compte ?',
+    content: 'Si vous n\'êtes pas à l\'origine de cette inscription, vous pouvez ignorer cet email. Le compte ne sera pas activé et sera automatiquement supprimé.',
+    custom_style: 'margin: 10px auto;'
+  } %}
+
+  {# Message de fin #}
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'À très bientôt sur <strong>' ~ app_name ~ '</strong> !',
+    color: '#495057'
+  } %}
+
+  {% include 'emails/components/_text.html.twig' with {
+    level: 'p',
+    content: 'L\'équipe ' ~ app_name,
+    color: '#495057'
+  } %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{
+  "name": "sf-p04-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build:ts": "node scripts/compile-ts.js --mode build",
+    "build:scss": "node scripts/compile-scss.js --mode build",
+    "build": "npm run build:ts && npm run build:scss",
+    "compile:ts": "node scripts/compile-ts.js",
+    "compile:scss": "node scripts/compile-scss.js",
+    "compile": "npm run compile:ts && npm run compile:scss",
+    "dev:ts": "node scripts/compile-ts.js --watch",
+    "dev:scss": "node scripts/compile-scss.js --watch",
+    "dev": "concurrently \"npm run dev:ts\" \"npm run dev:scss\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-perso:fagathe-dev/sf-p04-boilerplate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "esbuild": "^0.28.0",
+    "sass": "^1.99.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "core-ts": "github:fagathe-dev/core-ts#master"
+  }
+}

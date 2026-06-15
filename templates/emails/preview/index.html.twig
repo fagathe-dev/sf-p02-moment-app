@@ -1,0 +1,65 @@
+{#
+  Index de prévisualisation des e-mails (dev uniquement)
+  
+  Variables requises:
+    - types: Liste des EmailTypeEnum disponibles
+#}
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block css %}
+<style>
+  .email-preview-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .email-preview-card .card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f3f5;
+    transition: background 0.15s;
+  }
+  .email-preview-card .card-item:last-child { border-bottom: none; }
+  .email-preview-card .card-item:hover { background: #f8f9fa; }
+  .email-preview-card .card-item .label { font-weight: 500; font-size: 15px; }
+  .email-preview-card .card-item a {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #0066ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .email-preview-card .card-item a:hover { background: #0052cc; }
+  .badge-auth { background: #d4edda; color: #155724; }
+  .badge-admin { background: #f8d7da; color: #721c24; }
+  .badge-other { background: #d1ecf1; color: #0c5460; }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <h4 class="mb-1">📧 Prévisualisation des e-mails</h4>
+      <p class="text-muted mb-4">{{ types|length }} template(s) disponible(s) — Environnement de développement</p>
+
+      <div class="email-preview-card">
+        {% for type in types %}
+          {% set category = type.value starts with 'auth' ? 'auth' : (type.value starts with 'admin' ? 'admin' : 'other') %}
+          <div class="card-item">
+            <div>
+              <span class="label">{{ type.value }}</span>
+              <span class="badge badge-{{ category }}">{{ category }}</span>
+            </div>
+            <a href="{{ path('admin_email_preview', {type: type.value}) }}" target="_blank">Prévisualiser</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

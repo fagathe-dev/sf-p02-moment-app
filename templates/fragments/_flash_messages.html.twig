@@ -1,0 +1,20 @@
+{# Flash messages component - Alert dismissible #}
+{% for type, messages in app.flashes %}
+  {% for message in messages %}
+    {% set alert_class = 'alert' %}
+    {% if type == 'success' %}
+      {% set alert_class = alert_class ~ ' alert-success' %}
+    {% elseif type == 'error' or type == 'danger' %}
+      {% set alert_class = alert_class ~ ' alert-danger' %}
+    {% elseif type == 'warning' %}
+      {% set alert_class = alert_class ~ ' alert-warning' %}
+    {% elseif type == 'info' %}
+      {% set alert_class = alert_class ~ ' alert-info' %}
+    {% endif %}
+    
+    <div class="{{ alert_class }} alert-dismissible" role="alert" style="margin-block-start: 0.5rem;">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div>{{ message|raw }}</div>
+    </div>
+  {% endfor %}
+{% endfor %}

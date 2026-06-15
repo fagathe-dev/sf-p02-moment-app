@@ -1,0 +1,65 @@
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+    <!-- LOGO -->
+    <div class="navbar-brand-box">
+      <!-- Light Logo-->
+      <a href="/" class="logo">
+        <img src="{{ asset(APP_LOGO) }}" alt="" height="30">
+      </a>
+      <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+        <i class="ri-record-circle-line"></i>
+      </button>
+    </div>
+
+    <div id="scrollbar">
+        <div class="container-fluid">
+
+            <div id="two-column-menu"></div>
+            <ul class="navbar-nav" id="navbar-nav">
+              <li class="menu-title">
+                <i class="ri-more-fill"></i>
+                <span>Administration</span>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link menu-link" href="#sidebarUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarUI">
+                  <i class="ri-group-line"></i> 
+                  <span>Utilisateurs</span>
+                </a>
+                <div class="collapse menu-dropdown mega-dropdown-menu" id="sidebarUI">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                          <a href="{{ url('admin_user_index') }}" class="nav-link">Gestion des utilisateurs</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="{{ url('admin_user_create') }}" class="nav-link">Ajouter un utilisateur</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link menu-link" href="{{ url('admin_email_index') }}">
+                  <i class="ri-mail-line"></i>
+                  <span>Emails</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link menu-link" href="{{ url('admin_log_index') }}">
+                  <i class="ri-file-list-3-line"></i>
+                  <span>Logs</span>
+                </a>
+              </li>
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+
+    <div class="sidebar-background"></div>
+</div>
+<!-- Left Sidebar End -->
+<!-- Vertical Overlay-->
+<div class="vertical-overlay"></div>

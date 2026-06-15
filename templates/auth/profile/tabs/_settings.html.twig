@@ -1,0 +1,25 @@
+<div class="jumbotron mb-3">
+  <h2 class="h6 mb-3">Changer l'adresse e-mail</h2>
+  {{ form(emailForm) }} 
+</div>
+<div class="jumbotron mb-4">
+  <h2 class="h6 mb-3">Changer le mot de passe</h2>
+  {{ form(passwordForm) }}
+</div>
+<div class="alert alert-danger">
+  <h2 class="lead mb-3" style="color: inherit !important;">Supprimer le compte</h2>
+  <div class="row">
+    <div class="col-auto">
+      <i class="ri-alert-line text-danger" style="font-size: 2.5rem;"></i>
+    </div>
+    <div class="col-auto">
+      <p class="mb-0 lead">Cette action est irréversible.</p>
+      <p class="lead">En supprimant votre compte, toutes vos données seront perdues de manière irréversible.</p>
+    </div>
+  </div>
+  <form method="post" action="{{ path('auth_profile_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+    {# Ajout du token CSRF vital pour la sécurité #}
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_account' ~ app.user.id) }}">
+    <button type="submit" class="btn btn-danger">Supprimer mon compte</button>
+  </form>
+</div>

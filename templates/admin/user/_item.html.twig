@@ -1,0 +1,38 @@
+<tr>
+  <th scope="row">{{ user.id }}</th>
+  <td>{{ user.username }}</td>
+  <td>{{ user.email }}</td>
+  <td>
+    {% if user.isVerified %}
+      <span class="badge bg-success">Oui</span>
+    {% else %}
+      <span class="badge bg-danger">Non</span>
+    {% endif %}
+  </td>
+  <td>
+    {% if user.roles %}
+      <span class="badge bg-primary-subtle text-primary">{{ roles(user) }}</span>
+    {% endif %}
+  </td>
+  <td> 
+    <a href="{{ path('admin_user_edit', {'id': user.id}) }}" title="Éditer l'utilisateur" class="btn btn-sm btn-icon btn-ghost-info waves-effect waves-light">
+      <i class="ri-edit-box-line"></i>  
+    </a>
+    <form 
+      method="POST" 
+      action="{{ path('admin_user_delete', {'id': user.id}) }}" 
+      style="display: inline-block;" 
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');"
+    >
+    {# Indique à Symfony de traiter ce POST comme un DELETE #}
+    <input type="hidden" name="_method" value="DELETE">
+    
+    {# Token CSRF #}
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+    
+    <button type="submit" title="Supprimer l'utilisateur" class="btn btn-sm btn-icon btn-ghost-danger waves-effect waves-light">
+      <i class="ri-delete-bin-line"></i>
+    </button>
+    </form>
+  </td>
+</tr>

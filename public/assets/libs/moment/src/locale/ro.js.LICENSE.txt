@@ -1,0 +1,7 @@
+//! author : Valentin Agachi : https://github.com/avaly
+
+//! author : Vlad Gurdiga : https://github.com/gurdiga
+
+//! locale : Romanian [ro]
+
+//! moment.js locale configuration

@@ -1,0 +1,1 @@
+var mathAbs=Math.abs;export function abs(){var s=this._data;return this._milliseconds=mathAbs(this._milliseconds),this._days=mathAbs(this._days),this._months=mathAbs(this._months),s.milliseconds=mathAbs(s.milliseconds),s.seconds=mathAbs(s.seconds),s.minutes=mathAbs(s.minutes),s.hours=mathAbs(s.hours),s.months=mathAbs(s.months),s.years=mathAbs(s.years),this}

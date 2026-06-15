@@ -1,0 +1,42 @@
+{% set current = app.request.query.get('t') ?? 'informations' %}
+{% set profile_tabs = [{
+  'id': 'infos',
+  'active': current == 'informations',
+  'label': 'Informations',
+  'content': 'infos'
+}, {
+  'id': 'preferences',
+  'active': current == 'preferences',
+  'label': 'Préférences',
+  'content': 'preferences'
+}, {
+  'id': 'settings',
+  'active': current == 'settings',
+  'label': 'Paramètres',
+  'content': 'settings'
+}] %}
+
+<div class="card mt-4">
+  <div class="card-body">
+    <ul class="nav nav-tabs mb-3" role="tablist">
+      {% for tab in profile_tabs %}
+        <li class="nav-item" role="presentation">
+          <a class="nav-link {{ tab.active ? 'active' : '' }}" data-bs-toggle="tab" href="#{{ tab.id }}" role="tab" aria-selected="{{ tab.active ? 'true' : 'false' }}">
+            {{ tab.label }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content  text-muted">
+      {% for tab in profile_tabs %}
+        <div class="tab-pane {{ tab.active ? 'active show' : '' }}" id="{{ tab.id }}" role="tabpanel">
+          <div class="container-fluid">
+            <h6 class="mb-3">{{ tab.label }}</h6>
+            {% include 'auth/profile/tabs/_' ~ tab.content ~ '.html.twig' %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

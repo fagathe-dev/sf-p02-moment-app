@@ -1,0 +1,35 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block title %}Logs - Dates disponibles{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="h3 mb-3 d-flex align-items-center">
+          <i class="ds ds-file-text"></i>
+          Logs - Dates disponibles
+        </h1>
+        <p class="text-muted">Sélectionnez une date pour consulter les fichiers de logs correspondants.</p>
+      </div>
+    </div>
+
+      {% if dates is empty %}
+        <div class="alert alert-info">
+          <i class="fas fa-circle-info me-2"></i>
+          Aucun fichier de log disponible.
+        </div>
+      {% else %}
+        <div class="row">
+          <ul class="list-group list-group-flush">
+            {% for date in dates %}
+              <a href="{{ url('admin_log_show_date', {date: date}) }}" class="list-group-item">
+                <i class="fas fa-calendar-days me-2"></i>
+                {{ date}}
+              </a>
+            {% endfor %}
+          </ul> 
+        </div>
+      {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'layouts/error.html.twig' %}
+
+{% block title %}Erreur Serveur (500){% endblock %}
+{% block error_code %}500{% endblock %}
+{% block error_message %}Erreur Interne{% endblock %}
+{% block error_details %}
+  Oups ! Quelque chose a cassé du côté du serveur. Nos techniciens sont sur le coup.
+{% endblock %}

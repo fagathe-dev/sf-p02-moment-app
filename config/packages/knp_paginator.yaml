@@ -1,0 +1,14 @@
+# config/packages/knp_paginator.yaml
+knp_paginator:
+  page_range: 5 # Nombre de liens de page à afficher de chaque côté de la page actuelle
+  default_options:
+    page_name: p # Nom du paramètre de la page dans l'URL (ex: ?page=1)
+    sort_field_name: sort # Nom du paramètre de tri dans l'URL
+    sort_direction_name: order # Nom du paramètre de direction de tri dans l'URL
+    distinct: true # Si les résultats doivent être distincts (utile avec les jointures)
+    filter_field_name: filterField # Nom du paramètre de filtre dans l'URL
+    filter_value_name: filterValue # Nom de la valeur de filtre dans l'URL
+  template:
+    pagination: '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig' # Le template de pagination pour Bootstrap 5
+    sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # Le template pour les liens de tri
+    filtration: '@KnpPaginator/Pagination/filtration.html.twig' # Le template pour les filtres

@@ -1,0 +1,25 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block title %}Une erreur est survenue{% endblock %}
+
+{% block body %}
+  <div class="text-center py-5">
+    <div class="mb-4">
+      {# On peut utiliser une icône Remix générique pour les erreurs #}
+      <i class="ri-error-warning-line display-1 text-danger"></i>
+    </div>
+    
+    <h1 class="fw-bold">{% block error_code %}Erreur{% endblock %}</h1>
+    <h2 class="text-muted mb-4">{% block error_message %}Quelque chose s'est mal passé.{% endblock %}</h2>
+    
+    <p class="text-muted mb-5">
+      {% block error_details %}
+        Désolé pour le désagrément. Nos équipes techniques ont été prévenues.
+      {% endblock %}
+    </p>
+
+    <a href="#" class="btn btn-primary">
+      <i class="ri-home-4-line align-bottom me-1"></i> Retour à l'accueil
+    </a>
+  </div>
+{% endblock %}

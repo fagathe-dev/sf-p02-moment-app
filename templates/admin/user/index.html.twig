@@ -1,0 +1,57 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block title %}Gestion des utilisateurs - {% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="h3 d-flex align-items-center">
+          Gestion des utilisateurs
+          <a 
+            href="{{ url('admin_user_create') }}" 
+            class="btn btn-primary ms-3" 
+            title="Ajouter un utilisateur"
+          >
+            <i class="ri-add-line"></i>
+          </a>
+        </h1>
+        <p class="text-muted">Liste des utilisateurs enregistrés dans le système.</p>
+      </div>
+    </div>
+
+      {% if paginatedUsers is empty %}
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          Aucun utilisateur disponible.
+        </div>
+      {% else %}
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Vérifié</th>
+                    <th scope="col">Rôle</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in paginatedUsers %}
+                    {% include 'admin/user/_item.html.twig' with {'user': user} %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="mb-3">
+            {{ knp_pagination_render(paginatedUsers) }}
+          </div>
+        </div>
+      {% endif %}
+  </div>
+{% endblock %}

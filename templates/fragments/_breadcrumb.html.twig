@@ -1,0 +1,15 @@
+{% if breadcrumb is defined and breadcrumb is not null %}
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+
+        <div class="page-title-right">
+          {{ generate_breadcrumb(breadcrumb) }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+{% endif %}

@@ -1,0 +1,5 @@
+//! author : Bang Nguyen : https://github.com/bangnk
+
+//! locale : Vietnamese [vi]
+
+//! moment.js locale configuration
