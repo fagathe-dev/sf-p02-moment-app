@@ -1,0 +1,89 @@
+// =============================================================================
+// components/_top-button.scss
+// Bouton "Retour en haut de page" (Top Button).
+//
+// Positionné de manière fixe en bas à droite de l'écran, au-dessus de la
+// Bottom Navigation Bar sur mobile.
+//
+// ÉTATS :
+//   Masqué par défaut (opacity: 0 + visibility: hidden + pointer-events: none).
+//   Visible dès que TopButton.ts ajoute la classe `.top-button--visible`.
+//
+// NOTE : On surcharge le `display: none` natif de l'attribut `[hidden]` pour
+//   permettre les transitions CSS d'entrée/sortie (fade + slide).
+//
+// TOKENS utilisés : palette Neutral et Olive du Design System.
+// =============================================================================
+@use '../mixins' as *;
+
+.top-button {
+  // ── Tokens locaux (surchargeables depuis une vue parente) ─────────────────
+  --top-button-size: 2.75rem; // 44 px — cible tactile minimale
+  --top-button-bottom: calc(var(--bottom-nav-total-height, 4rem) + 0.75rem);
+  --top-button-right: 1rem;
+  --top-button-bg: var(--ds-olive-700);
+  --top-button-color: var(--ds-neutral-50);
+  --top-button-bg-hover: var(--ds-olive-800);
+  --top-button-outline: var(--ds-olive-400);
+  --top-button-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+  --top-button-radius: 50%;
+  --top-button-z-index: 1025; // sous les modals (1050)
+  --top-button-transition:
+    opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+
+  // ── Positionnement fixe ───────────────────────────────────────────────────
+  position: fixed;
+  bottom: var(--top-button-bottom);
+  right: var(--top-button-right);
+  z-index: var(--top-button-z-index);
+
+  // ── Apparence ─────────────────────────────────────────────────────────────
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--top-button-size);
+  height: var(--top-button-size);
+  border: none;
+  border-radius: var(--top-button-radius);
+  background-color: var(--top-button-bg);
+  color: var(--top-button-color);
+  font-size: 1.125rem;
+  cursor: pointer;
+  box-shadow: var(--top-button-shadow);
+
+  // ── État masqué par défaut ────────────────────────────────────────────────
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition: var(--top-button-transition);
+  pointer-events: none;
+
+  // Surcharge du display:none natif de [hidden] pour permettre la transition
+  &[hidden] {
+    display: inline-flex;
+  }
+
+  // ── État visible (classe ajoutée par TopButton.ts) ────────────────────────
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  // ── Interactions ──────────────────────────────────────────────────────────
+  &:hover {
+    background-color: var(--top-button-bg-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--top-button-outline);
+    outline-offset: 2px;
+  }
+
+  // ── Desktop : repositionnement (pas de Bottom Nav) ────────────────────────
+  @include bp-up('lg') {
+    --top-button-bottom: 1.5rem;
+    --top-button-right: 1.5rem;
+  }
+}

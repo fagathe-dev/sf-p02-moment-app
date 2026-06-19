@@ -1,0 +1,94 @@
+{#
+  ================================================================
+  _bottom_nav.html.twig
+  Barre de navigation inférieure mobile (Bottom Navigation Bar).
+
+  Visible uniquement en dessous du breakpoint LG (< 992 px) via CSS.
+
+  VARIANTES : modifier la classe modificatrice sur <nav> :
+    .bottom-nav--stacked  (défaut)
+      → icône au-dessus du label, pilule colorée sur l'icône seule
+    .bottom-nav--inline
+      → icône + label côte à côte, pilule englobant le bloc entier
+
+  TYPES DE LIENS SUPPORTÉS :
+    1. Ancre simple        href="#section-id"
+       → défilement fluide géré par BottomNav.ts
+    2. Toggle tab          data-bs-toggle="tab" + data-bs-target="#panel"
+       → changement de panneau délégué au composant Tab.ts
+  ================================================================
+#}
+<nav
+  class="bottom-nav bottom-nav--stacked"
+  id="bottomNav"
+  aria-label="Navigation principale"
+>
+  <ul class="bottom-nav__list" role="list">
+
+    {# ── Accueil ──────────────────────────────────────────────── #}
+    <li class="bottom-nav__item">
+      <a
+        class="bottom-nav__link active"
+        href="/"
+        aria-current="page"
+      >
+        <span class="bottom-nav__icon" aria-hidden="true">
+          <i class="mdi mdi-cards-variant"></i>
+        </span>
+        <span class="bottom-nav__label">Feed</span>
+      </a>
+    </li>
+
+    {# ── Insights ────────────────────────────────────────────── #}
+    <li class="bottom-nav__item">
+      <a
+        class="bottom-nav__link"
+        href="/insights"
+      >
+        <span class="bottom-nav__icon" aria-hidden="true">
+          <i class="mdi mdi-home-variant"></i>
+        </span>
+        <span class="bottom-nav__label">Insights</span>
+      </a>
+    </li>
+
+    {# ── Catégories ───────────────────────────────────────────── #}
+    <li class="bottom-nav__item">
+      <a
+        class="bottom-nav__link"
+        href="/category"
+      >
+        <span class="bottom-nav__icon" aria-hidden="true">
+          <i class="mdi mdi-view-grid-outline"></i>
+        </span>
+        <span class="bottom-nav__label">Catégories</span>
+      </a>
+    </li>
+
+    {# ── Mon Compte ─────────────────────────────────────────────── #}
+    <li class="bottom-nav__item">
+      <a
+        class="bottom-nav__link"
+        href="{{ path('auth_profile_index') }}"
+      >
+        <span class="bottom-nav__icon" aria-hidden="true">
+          {% if app.user %}
+            {% if app.user.avatar %}
+              <span class="avatar avatar--sm">
+                <img src="{{ asset(app.user.avatar) }}" alt="">
+              </span>
+            {% else %}
+              <span class="avatar avatar--sm avatar--primary">
+                {{ app.user.username|first|upper }}
+              </span>
+            {% endif %}
+          {% else %}
+            <i class="mdi mdi-account-circle-outline"></i>
+          {% endif %}
+        </span>
+        <span class="bottom-nav__label">Mon Compte</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>

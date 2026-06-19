@@ -1,1 +1,0 @@
-import{elementChildren}from"../../shared/utils.js";export default function loopCreate(e){const i=this,{params:l,slidesEl:t}=i;if(!l.loop||i.virtual&&i.params.virtual.enabled)return;elementChildren(t,`.${l.slideClass}, swiper-slide`).forEach(((e,i)=>{e.setAttribute("data-swiper-slide-index",i)})),i.loopFix({slideRealIndex:e,direction:l.centeredSlides?void 0:"next"})}

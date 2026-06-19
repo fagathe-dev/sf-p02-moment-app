@@ -1,1 +1,0 @@
-import{getTranslate}from"../../shared/utils.js";export default function getSwiperTranslate(t=(this.isHorizontal()?"x":"y")){const{params:r,rtlTranslate:e,translate:s,wrapperEl:a}=this;if(r.virtualTranslate)return e?-s:s;if(r.cssMode)return s;let l=getTranslate(a,t);return l+=this.cssOverflowAdjustment(),e&&(l=-l),l||0}

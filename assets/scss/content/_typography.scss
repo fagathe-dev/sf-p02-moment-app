@@ -1,0 +1,319 @@
+// =============================================================================
+// content/_typography.scss
+// Classes utilitaires de typographie — nomenclature Bootstrap 5.
+// .display-*, .lead, .text-*, .fw-*, .fs-*, .lh-*, .font-monospace
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Display headings (grands titres décoratifs)
+// =============================================================================
+.display-1 {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.display-2 {
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.display-3 {
+  font-size: clamp(1.75rem, 4vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.display-4 {
+  font-size: clamp(1.5rem, 3.5vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.display-5 {
+  font-size: clamp(1.25rem, 3vw, 3rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.display-6 {
+  font-size: clamp(1rem, 2.5vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+// =============================================================================
+// Lead
+// =============================================================================
+.lead {
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-normal);
+  line-height: var(--ds-line-height-relaxed);
+}
+
+// =============================================================================
+// Tailles de police
+// =============================================================================
+.fs-1 {
+  font-size: var(--ds-font-size-4xl) !important;
+}
+.fs-2 {
+  font-size: var(--ds-font-size-3xl) !important;
+}
+.fs-3 {
+  font-size: var(--ds-font-size-2xl) !important;
+}
+.fs-4 {
+  font-size: var(--ds-font-size-xl) !important;
+}
+.fs-5 {
+  font-size: var(--ds-font-size-lg) !important;
+}
+.fs-6 {
+  font-size: var(--ds-font-size-base) !important;
+}
+
+.fs-xs {
+  font-size: var(--ds-font-size-xs) !important;
+}
+.fs-sm {
+  font-size: var(--ds-font-size-sm) !important;
+}
+
+// =============================================================================
+// Graisses
+// =============================================================================
+.fw-light {
+  font-weight: var(--ds-font-weight-light) !important;
+}
+.fw-normal {
+  font-weight: var(--ds-font-weight-normal) !important;
+}
+.fw-medium {
+  font-weight: var(--ds-font-weight-medium) !important;
+}
+.fw-semibold {
+  font-weight: var(--ds-font-weight-semibold) !important;
+}
+.fw-bold {
+  font-weight: var(--ds-font-weight-bold) !important;
+}
+.fw-bolder {
+  font-weight: bolder !important;
+}
+.fw-lighter {
+  font-weight: lighter !important;
+}
+
+// =============================================================================
+// Style
+// =============================================================================
+.fst-italic {
+  font-style: italic !important;
+}
+.fst-normal {
+  font-style: normal !important;
+}
+
+// =============================================================================
+// Interligne
+// =============================================================================
+.lh-1 {
+  line-height: 1 !important;
+}
+.lh-tight {
+  line-height: var(--ds-line-height-tight) !important;
+}
+.lh-snug {
+  line-height: var(--ds-line-height-snug) !important;
+}
+.lh-base {
+  line-height: var(--ds-line-height-base) !important;
+}
+.lh-relaxed {
+  line-height: var(--ds-line-height-relaxed) !important;
+}
+
+// =============================================================================
+// Alignement
+// =============================================================================
+.text-start {
+  text-align: left !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-end {
+  text-align: right !important;
+}
+.text-justify {
+  text-align: justify !important;
+}
+
+// =============================================================================
+// Transformation
+// =============================================================================
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+// =============================================================================
+// Décoration
+// =============================================================================
+.text-decoration-none {
+  text-decoration: none !important;
+}
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+.text-decoration-line-through {
+  text-decoration: line-through !important;
+}
+
+// =============================================================================
+// Wrap
+// =============================================================================
+.text-wrap {
+  white-space: normal !important;
+}
+.text-nowrap {
+  white-space: nowrap !important;
+}
+.text-break {
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+// =============================================================================
+// Troncature
+// =============================================================================
+.text-truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+// =============================================================================
+// Couleurs de texte
+// =============================================================================
+.text-primary {
+  color: var(--ds-primary) !important;
+}
+.text-secondary {
+  color: var(--ds-secondary) !important;
+}
+.text-success {
+  color: var(--ds-success) !important;
+}
+.text-danger {
+  color: var(--ds-danger) !important;
+}
+.text-warning {
+  color: var(--ds-warning) !important;
+}
+.text-info {
+  color: var(--ds-info) !important;
+}
+.text-light {
+  color: var(--ds-light) !important;
+}
+.text-dark {
+  color: var(--ds-dark) !important;
+}
+.text-body {
+  color: var(--ds-body-color) !important;
+}
+.text-muted {
+  color: var(--ds-neutral-400) !important;
+}
+.text-white {
+  color: #ffffff !important;
+}
+.text-black {
+  color: #000000 !important;
+}
+.text-reset {
+  color: inherit !important;
+}
+
+// =============================================================================
+// Police mono
+// =============================================================================
+.font-monospace {
+  font-family: var(--ds-font-family-mono) !important;
+}
+
+// =============================================================================
+// Mark / Small / Abbr
+// =============================================================================
+mark,
+.mark {
+  padding: 0.1875em 0.375em;
+  background-color: var(--ds-warning-light);
+  border-radius: var(--ds-border-radius-sm);
+}
+
+small,
+.small {
+  font-size: 0.875em;
+}
+
+// =============================================================================
+// Blockquote
+// =============================================================================
+.blockquote {
+  margin-bottom: 1rem;
+  font-size: var(--ds-font-size-lg);
+  border-left: 4px solid var(--ds-primary);
+  padding-left: 1rem;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.blockquote-footer {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-neutral-500);
+
+  &::before {
+    content: '\2014\00A0';
+  }
+}
+
+// =============================================================================
+// Description list
+// =============================================================================
+.dl-horizontal {
+  @include bp-up('sm') {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1.5rem;
+
+    dt {
+      text-align: right;
+    }
+  }
+}
+
+// =============================================================================
+// Alignement responsive
+// =============================================================================
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  @include bp-up($bp) {
+    .text-#{$bp}-start {
+      text-align: left !important;
+    }
+    .text-#{$bp}-center {
+      text-align: center !important;
+    }
+    .text-#{$bp}-end {
+      text-align: right !important;
+    }
+  }
+}

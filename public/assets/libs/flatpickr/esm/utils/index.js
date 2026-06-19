@@ -1,1 +1,0 @@
-export var pad=function(r,n){return void 0===n&&(n=2),("000"+r).slice(-1*n)};export var int=function(r){return!0===r?1:0};export function debounce(r,n){var t;return function(){var e=this,o=arguments;clearTimeout(t),t=setTimeout((function(){return r.apply(e,o)}),n)}}export var arrayify=function(r){return r instanceof Array?r:[r]};

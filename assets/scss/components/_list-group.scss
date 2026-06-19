@@ -1,0 +1,223 @@
+// =============================================================================
+// components/_list-group.scss
+// .list-group, variants flush/horizontal/numbered + couleurs + actions
+// =============================================================================
+@use '../mixins' as *;
+
+.list-group {
+  --list-group-color: var(--ds-body-color);
+  --list-group-bg: var(--ds-surface-bg-raised);
+  --list-group-border-color: var(--ds-border-color);
+  --list-group-border-width: var(--ds-border-width);
+  --list-group-border-radius: var(--ds-border-radius);
+  --list-group-item-padding-x: 1rem;
+  --list-group-item-padding-y: 0.625rem;
+  --list-group-action-color: var(--ds-body-color);
+  --list-group-action-hover-color: var(--ds-body-color);
+  --list-group-action-hover-bg: var(--ds-neutral-100);
+  --list-group-action-active-color: var(--ds-body-color);
+  --list-group-action-active-bg: var(--ds-neutral-200);
+  --list-group-active-color: #ffffff;
+  --list-group-active-bg: var(--ds-primary);
+  --list-group-active-border-color: var(--ds-primary);
+  --list-group-disabled-color: var(--ds-neutral-400);
+  --list-group-disabled-bg: var(--ds-surface-bg-raised);
+
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: var(--list-group-border-radius);
+}
+
+// =============================================================================
+// Item
+// =============================================================================
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: var(--list-group-item-padding-y) var(--list-group-item-padding-x);
+  color: var(--list-group-color);
+  text-decoration: none;
+  background-color: var(--list-group-bg);
+  border: var(--list-group-border-width) solid var(--list-group-border-color);
+
+  &:first-child {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: inherit;
+  }
+
+  &.disabled,
+  &:disabled {
+    color: var(--list-group-disabled-color);
+    pointer-events: none;
+    background-color: var(--list-group-disabled-bg);
+  }
+
+  &.active {
+    z-index: 2;
+    color: var(--list-group-active-color);
+    background-color: var(--list-group-active-bg);
+    border-color: var(--list-group-active-border-color);
+  }
+
+  // Supprimer la double bordure entre items
+  & + .list-group-item {
+    border-top-width: 0;
+
+    &.active {
+      margin-top: calc(-1 * var(--list-group-border-width));
+      border-top-width: var(--list-group-border-width);
+    }
+  }
+}
+
+// =============================================================================
+// Action (cliquable : <a> ou <button>)
+// =============================================================================
+.list-group-item-action {
+  width: 100%;
+  color: var(--list-group-action-color);
+  text-align: inherit;
+  cursor: pointer;
+  @include transition(color background-color border-color, fast);
+
+  &:hover,
+  &:focus {
+    z-index: 1;
+    color: var(--list-group-action-hover-color);
+    background-color: var(--list-group-action-hover-bg);
+    text-decoration: none;
+  }
+
+  &:active {
+    color: var(--list-group-action-active-color);
+    background-color: var(--list-group-action-active-bg);
+  }
+}
+
+// =============================================================================
+// Flush (sans bords ni arrondi)
+// =============================================================================
+.list-group-flush {
+  border-radius: 0;
+
+  > .list-group-item {
+    border-width: 0 0 var(--list-group-border-width);
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+// =============================================================================
+// Numérotée
+// =============================================================================
+.list-group-numbered {
+  list-style-type: none;
+  counter-reset: section;
+
+  > .list-group-item::before {
+    content: counters(section, '.') '. ';
+    counter-increment: section;
+    font-weight: var(--ds-font-weight-semibold);
+  }
+}
+
+// =============================================================================
+// Horizontal
+// =============================================================================
+.list-group-horizontal {
+  flex-direction: row;
+
+  > .list-group-item {
+    &:first-child:not(:last-child) {
+      border-bottom-left-radius: var(--list-group-border-radius);
+      border-top-right-radius: 0;
+    }
+
+    &:last-child:not(:first-child) {
+      border-top-right-radius: var(--list-group-border-radius);
+      border-bottom-left-radius: 0;
+    }
+
+    & + .list-group-item {
+      border-top-width: var(--list-group-border-width);
+      border-left-width: 0;
+
+      &.active {
+        margin-left: calc(-1 * var(--list-group-border-width));
+        border-left-width: var(--list-group-border-width);
+      }
+    }
+  }
+}
+
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  .list-group-horizontal-#{$bp} {
+    @include bp-up($bp) {
+      flex-direction: row;
+
+      > .list-group-item {
+        &:first-child:not(:last-child) {
+          border-bottom-left-radius: var(--list-group-border-radius);
+          border-top-right-radius: 0;
+        }
+
+        &:last-child:not(:first-child) {
+          border-top-right-radius: var(--list-group-border-radius);
+          border-bottom-left-radius: 0;
+        }
+
+        & + .list-group-item {
+          border-top-width: var(--list-group-border-width);
+          border-left-width: 0;
+
+          &.active {
+            margin-left: calc(-1 * var(--list-group-border-width));
+            border-left-width: var(--list-group-border-width);
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Couleurs
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .list-group-item-#{$color} {
+    --list-group-color: var(--ds-#{$color}-dark);
+    --list-group-bg: var(--ds-#{$color}-light);
+    --list-group-border-color: var(--ds-#{$color}-light);
+
+    &.list-group-item-action {
+      &:hover,
+      &:focus {
+        --list-group-action-hover-color: var(--ds-#{$color}-dark);
+        --list-group-action-hover-bg: var(--ds-#{$color}-light);
+        filter: brightness(0.95);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Stretched link (pour couvrir toute la carte/item parent)
+// =============================================================================
+.stretched-link {
+  &::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    content: '';
+  }
+}

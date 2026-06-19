@@ -5,34 +5,55 @@
 {% endblock %}
 
 {% block javascripts %}
-  <!-- App js -->
-  <script src="{{ asset('assets/js/app.js') }}"></script>
+  <script src="{{ asset('js/main.js') }}"></script>
   {% block js %}{% endblock %}
 {% endblock %}
-  
+
 {% block body %}
-  <!-- Begin page -->
-  <div id="layout-wrapper">
-    {% include 'fragments/_navbar_dashboard.html.twig' %}
-    {% include 'fragments/_sidebar_dashboard.html.twig' %}
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-      <div class="page-content">
-        <div class="container-fluid">
-          {% include 'fragments/_breadcrumb.html.twig' with {pagetitle: 'Pages', title: 'Starter'} %}
+  {# ── Enveloppe principale du tableau de bord (Desktop First) ───────────── #}
+  <div class="dashboard-wrapper">
+
+    {# ── Barre latérale ────────────────────────────────────────────────────── #}
+    <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Navigation du tableau de bord">
+      {% include 'fragments/_sidebar_dashboard.html.twig' %}
+    </aside>
+
+    {# ── Colonne principale ────────────────────────────────────────────────── #}
+    <div class="dashboard-main">
+
+      {# Top bar #}
+      <header class="dashboard-header" id="dashboard-header">
+        {% include 'fragments/_navbar_dashboard.html.twig' %}
+      </header>
+
+      {# Zone de contenu #}
+      <main class="dashboard-content" id="main-content">
+        <div class="dashboard-content__inner">
+
+          {# Fil d'Ariane (affiché si la variable `breadcrumb` est définie par le contrôleur) #}
+          {% include 'fragments/_breadcrumb.html.twig' %}
+
+          {# Messages flash #}
           {% include 'fragments/_flash_messages.html.twig' %}
+
+          {# ── Pilules de catégorisation (style Apple Finder) ─────────────── #}
+          {# Surcharger ce block depuis les vues enfants pour afficher des tags #}
+          {% block category_pills %}{% endblock %}
+
+          {# ── Contenu principal de la page ──────────────────────────────── #}
           {% block content %}{% endblock %}
-          {% include 'fragments/_top_button.html.twig' %}
+
         </div>
-        <!-- container-fluid -->
-      </div>
-      <!-- End Page-content -->
+        {# end dashboard-content__inner #}
+      </main>
+      {# end main #}
+
+      {# Pied de page #}
       {% include 'fragments/_footer_dashboard.html.twig' %}
+
     </div>
-    <!-- end main content-->
+    {# end dashboard-main #}
 
   </div>
-  <!-- END layout-wrapper -->
+  {# end dashboard-wrapper #}
 {% endblock %}

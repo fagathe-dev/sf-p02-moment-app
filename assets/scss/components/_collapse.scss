@@ -1,0 +1,30 @@
+// =============================================================================
+// components/_collapse.scss
+// .collapse, .collapsing, .show
+// La hauteur est animée via JS/TS (inline style height).
+// =============================================================================
+
+// =============================================================================
+// État masqué
+// =============================================================================
+.collapse {
+  &:not(.show) {
+    display: none;
+  }
+}
+
+// =============================================================================
+// Transition en cours
+// =============================================================================
+.collapsing {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+
+  // Variante horizontale (collapse latéral)
+  &.collapse-horizontal {
+    width: 0;
+    height: auto;
+    transition: width 0.3s ease;
+  }
+}

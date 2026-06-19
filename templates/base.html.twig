@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="fr">
 <head>
  <meta charset="utf-8" />
   <title>{{ title is defined ? title|capitalize  ~ ' | ': ''  }} {{ APP_NAME }}</title>
@@ -10,18 +10,10 @@
   <link rel="shortcut icon" href="{{ asset(APP_FAVICON) }}" type="image/x-icon">
   <link rel="icon" href="{{ asset(APP_LOGO) }}" type="image/webp">
   <link rel="apple-touch-icon" href="{{ asset(APP_LOGO_PNG) }}" type="image/png">
-  <!-- aos css -->
-  <link rel="stylesheet" href="{{ asset('assets/libs/aos/aos.css') }}" />
-  <!-- Layout config Js -->
-  <script src="{{ asset('assets/js/layout.js') }}"></script>
-  <!-- Bootstrap Css -->
-  <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-  <!-- Icons Css -->
-  <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-  <!-- App Css-->
-  <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <!-- Custom Css-->
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
+  <!-- Custom Css-->
+  <link href="{{ asset('css/icons.css') }}" rel="stylesheet" type="text/css" />
   {% block head %}{% endblock %}
   {% block stylesheets %}{% endblock %}
 </head>
@@ -31,12 +23,8 @@
   {% block body %}{% endblock %}
 
   <!-- JAVASCRIPT -->
-  <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
-  <script src="{{ asset('assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-  <script src="{{ asset('assets/js/plugins.js') }}"></script>
-  {% block javascripts %}{% endblock %}
+  {% block javascripts %}
+    <script src="{{ asset('js/main.js') }}"></script>
+  {% endblock %}
 </body>
 </html>

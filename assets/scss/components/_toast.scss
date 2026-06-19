@@ -1,0 +1,136 @@
+// =============================================================================
+// components/_toast.scss
+// .toast, .toast-header, .toast-body, .toast-container
+// Le TS gère l'affichage via .show / .hiding / .hide.
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Conteneur de stacking
+// =============================================================================
+.toast-container {
+  --toast-zindex: var(--ds-z-toast);
+
+  position: fixed;
+  z-index: var(--toast-zindex);
+  width: max-content;
+  max-width: 100%;
+  pointer-events: none;
+
+  // Positionnements prédéfinis
+  &.top-0 {
+    top: 0;
+  }
+  &.top-50 {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &.bottom-0 {
+    bottom: 0;
+  }
+  &.start-0 {
+    left: 0;
+  }
+  &.start-50 {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &.end-0 {
+    right: 0;
+  }
+
+  &.top-50.start-50 {
+    transform: translate(-50%, -50%);
+  }
+
+  .toast {
+    pointer-events: auto;
+  }
+}
+
+// =============================================================================
+// Toast
+// =============================================================================
+.toast {
+  --toast-zindex: var(--ds-z-toast);
+  --toast-padding-x: 0.875rem;
+  --toast-padding-y: 0.625rem;
+  --toast-spacing: 1.5rem;
+  --toast-max-width: 350px;
+  --toast-font-size: var(--ds-font-size-sm);
+  --toast-color: var(--ds-body-color);
+  --toast-bg: var(--ds-surface-bg-raised);
+  --toast-border-width: var(--ds-border-width);
+  --toast-border-color: var(--ds-border-color);
+  --toast-border-radius: var(--ds-border-radius);
+  --toast-box-shadow: var(--ds-shadow-lg);
+  --toast-header-color: var(--ds-neutral-500);
+  --toast-header-bg: var(--ds-surface-bg);
+  --toast-header-border-color: var(--ds-border-color);
+
+  width: var(--toast-max-width);
+  max-width: 100%;
+  font-size: var(--toast-font-size);
+  color: var(--toast-color);
+  pointer-events: auto;
+  background-color: var(--toast-bg);
+  background-clip: padding-box;
+  border: var(--toast-border-width) solid var(--toast-border-color);
+  border-radius: var(--toast-border-radius);
+  box-shadow: var(--toast-box-shadow);
+
+  // Masqué par défaut
+  &:not(.show) {
+    display: none;
+  }
+
+  // Animation
+  &.showing {
+    opacity: 0;
+  }
+
+  &.show {
+    display: block;
+    opacity: 1;
+  }
+}
+
+// =============================================================================
+// Header
+// =============================================================================
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: var(--toast-padding-y) var(--toast-padding-x);
+  color: var(--toast-header-color);
+  background-color: var(--toast-header-bg);
+  background-clip: padding-box;
+  border-bottom: var(--toast-border-width) solid
+    var(--toast-header-border-color);
+  border-top-left-radius: calc(
+    var(--toast-border-radius) - var(--toast-border-width)
+  );
+  border-top-right-radius: calc(
+    var(--toast-border-radius) - var(--toast-border-width)
+  );
+
+  .btn-close {
+    margin-right: calc(-0.375 * var(--toast-padding-x));
+    margin-left: var(--toast-padding-x);
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: var(--ds-border-radius-sm);
+  }
+}
+
+// =============================================================================
+// Body
+// =============================================================================
+.toast-body {
+  padding: var(--toast-padding-x);
+  word-break: break-word;
+}

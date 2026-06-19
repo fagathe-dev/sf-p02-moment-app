@@ -1,0 +1,219 @@
+// =============================================================================
+// components/_bottom-nav.scss
+// Barre de navigation inférieure (Bottom Navigation Bar / Tab Bar).
+//
+// Toujours visible, quelle que soit la taille d'écran.
+//
+// VARIANTES DE DESIGN
+// ───────────────────
+//   .bottom-nav--stacked  (défaut)
+//     Icône au-dessus du label. La pilule colorée ne couvre que l'icône à l'état actif.
+//
+//   .bottom-nav--inline
+//     Icône et label alignés horizontalement. La pilule colorée englobe le bloc
+//     entier (icône + label) à l'état actif.
+//
+// GESTION DU CHEVAUCHEMENT DE CONTENU
+// ─────────────────────────────────────
+//   La règle sur `.layout-wrapper` en bas de ce fichier ajoute un
+//   padding-bottom compensatoire sur mobile pour que le bas de la page reste
+//   toujours accessible au scroll. La valeur intègre env(safe-area-inset-bottom)
+//   pour les encoches iOS / Android.
+//
+// ZONE SÉCURISÉE MOBILE
+// ──────────────────────
+//   padding-bottom utilise env(safe-area-inset-bottom, 0px) pour ne jamais
+//   être chevauché par la barre système (iPhone notch, gestures bar Android).
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Tokens locaux (surchargeables par attribut style sur <nav>)
+// =============================================================================
+.bottom-nav {
+  // ── Dimensions ──────────────────────────────────────────────────────────
+  --bottom-nav-height: 64px;
+  --bottom-nav-safe-area: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-total-height: calc(
+    var(--bottom-nav-height) + var(--bottom-nav-safe-area)
+  );
+
+  // ── Couleurs ─────────────────────────────────────────────────────────────
+  --bottom-nav-bg: var(--ds-surface-bg-raised);
+  --bottom-nav-border: var(--ds-border-color);
+  --bottom-nav-color: var(--ds-neutral-500);
+  --bottom-nav-active-color: var(--ds-primary);
+  --bottom-nav-pill-bg: var(--ds-secondary-light);
+  --bottom-nav-pill-radius: var(--ds-border-radius-pill);
+
+  // ── Typographie ──────────────────────────────────────────────────────────
+  --bottom-nav-label-size: 0.6875rem; // 11 px
+  --bottom-nav-icon-size: 1.375rem; // 22 px
+
+  // ── Élévation & empilement ───────────────────────────────────────────────
+  --bottom-nav-shadow: 0 -2px 12px rgb(0 0 0 / 0.08);
+  --bottom-nav-z-index: 1030;
+}
+
+// =============================================================================
+// Affichage — toujours visible quelle que soit la taille d'écran
+// =============================================================================
+.bottom-nav {
+  display: flex;
+}
+
+// =============================================================================
+// Positionnement fixe en bas d'écran
+// =============================================================================
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--bottom-nav-z-index);
+  height: var(--bottom-nav-height);
+  // Espace sécurisé : étend la barre sous la gesture bar iOS / Android
+  padding-bottom: var(--bottom-nav-safe-area);
+  background-color: var(--bottom-nav-bg);
+  border-top: 1px solid var(--bottom-nav-border);
+  box-shadow: var(--bottom-nav-shadow);
+  align-items: stretch;
+}
+
+// =============================================================================
+// Liste et items
+// =============================================================================
+.bottom-nav__list {
+  @include reset-list;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.bottom-nav__item {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+// =============================================================================
+// Lien — base commune aux deux variantes
+// =============================================================================
+.bottom-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.25rem;
+  color: var(--bottom-nav-color);
+  text-decoration: none;
+  cursor: pointer;
+  @include transition(color, fast);
+
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: var(--ds-border-radius);
+    outline-offset: -2px;
+  }
+
+  &.active,
+  &[aria-current='page'] {
+    color: var(--bottom-nav-active-color);
+  }
+}
+
+// =============================================================================
+// Icône et label
+// =============================================================================
+.bottom-nav__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--bottom-nav-icon-size);
+  line-height: 1;
+}
+
+.bottom-nav__label {
+  font-size: var(--bottom-nav-label-size);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+// =============================================================================
+// VARIANTE 1 — Stacked (icône au-dessus du label)
+// Pilule colorée sur l'icône uniquement à l'état actif.
+// =============================================================================
+.bottom-nav--stacked {
+  .bottom-nav__link {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .bottom-nav__icon {
+    padding: 0.2rem 0.875rem;
+    border-radius: var(--bottom-nav-pill-radius);
+    @include transition(background-color, fast);
+  }
+
+  .bottom-nav__link.active .bottom-nav__icon,
+  .bottom-nav__link[aria-current='page'] .bottom-nav__icon {
+    background-color: var(--bottom-nav-pill-bg);
+  }
+}
+
+// =============================================================================
+// VARIANTE 2 — Inline (icône + label côte à côte)
+// Pilule colorée englobant l'ensemble du bloc à l'état actif.
+// =============================================================================
+.bottom-nav--inline {
+  .bottom-nav__item {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-nav__link {
+    flex: 0 1 auto;
+    flex-direction: row;
+    gap: 0.375rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--bottom-nav-pill-radius);
+    @include transition(background-color, fast);
+
+    &.active,
+    &[aria-current='page'] {
+      background-color: var(--bottom-nav-pill-bg);
+    }
+  }
+}
+
+// =============================================================================
+// Compensation du chevauchement sur le conteneur principal
+//
+// Sur mobile, le conteneur .layout-wrapper reçoit un padding-bottom égal à la
+// hauteur totale de la barre (hauteur fixe + encoche système) afin que le bas
+// de la page reste entièrement accessible au scroll.
+// =============================================================================
+@include bp-down('md') {
+  .layout-wrapper {
+    padding-bottom: var(
+      --bottom-nav-total-height,
+      calc(64px + env(safe-area-inset-bottom, 0px))
+    );
+  }
+}
+
+// =============================================================================
+// Dark mode — [data-bs-theme="dark"] sur <html> ou tout conteneur parent
+// =============================================================================
+[data-bs-theme='dark'] .bottom-nav {
+  --bottom-nav-bg: var(
+    --ds-surface-bg-raised
+  ); // déjà remappé en dark par _theme.scss
+  --bottom-nav-border: var(--ds-border-color);
+  --bottom-nav-color: var(--ds-neutral-400);
+  --bottom-nav-active-color: var(--ds-primary); // remappé neutral-300 en dark
+  --bottom-nav-pill-bg: var(--ds-secondary-light); // remappé olive-800 en dark
+  --bottom-nav-shadow: 0 -2px 12px rgb(0 0 0 / 0.3);
+}

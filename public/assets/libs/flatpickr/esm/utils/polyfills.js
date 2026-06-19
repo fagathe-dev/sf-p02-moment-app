@@ -1,1 +1,0 @@
-"use strict";"function"!=typeof Object.assign&&(Object.assign=function(n){for(var t=[],r=1;r<arguments.length;r++)t[r-1]=arguments[r];if(!n)throw TypeError("Cannot convert undefined or null to object");for(var e=function(t){t&&Object.keys(t).forEach((function(r){return n[r]=t[r]}))},o=0,c=t;o<c.length;o++){e(c[o])}return n});

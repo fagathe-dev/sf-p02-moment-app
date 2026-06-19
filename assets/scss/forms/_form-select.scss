@@ -1,0 +1,80 @@
+// =============================================================================
+// forms/_form-select.scss
+// .form-select — tailles sm/lg
+// =============================================================================
+@use '../mixins' as *;
+
+.form-select {
+  --form-select-bg: var(--ds-surface-bg-raised);
+  --form-select-color: var(--ds-body-color);
+  --form-select-border-color: var(--ds-border-color);
+  --form-select-border-width: var(--ds-border-width);
+  --form-select-border-radius: var(--ds-border-radius);
+  --form-select-focus-border-color: var(--ds-primary);
+  --form-select-padding-x: 0.75rem;
+  --form-select-padding-y: 0.5rem;
+  --form-select-font-size: var(--ds-font-size-base);
+  --form-select-disabled-bg: var(--ds-neutral-100);
+  --form-select-disabled-color: var(--ds-neutral-500);
+  --form-select-indicator-padding: 2rem;
+  --form-select-indicator: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23404040' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+
+  display: block;
+  width: 100%;
+  padding: var(--form-select-padding-y) var(--form-select-indicator-padding)
+    var(--form-select-padding-y) var(--form-select-padding-x);
+  font-size: var(--form-select-font-size);
+  font-family: inherit;
+  font-weight: var(--ds-font-weight-normal);
+  line-height: var(--ds-line-height-base);
+  color: var(--form-select-color);
+  appearance: none;
+  background-color: var(--form-select-bg);
+  background-image: var(--form-select-indicator);
+  background-repeat: no-repeat;
+  background-position: right var(--form-select-padding-x) center;
+  background-size: 16px 12px;
+  border: var(--form-select-border-width) solid var(--form-select-border-color);
+  border-radius: var(--form-select-border-radius);
+  @include transition(border-color box-shadow, fast);
+
+  &:focus {
+    border-color: var(--form-select-focus-border-color);
+    outline: 0;
+    box-shadow: 0 0 0 var(--ds-focus-ring-width) var(--ds-focus-ring-color);
+  }
+
+  &:disabled {
+    color: var(--form-select-disabled-color);
+    background-color: var(--form-select-disabled-bg);
+    cursor: not-allowed;
+  }
+
+  &[multiple],
+  &[size]:not([size='1']) {
+    padding-right: var(--form-select-padding-x);
+    background-image: none;
+  }
+}
+
+// =============================================================================
+// Tailles
+// =============================================================================
+.form-select-sm {
+  --form-select-padding-x: 0.5rem;
+  --form-select-padding-y: 0.3rem;
+  --form-select-font-size: var(--ds-font-size-sm);
+  --form-select-border-radius: var(--ds-border-radius-sm);
+}
+
+.form-select-lg {
+  --form-select-padding-x: 1rem;
+  --form-select-padding-y: 0.625rem;
+  --form-select-font-size: var(--ds-font-size-lg);
+  --form-select-border-radius: var(--ds-border-radius-lg);
+}
+
+// Dark mode : inverser la couleur de l'indicateur
+[data-bs-theme='dark'] .form-select {
+  --form-select-indicator: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23d4d4d4' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+}

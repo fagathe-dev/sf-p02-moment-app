@@ -1,0 +1,339 @@
+// =============================================================================
+// _variables.scss
+// Tokens bruts du Design System — seule source de vérité pour les valeurs.
+// Règle : les composants n'importent JAMAIS ce fichier directement.
+// Ils consomment uniquement les CSS Custom Properties définies dans _theme.scss.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Palette Primary : Tailwind Neutral
+// Source : https://uicolors.app/tailwind-colors/neutral
+// -----------------------------------------------------------------------------
+$neutral-50: #fafafa !default;
+$neutral-100: #f5f5f5 !default;
+$neutral-200: #e5e5e5 !default;
+$neutral-300: #d4d4d4 !default;
+$neutral-400: #a1a1a1 !default;
+$neutral-500: #737373 !default;
+$neutral-600: #525252 !default;
+$neutral-700: #404040 !default;
+$neutral-800: #262626 !default;
+$neutral-900: #171717 !default;
+$neutral-950: #0a0a0a !default;
+
+// -----------------------------------------------------------------------------
+// Palette Secondary : Tailwind Olive
+// Source : https://uicolors.app/tailwind-colors/olive
+// -----------------------------------------------------------------------------
+$olive-50: #fbfbf9 !default;
+$olive-100: #f4f4f0 !default;
+$olive-200: #e8e8e3 !default;
+$olive-300: #d8d8d0 !default;
+$olive-400: #abab9c !default;
+$olive-500: #7c7c67 !default;
+$olive-600: #5b5b4b !default;
+$olive-700: #474739 !default;
+$olive-800: #2b2b22 !default;
+$olive-900: #1d1d16 !default;
+$olive-950: #0c0c09 !default;
+
+// -----------------------------------------------------------------------------
+// Palette Success : Tailwind Green
+// -----------------------------------------------------------------------------
+$green-50: #f0fdf4 !default;
+$green-100: #dcfce7 !default;
+$green-200: #bbf7d0 !default;
+$green-300: #86efac !default;
+$green-400: #4ade80 !default;
+$green-500: #22c55e !default;
+$green-600: #16a34a !default;
+$green-700: #15803d !default;
+$green-800: #166534 !default;
+$green-900: #14532d !default;
+$green-950: #052e16 !default;
+
+// -----------------------------------------------------------------------------
+// Palette Danger : Tailwind Red
+// -----------------------------------------------------------------------------
+$red-50: #fef2f2 !default;
+$red-100: #fee2e2 !default;
+$red-200: #fecaca !default;
+$red-300: #fca5a5 !default;
+$red-400: #f87171 !default;
+$red-500: #ef4444 !default;
+$red-600: #dc2626 !default;
+$red-700: #b91c1c !default;
+$red-800: #991b1b !default;
+$red-900: #7f1d1d !default;
+$red-950: #450a0a !default;
+
+// -----------------------------------------------------------------------------
+// Palette Warning : Tailwind Amber
+// -----------------------------------------------------------------------------
+$amber-50: #fffbeb !default;
+$amber-100: #fef3c7 !default;
+$amber-200: #fde68a !default;
+$amber-300: #fcd34d !default;
+$amber-400: #fbbf24 !default;
+$amber-500: #f59e0b !default;
+$amber-600: #d97706 !default;
+$amber-700: #b45309 !default;
+$amber-800: #92400e !default;
+$amber-900: #78350f !default;
+$amber-950: #451a03 !default;
+
+// -----------------------------------------------------------------------------
+// Palette Info : Tailwind Sky
+// -----------------------------------------------------------------------------
+$sky-50: #f0f9ff !default;
+$sky-100: #e0f2fe !default;
+$sky-200: #bae6fd !default;
+$sky-300: #7dd3fc !default;
+$sky-400: #38bdf8 !default;
+$sky-500: #0ea5e9 !default;
+$sky-600: #0284c7 !default;
+$sky-700: #0369a1 !default;
+$sky-800: #075985 !default;
+$sky-900: #0c4a6e !default;
+$sky-950: #082f49 !default;
+
+// -----------------------------------------------------------------------------
+// Couleurs sémantiques (light mode)
+// -----------------------------------------------------------------------------
+
+// Primary
+$primary: $neutral-700 !default;
+$primary-light: $neutral-100 !default;
+$primary-dark: $neutral-900 !default;
+
+// Secondary
+$secondary: $olive-500 !default;
+$secondary-light: $olive-100 !default;
+$secondary-dark: $olive-800 !default;
+
+// Success
+$success: $green-600 !default;
+$success-light: $green-50 !default;
+$success-dark: $green-800 !default;
+
+// Danger
+$danger: $red-600 !default;
+$danger-light: $red-50 !default;
+$danger-dark: $red-800 !default;
+
+// Warning
+$warning: $amber-500 !default;
+$warning-light: $amber-50 !default;
+$warning-dark: $amber-700 !default;
+
+// Info
+$info: $sky-500 !default;
+$info-light: $sky-50 !default;
+$info-dark: $sky-700 !default;
+
+// Light / Dark
+$light: $neutral-100 !default;
+$dark: $neutral-900 !default;
+
+// Body
+$body-bg: $neutral-50 !default;
+$body-color: $neutral-800 !default;
+$body-bg-dark: $neutral-950 !default;
+$body-color-dark: $neutral-100 !default;
+
+// Liens
+$link-color: $neutral-700 !default;
+$link-hover-color: $neutral-900 !default;
+$link-color-dark: $neutral-300 !default;
+$link-hover-color-dark: $neutral-100 !default;
+
+// Bordures
+$border-color: $neutral-200 !default;
+$border-color-dark: $neutral-700 !default;
+$border-width: 1px !default;
+
+// Arrondi
+$border-radius: 0.375rem !default;
+$border-radius-sm: 0.25rem !default;
+$border-radius-lg: 0.5rem !default;
+$border-radius-xl: 0.75rem !default;
+$border-radius-2xl: 1rem !default;
+$border-radius-pill: 50rem !default;
+$border-radius-full: 9999px !default;
+
+// Surface (bg des cards, modals, popovers…)
+$surface-bg: $neutral-50 !default;
+$surface-bg-raised: #ffffff !default;
+$surface-bg-dark: $neutral-900 !default;
+$surface-bg-raised-dark: $neutral-800 !default;
+
+// -----------------------------------------------------------------------------
+// Typographie
+// -----------------------------------------------------------------------------
+$font-family-sans-serif:
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  sans-serif !default;
+$font-family-mono:
+  ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+  monospace !default;
+
+$font-size-base: 1rem !default; // 16px
+$font-size-xs: 0.75rem !default; // 12px
+$font-size-sm: 0.875rem !default; // 14px
+$font-size-lg: 1.125rem !default; // 18px
+$font-size-xl: 1.25rem !default; // 20px
+$font-size-2xl: 1.5rem !default; // 24px
+$font-size-3xl: 1.875rem !default; // 30px
+$font-size-4xl: 2.25rem !default; // 36px
+
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+
+$line-height-tight: 1.25 !default;
+$line-height-snug: 1.375 !default;
+$line-height-base: 1.6 !default;
+$line-height-relaxed: 1.75 !default;
+
+// Titres
+$h1-font-size: $font-size-4xl !default;
+$h2-font-size: $font-size-3xl !default;
+$h3-font-size: $font-size-2xl !default;
+$h4-font-size: $font-size-xl !default;
+$h5-font-size: $font-size-lg !default;
+$h6-font-size: $font-size-base !default;
+
+// -----------------------------------------------------------------------------
+// Espacement — échelle granulaire (utilisée pour m-*, p-*, gap-*, etc.)
+// -----------------------------------------------------------------------------
+$spacer: 1rem !default;
+
+$spacers: (
+  0: 0,
+  1: 0.25rem,
+  // 4px
+  2: 0.5rem,
+  // 8px
+  3: 0.75rem,
+  // 12px
+  4: 1rem,
+  // 16px
+  5: 1.25rem,
+  // 20px
+  6: 1.5rem,
+  // 24px
+  7: 1.75rem,
+  // 28px
+  8: 2rem,
+  // 32px
+  9: 2.25rem,
+  // 36px
+  10: 2.5rem,
+  // 40px
+  12: 3rem,
+  // 48px
+  14: 3.5rem,
+  // 56px
+  16: 4rem,
+  // 64px
+  20: 5rem,
+  // 80px
+  24: 6rem, // 96px
+) !default;
+
+// -----------------------------------------------------------------------------
+// Breakpoints — alignés avec BREAKPOINTS de core-ts
+// -----------------------------------------------------------------------------
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1400px,
+) !default;
+
+// Valeurs max (breakpoint suivant − 0.02px) pour les media queries "down"
+$breakpoints-max: (
+  'xs': 575.98px,
+  'sm': 767.98px,
+  'md': 991.98px,
+  'lg': 1199.98px,
+  'xl': 1399.98px,
+  'xxl': 1599.98px,
+) !default;
+
+// Container max-widths par breakpoint
+$container-max-widths: (
+  'sm': 540px,
+  'md': 720px,
+  'lg': 960px,
+  'xl': 1140px,
+  'xxl': 1320px,
+) !default;
+
+$container-padding-x: 0.75rem !default;
+
+// -----------------------------------------------------------------------------
+// Grille
+// -----------------------------------------------------------------------------
+$grid-columns: 12 !default;
+$grid-gutter-width: 1.5rem !default;
+
+// -----------------------------------------------------------------------------
+// Ombres
+// -----------------------------------------------------------------------------
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05) !default;
+$shadow:
+  0 1px 3px 0 rgb(0 0 0 / 0.1),
+  0 1px 2px -1px rgb(0 0 0 / 0.1) !default;
+$shadow-md:
+  0 4px 6px -1px rgb(0 0 0 / 0.1),
+  0 2px 4px -2px rgb(0 0 0 / 0.1) !default;
+$shadow-lg:
+  0 10px 15px -3px rgb(0 0 0 / 0.1),
+  0 4px 6px -4px rgb(0 0 0 / 0.1) !default;
+$shadow-xl:
+  0 20px 25px -5px rgb(0 0 0 / 0.1),
+  0 8px 10px -6px rgb(0 0 0 / 0.1) !default;
+$shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25) !default;
+$shadow-none: none !default;
+
+// -----------------------------------------------------------------------------
+// Transitions
+// -----------------------------------------------------------------------------
+$transition-duration-fast: 150ms !default;
+$transition-duration-base: 200ms !default;
+$transition-duration-slow: 300ms !default;
+$transition-easing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-easing-in: cubic-bezier(0.4, 0, 1, 1) !default;
+$transition-easing-out: cubic-bezier(0, 0, 0.2, 1) !default;
+
+$transition-base: all $transition-duration-base $transition-easing !default;
+$transition-fade: opacity $transition-duration-base $transition-easing !default;
+$transition-collapse: height $transition-duration-slow $transition-easing !default;
+
+// -----------------------------------------------------------------------------
+// Z-index — nommage Bootstrap pour compatibilité data-bs-*
+// -----------------------------------------------------------------------------
+$z-index-dropdown: 1000 !default;
+$z-index-sticky: 1020 !default;
+$z-index-fixed: 1030 !default;
+$z-index-backdrop: 1040 !default;
+$z-index-offcanvas: 1045 !default;
+$z-index-modal: 1050 !default;
+$z-index-popover: 1070 !default;
+$z-index-tooltip: 1080 !default;
+$z-index-toast: 1090 !default;
+
+// -----------------------------------------------------------------------------
+// Focus ring
+// -----------------------------------------------------------------------------
+$focus-ring-width: 3px !default;
+$focus-ring-offset: 2px !default;

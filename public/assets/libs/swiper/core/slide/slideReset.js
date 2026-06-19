@@ -1,1 +1,0 @@
-export default function slideReset(e=this.params.speed,t=!0,s){return this.slideTo(this.activeIndex,e,t,s)}

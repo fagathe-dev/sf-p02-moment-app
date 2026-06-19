@@ -1,1 +1,0 @@
-export default function updateSlidesOffset(){const e=this,t=e.slides,f=e.isElement?e.isHorizontal()?e.wrapperEl.offsetLeft:e.wrapperEl.offsetTop:0;for(let s=0;s<t.length;s+=1)t[s].swiperSlideOffset=(e.isHorizontal()?t[s].offsetLeft:t[s].offsetTop)-f-e.cssOverflowAdjustment()}

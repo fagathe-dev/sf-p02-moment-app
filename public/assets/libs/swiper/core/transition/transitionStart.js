@@ -1,1 +1,0 @@
-import transitionEmit from"./transitionEmit.js";export default function transitionStart(t=!0,i){const a=this,{params:n}=a;n.cssMode||(n.autoHeight&&a.updateAutoHeight(),transitionEmit({swiper:a,runCallbacks:t,direction:i,step:"Start"}))}

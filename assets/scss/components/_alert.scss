@@ -1,0 +1,81 @@
+// =============================================================================
+// components/_alert.scss
+// Variants couleur + dismissible + animations fade/show
+// =============================================================================
+@use '../mixins' as *;
+
+.alert {
+  --alert-padding-x: 1rem;
+  --alert-padding-y: 0.875rem;
+  --alert-border-radius: var(--ds-border-radius);
+  --alert-border-width: var(--ds-border-width);
+  --alert-color: var(--ds-body-color);
+  --alert-bg: var(--ds-surface-bg);
+  --alert-border-color: var(--ds-border-color);
+  --alert-link-color: inherit;
+
+  position: relative;
+  padding: var(--alert-padding-y) var(--alert-padding-x);
+  color: var(--alert-color);
+  background-color: var(--alert-bg);
+  border: var(--alert-border-width) solid var(--alert-border-color);
+  border-radius: var(--alert-border-radius);
+
+  .alert-link {
+    color: var(--alert-link-color);
+    font-weight: var(--ds-font-weight-semibold);
+  }
+
+  .alert-heading {
+    color: inherit;
+    margin-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// =============================================================================
+// Couleurs
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .alert-#{$color} {
+    --alert-color: var(--ds-#{$color}-dark);
+    --alert-bg: var(--ds-#{$color}-light);
+    --alert-border-color: var(--ds-#{$color}-light);
+    --alert-link-color: var(--ds-#{$color}-dark);
+  }
+}
+
+// =============================================================================
+// Dismissible
+// =============================================================================
+.alert-dismissible {
+  padding-right: 3rem;
+
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
+  }
+}
+
+// =============================================================================
+// Animation (partagée avec d'autres composants)
+// =============================================================================
+.fade {
+  transition: opacity 0.15s linear;
+
+  &:not(.show) {
+    opacity: 0;
+  }
+}
+
+// Alert fermée : masquage complet après fade
+.alert.fade:not(.show) {
+  display: none;
+}

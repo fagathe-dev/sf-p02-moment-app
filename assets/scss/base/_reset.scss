@@ -1,0 +1,441 @@
+// =============================================================================
+// base/_reset.scss
+// Reboot complet : modern-normalize + tokens du Design System.
+// Règle : on utilise les CSS Custom Properties (--ds-*), jamais les variables
+// SCSS directement dans les règles CSS.
+// =============================================================================
+@use '../mixins' as *;
+
+// -----------------------------------------------------------------------------
+// Box model universel
+// -----------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// -----------------------------------------------------------------------------
+// Root
+// -----------------------------------------------------------------------------
+:root {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  hanging-punctuation: first last;
+}
+
+// -----------------------------------------------------------------------------
+// Body
+// -----------------------------------------------------------------------------
+body {
+  margin: 0;
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-font-size-base);
+  line-height: var(--ds-line-height-base);
+  background-color: var(--ds-body-bg);
+  color: var(--ds-body-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// -----------------------------------------------------------------------------
+// Titres
+// -----------------------------------------------------------------------------
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-line-height-tight);
+  color: inherit;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--ds-font-size-4xl);
+}
+h2 {
+  font-size: var(--ds-font-size-3xl);
+}
+h3 {
+  font-size: var(--ds-font-size-2xl);
+}
+h4 {
+  font-size: var(--ds-font-size-xl);
+}
+h5 {
+  font-size: var(--ds-font-size-lg);
+}
+h6 {
+  font-size: var(--ds-font-size-base);
+}
+
+// -----------------------------------------------------------------------------
+// Texte
+// -----------------------------------------------------------------------------
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-wrap: pretty;
+}
+
+b,
+strong {
+  font-weight: var(--ds-font-weight-bold);
+}
+
+small {
+  font-size: 0.875em;
+}
+
+sub,
+sup {
+  position: relative;
+  font-size: 0.75em;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+  text-decoration-skip-ink: none;
+}
+
+address {
+  margin-bottom: 1rem;
+  font-style: normal;
+  line-height: inherit;
+}
+
+blockquote {
+  margin: 0 0 1rem;
+}
+
+// -----------------------------------------------------------------------------
+// Liens
+// -----------------------------------------------------------------------------
+a {
+  color: var(--ds-link-color);
+  text-decoration: underline;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 0.2em;
+  @include transition(color, fast);
+
+  &:hover {
+    color: var(--ds-link-hover-color);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: var(--ds-border-radius-sm);
+    text-decoration: none;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Listes
+// -----------------------------------------------------------------------------
+ol,
+ul {
+  padding-left: 2rem;
+}
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+li > ol,
+li > ul {
+  margin-bottom: 0;
+}
+
+dd {
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+}
+
+dt {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+// -----------------------------------------------------------------------------
+// Médias
+// -----------------------------------------------------------------------------
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+img {
+  border-style: none; // IE fix
+}
+
+svg {
+  overflow: hidden; // IE fix
+  vertical-align: middle;
+}
+
+// -----------------------------------------------------------------------------
+// Tableau
+// -----------------------------------------------------------------------------
+table {
+  caption-side: bottom;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+caption {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: var(--ds-neutral-500);
+  text-align: left;
+}
+
+th {
+  text-align: inherit;
+  text-align: -webkit-match-parent;
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+// -----------------------------------------------------------------------------
+// Formulaires
+// -----------------------------------------------------------------------------
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+:disabled,
+[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+::-moz-focus-inner {
+  padding: 0;
+  border-style: none;
+}
+
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+fieldset {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: inherit;
+
+  + * {
+    clear: left;
+  }
+}
+
+label {
+  display: inline-block;
+}
+
+// Focus visible global (sauf composants qui le gèrent eux-mêmes)
+:focus-visible {
+  @include focus-ring;
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+// Supprime le focus natif quand on gère le nôtre
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// -----------------------------------------------------------------------------
+// Code
+// -----------------------------------------------------------------------------
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--ds-font-family-mono);
+  font-size: 0.875em;
+}
+
+pre {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  overflow: auto;
+  font-size: 0.875em;
+
+  code {
+    font-size: inherit;
+    color: inherit;
+    word-break: normal;
+  }
+}
+
+code {
+  font-size: 0.875em;
+  color: var(--ds-secondary);
+  word-wrap: break-word;
+
+  a > & {
+    color: inherit;
+  }
+}
+
+kbd {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.875em;
+  background-color: var(--ds-body-color);
+  color: var(--ds-body-bg);
+  border-radius: var(--ds-border-radius-sm);
+
+  kbd {
+    padding: 0;
+    font-size: 1em;
+    font-weight: var(--ds-font-weight-bold);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Séparateur
+// -----------------------------------------------------------------------------
+hr {
+  margin: 1rem 0;
+  color: inherit;
+  border: 0;
+  border-top: var(--ds-border-width) solid var(--ds-border-color);
+  opacity: 0.25;
+}
+
+// -----------------------------------------------------------------------------
+// Divers
+// -----------------------------------------------------------------------------
+details {
+  display: block;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+}
+
+output {
+  display: inline-block;
+}
+
+template {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+// Visually hidden (classe utilitaire)
+.visually-hidden,
+.sr-only {
+  @include visually-hidden;
+}
+
+.visually-hidden-focusable {
+  @include visually-hidden-focusable;
+}
+
+// Couleur des sélections
+::selection {
+  background-color: var(--ds-primary-light);
+  color: var(--ds-primary-dark);
+}
+
+// Scrollbar légère (navigateurs supportés)
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-neutral-300) transparent;
+  }
+}
+
+[data-bs-theme='dark'] {
+  ::selection {
+    background-color: var(--ds-primary-light);
+    color: var(--ds-primary-dark);
+  }
+
+  @supports (scrollbar-width: thin) {
+    * {
+      scrollbar-color: var(--ds-neutral-700) transparent;
+    }
+  }
+}

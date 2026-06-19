@@ -1,0 +1,114 @@
+// =============================================================================
+// components/_breadcrumb.scss
+// Fil d'Ariane — généré par Fagathe\CorePhp\Breadcrumb\BreadcrumbGenerator.
+//
+// HTML produit :
+//
+//   <!-- wrapper du fragment _breadcrumb.html.twig -->
+//   <div class="page-title-box">
+//     <div class="page-title-right">
+//       <nav aria-label="breadcrumb">
+//         <ol class="breadcrumb">
+//           <li class="breadcrumb-item">
+//             <a href="/admin">Administration</a>            <!-- lien -->
+//           </li>
+//           <li class="breadcrumb-item active" aria-current="page">
+//             Gestion des utilisateurs                       <!-- item actif -->
+//           </li>
+//         </ol>
+//       </nav>
+//     </div>
+//   </div>
+//
+// Avec icône (optionnel) :
+//   <a class="d-flex align-items-center" href="…">
+//     <i class="ds icon-name me-1"></i>
+//     Label
+//   </a>
+// =============================================================================
+
+// =============================================================================
+// Wrapper du fragment
+// =============================================================================
+.page-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-title-right {
+  display: flex;
+  align-items: center;
+}
+
+// =============================================================================
+// Composant breadcrumb
+// =============================================================================
+.breadcrumb {
+  // ── Tokens locaux ──────────────────────────────────────────────────────────
+  --breadcrumb-padding-x: 0;
+  --breadcrumb-padding-y: 0;
+  --breadcrumb-item-padding-x: 0.5rem;
+  --breadcrumb-font-size: 0.8125rem; // 13 px
+  --breadcrumb-divider-color: var(--ds-neutral-300);
+  --breadcrumb-active-color: var(--ds-neutral-500);
+  --breadcrumb-link-color: var(--ds-neutral-600);
+  --breadcrumb-link-hover-color: var(--ds-neutral-900);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--breadcrumb-padding-y) var(--breadcrumb-padding-x);
+  margin: 0;
+  list-style: none;
+  font-size: var(--breadcrumb-font-size);
+}
+
+// =============================================================================
+// Item
+// =============================================================================
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+
+  // Séparateur entre les items
+  + .breadcrumb-item {
+    padding-left: var(--breadcrumb-item-padding-x);
+
+    &::before {
+      content: '/';
+      padding-right: var(--breadcrumb-item-padding-x);
+      color: var(--breadcrumb-divider-color);
+      font-size: 0.75rem;
+    }
+  }
+
+  // ── Lien ──────────────────────────────────────────────────────────────────
+  a {
+    color: var(--breadcrumb-link-color);
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--breadcrumb-link-hover-color);
+    }
+
+    // Lien avec icône (classe .d-flex générée par BreadcrumbGenerator)
+    &.d-flex {
+      gap: 0.25rem;
+
+      i {
+        font-size: 0.875rem;
+        line-height: 1;
+      }
+    }
+  }
+
+  // ── Item actif (dernier élément, aria-current="page") ─────────────────────
+  &.active {
+    color: var(--breadcrumb-active-color);
+  }
+}

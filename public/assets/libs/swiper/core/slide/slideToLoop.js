@@ -1,1 +1,0 @@
-export default function slideToLoop(e=0,t=this.params.speed,a=!0,s){if("string"==typeof e){e=parseInt(e,10)}const i=this;let r=e;return i.params.loop&&(i.virtual&&i.params.virtual.enabled?r+=i.virtual.slidesBefore:r=i.getSlideIndexByData(r)),i.slideTo(r,t,a,s)}

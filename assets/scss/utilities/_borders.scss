@@ -1,0 +1,106 @@
+// =============================================================================
+// utilities/_borders.scss
+// .border, .border-{n}, .rounded-*, .border-{bp}-*
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Border
+// =============================================================================
+.border {
+  border: var(--ds-border-width) solid var(--ds-border-color) !important;
+}
+.border-top {
+  border-top: var(--ds-border-width) solid var(--ds-border-color) !important;
+}
+.border-end {
+  border-right: var(--ds-border-width) solid var(--ds-border-color) !important;
+}
+.border-bottom {
+  border-bottom: var(--ds-border-width) solid var(--ds-border-color) !important;
+}
+.border-start {
+  border-left: var(--ds-border-width) solid var(--ds-border-color) !important;
+}
+
+.border-0 {
+  border: 0 !important;
+}
+.border-top-0 {
+  border-top: 0 !important;
+}
+.border-end-0 {
+  border-right: 0 !important;
+}
+.border-bottom-0 {
+  border-bottom: 0 !important;
+}
+.border-start-0 {
+  border-left: 0 !important;
+}
+
+// Épaisseurs
+.border-1 {
+  border-width: 1px !important;
+}
+.border-2 {
+  border-width: 2px !important;
+}
+.border-3 {
+  border-width: 3px !important;
+}
+.border-4 {
+  border-width: 4px !important;
+}
+.border-5 {
+  border-width: 5px !important;
+}
+
+// =============================================================================
+// Border radius
+// =============================================================================
+.rounded {
+  border-radius: var(--ds-border-radius) !important;
+}
+.rounded-sm {
+  border-radius: var(--ds-border-radius-sm) !important;
+}
+.rounded-lg {
+  border-radius: var(--ds-border-radius-lg) !important;
+}
+.rounded-xl {
+  border-radius: var(--ds-border-radius-xl) !important;
+}
+.rounded-2xl {
+  border-radius: var(--ds-border-radius-2xl) !important;
+}
+.rounded-pill {
+  border-radius: var(--ds-border-radius-pill) !important;
+}
+.rounded-full {
+  border-radius: var(--ds-border-radius-full) !important;
+}
+.rounded-0 {
+  border-radius: 0 !important;
+}
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+// Top/bottom/start/end radius
+.rounded-top {
+  border-top-left-radius: var(--ds-border-radius) !important;
+  border-top-right-radius: var(--ds-border-radius) !important;
+}
+.rounded-bottom {
+  border-bottom-left-radius: var(--ds-border-radius) !important;
+  border-bottom-right-radius: var(--ds-border-radius) !important;
+}
+.rounded-start {
+  border-top-left-radius: var(--ds-border-radius) !important;
+  border-bottom-left-radius: var(--ds-border-radius) !important;
+}
+.rounded-end {
+  border-top-right-radius: var(--ds-border-radius) !important;
+  border-bottom-right-radius: var(--ds-border-radius) !important;
+}

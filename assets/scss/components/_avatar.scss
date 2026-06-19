@@ -1,0 +1,150 @@
+// =============================================================================
+// components/_avatar.scss
+// Composant Avatar — affichage d'une photo de profil ou d'initiales.
+//
+// VARIANTES DE TAILLE :
+//   .avatar--xs   24 px
+//   .avatar--sm   32 px
+//   .avatar        40 px  (défaut)
+//   .avatar--lg   48 px
+//   .avatar--xl   64 px
+//   .avatar--2xl  80 px
+//
+// VARIANTES DE COULEUR (fond clair + texte foncé — initiales uniquement) :
+//   .avatar--neutral  (défaut)
+//   .avatar--olive
+//   .avatar--primary
+//   .avatar--success
+//   .avatar--danger
+//   .avatar--warning
+//   .avatar--info
+//
+// USAGE :
+//   Photo :
+//     <span class="avatar avatar--lg">
+//       <img src="…" alt="">
+//     </span>
+//
+//   Initiales :
+//     <span class="avatar avatar--primary">JD</span>
+//
+// Inspiré de MUI Avatar (https://mui.com/material-ui/react-avatar/).
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Base
+// =============================================================================
+.avatar {
+  // ── Tokens locaux ──────────────────────────────────────────────────────────
+  --avatar-size: 2.5rem; // 40 px — taille par défaut
+  --avatar-font-size: calc(var(--avatar-size) * 0.4);
+  --avatar-bg: var(--ds-neutral-100);
+  --avatar-color: var(--ds-neutral-700);
+  --avatar-border: none;
+
+  // ── Mise en page ───────────────────────────────────────────────────────────
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  overflow: hidden;
+  border: var(--avatar-border);
+  user-select: none;
+
+  // ── Initiales ──────────────────────────────────────────────────────────────
+  background-color: var(--avatar-bg);
+  color: var(--avatar-color);
+  font-size: var(--avatar-font-size);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  // ── Image ──────────────────────────────────────────────────────────────────
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// =============================================================================
+// Tailles
+// =============================================================================
+.avatar--xs {
+  --avatar-size: 1.5rem;
+} // 24 px
+.avatar--sm {
+  --avatar-size: 2rem;
+} // 32 px
+// .avatar       → 2.5rem (40 px, défaut, déclaré ci-dessus)
+.avatar--lg {
+  --avatar-size: 3rem;
+} // 48 px
+.avatar--xl {
+  --avatar-size: 4rem;
+} // 64 px
+.avatar--2xl {
+  --avatar-size: 5rem;
+} // 80 px
+
+// =============================================================================
+// Variantes de couleur — fond clair / texte foncé
+// =============================================================================
+
+// Neutral (défaut — déclaré dans les tokens de base)
+
+// Olive
+.avatar--olive {
+  --avatar-bg: var(--ds-olive-100);
+  --avatar-color: var(--ds-olive-800);
+}
+
+// Primary
+.avatar--primary {
+  --avatar-bg: var(--ds-primary-light);
+  --avatar-color: var(--ds-primary-dark);
+}
+
+// Success
+.avatar--success {
+  --avatar-bg: var(--ds-success-light);
+  --avatar-color: var(--ds-success-dark);
+}
+
+// Danger
+.avatar--danger {
+  --avatar-bg: var(--ds-danger-light);
+  --avatar-color: var(--ds-danger-dark);
+}
+
+// Warning
+.avatar--warning {
+  --avatar-bg: var(--ds-warning-light);
+  --avatar-color: var(--ds-warning-dark);
+}
+
+// Info
+.avatar--info {
+  --avatar-bg: var(--ds-info-light);
+  --avatar-color: var(--ds-info-dark);
+}
+
+// =============================================================================
+// Modificateurs
+// =============================================================================
+
+// Bord visible (utile pour les groupes d'avatars superposés)
+.avatar--bordered {
+  --avatar-border: 2px solid var(--ds-surface-bg-raised);
+}
+
+// Forme carrée arrondie (non circulaire)
+.avatar--rounded {
+  border-radius: var(--ds-border-radius-lg);
+}

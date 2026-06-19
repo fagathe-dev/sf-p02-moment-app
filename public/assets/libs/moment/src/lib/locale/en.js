@@ -1,1 +1,0 @@
-import"./prototype";import{getSetGlobalLocale}from"./locales";import toInt from"../utils/to-int";getSetGlobalLocale("en",{dayOfMonthOrdinalParse:/\d{1,2}(th|st|nd|rd)/,ordinal:function(t){var o=t%10;return t+(1===toInt(t%100/10)?"th":1===o?"st":2===o?"nd":3===o?"rd":"th")}});

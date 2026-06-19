@@ -1,0 +1,183 @@
+// =============================================================================
+// components/_nav.scss
+// .nav, .nav-tabs, .nav-pills, .nav-underline, .nav-fill, .nav-justified
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Base
+// =============================================================================
+.nav {
+  --nav-link-padding-x: 1rem;
+  --nav-link-padding-y: 0.5rem;
+  --nav-link-font-size: var(--ds-font-size-base);
+  --nav-link-font-weight: var(--ds-font-weight-normal);
+  --nav-link-color: var(--ds-link-color);
+  --nav-link-hover-color: var(--ds-link-hover-color);
+  --nav-link-active-color: var(--ds-primary);
+  --nav-link-disabled-color: var(--ds-neutral-400);
+
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: var(--nav-link-padding-y) var(--nav-link-padding-x);
+  font-size: var(--nav-link-font-size);
+  font-weight: var(--nav-link-font-weight);
+  color: var(--nav-link-color);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  @include transition(color, fast);
+
+  &:hover,
+  &:focus {
+    color: var(--nav-link-hover-color);
+    text-decoration: none;
+  }
+
+  &.active {
+    color: var(--nav-link-active-color);
+  }
+
+  &.disabled,
+  &[aria-disabled='true'] {
+    color: var(--nav-link-disabled-color);
+    pointer-events: none;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: var(--ds-border-radius-sm);
+  }
+}
+
+// =============================================================================
+// Tabs
+// =============================================================================
+.nav-tabs {
+  --nav-tabs-border-color: var(--ds-border-color);
+  --nav-tabs-border-width: var(--ds-border-width);
+  --nav-tabs-border-radius: var(--ds-border-radius);
+  --nav-tabs-link-hover-bg: var(--ds-neutral-100);
+  --nav-tabs-link-active-color: var(--ds-body-color);
+  --nav-tabs-link-active-bg: var(--ds-body-bg);
+  --nav-tabs-link-active-border-color: var(--ds-border-color)
+    var(--ds-border-color) transparent;
+
+  border-bottom: var(--nav-tabs-border-width) solid var(--nav-tabs-border-color);
+
+  .nav-link {
+    margin-bottom: calc(-1 * var(--nav-tabs-border-width));
+    border: var(--nav-tabs-border-width) solid transparent;
+    border-radius: var(--nav-tabs-border-radius) var(--nav-tabs-border-radius) 0
+      0;
+
+    &:hover,
+    &:focus {
+      isolation: isolate;
+      background-color: var(--nav-tabs-link-hover-bg);
+      border-color: var(--nav-tabs-border-color) var(--nav-tabs-border-color)
+        transparent;
+    }
+
+    &.active {
+      color: var(--nav-tabs-link-active-color);
+      background-color: var(--nav-tabs-link-active-bg);
+      border-color: var(--nav-tabs-link-active-border-color);
+    }
+  }
+}
+
+// =============================================================================
+// Pills
+// =============================================================================
+.nav-pills {
+  --nav-pills-border-radius: var(--ds-border-radius);
+  --nav-pills-link-active-color: #ffffff;
+  --nav-pills-link-active-bg: var(--ds-primary);
+
+  .nav-link {
+    border-radius: var(--nav-pills-border-radius);
+
+    &:hover {
+      background-color: var(--ds-primary-light);
+      color: var(--ds-primary);
+    }
+
+    &.active {
+      color: var(--nav-pills-link-active-color);
+      background-color: var(--nav-pills-link-active-bg);
+    }
+  }
+}
+
+// =============================================================================
+// Underline
+// =============================================================================
+.nav-underline {
+  --nav-underline-gap: 1rem;
+  --nav-underline-border-width: 2px;
+  --nav-underline-link-active-color: var(--ds-primary);
+
+  gap: var(--nav-underline-gap);
+
+  .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    border-bottom: var(--nav-underline-border-width) solid transparent;
+
+    &:hover,
+    &:focus {
+      border-bottom-color: currentColor;
+    }
+
+    &.active {
+      color: var(--nav-underline-link-active-color);
+      font-weight: var(--ds-font-weight-semibold);
+      border-bottom-color: currentColor;
+    }
+  }
+}
+
+// =============================================================================
+// Fill & Justified
+// =============================================================================
+.nav-fill {
+  .nav-item,
+  > .nav-link {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+.nav-justified {
+  .nav-item,
+  > .nav-link {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+// =============================================================================
+// Tab content (panneaux)
+// =============================================================================
+.tab-content {
+  > .tab-pane {
+    display: none;
+  }
+
+  > .active {
+    display: block;
+  }
+}

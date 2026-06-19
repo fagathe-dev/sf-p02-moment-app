@@ -1,1 +1,0 @@
-export default function onClick(a){const t=this;t.enabled&&(t.allowClick||(t.params.preventClicks&&a.preventDefault(),t.params.preventClicksPropagation&&t.animating&&(a.stopPropagation(),a.stopImmediatePropagation())))}

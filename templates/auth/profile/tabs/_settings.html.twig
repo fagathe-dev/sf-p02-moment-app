@@ -7,14 +7,14 @@
   {{ form(passwordForm) }}
 </div>
 <div class="alert alert-danger">
-  <h2 class="lead mb-3" style="color: inherit !important;">Supprimer le compte</h2>
+  <h2 class="h4 mb-3" style="color: inherit !important;">Supprimer le compte</h2>
   <div class="row">
     <div class="col-auto">
       <i class="ri-alert-line text-danger" style="font-size: 2.5rem;"></i>
     </div>
     <div class="col-auto">
-      <p class="mb-0 lead">Cette action est irréversible.</p>
-      <p class="lead">En supprimant votre compte, toutes vos données seront perdues de manière irréversible.</p>
+      <p class="mb-0">Cette action est irréversible.</p>
+      <p class="">En supprimant votre compte, toutes vos données seront perdues de manière irréversible.</p>
     </div>
   </div>
   <form method="post" action="{{ path('auth_profile_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
@@ -22,4 +22,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token('delete_account' ~ app.user.id) }}">
     <button type="submit" class="btn btn-danger">Supprimer mon compte</button>
   </form>
+</div>
+<div class="my-2">
+  <a href="{{ path('auth_logout') }}" class="btn btn-soft-secondary">Déconnexion</a>
 </div>

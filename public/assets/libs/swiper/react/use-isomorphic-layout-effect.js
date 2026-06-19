@@ -1,1 +1,0 @@
-import{useEffect,useLayoutEffect}from"react";function useIsomorphicLayoutEffect(e,f){return"undefined"==typeof window?useEffect(e,f):useLayoutEffect(e,f)}export{useIsomorphicLayoutEffect};

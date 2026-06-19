@@ -1,0 +1,245 @@
+// =============================================================================
+// forms/_form-validation.scss
+// États .is-valid / .is-invalid + .was-validated
+// Feedbacks : .valid-feedback, .invalid-feedback, .valid-tooltip, .invalid-tooltip
+// =============================================================================
+
+// =============================================================================
+// Messages de feedback
+// =============================================================================
+.valid-feedback,
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: var(--ds-font-size-sm);
+}
+
+.valid-feedback {
+  color: var(--ds-success);
+}
+.invalid-feedback {
+  color: var(--ds-danger);
+}
+
+.valid-tooltip,
+.invalid-tooltip {
+  position: absolute;
+  top: 100%;
+  z-index: 5;
+  display: none;
+  max-width: 100%;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.1rem;
+  font-size: var(--ds-font-size-sm);
+  border-radius: var(--ds-border-radius);
+}
+
+.valid-tooltip {
+  color: var(--ds-success-dark);
+  background-color: var(--ds-success-light);
+}
+
+.invalid-tooltip {
+  color: var(--ds-danger-dark);
+  background-color: var(--ds-danger-light);
+}
+
+// =============================================================================
+// États : .is-valid / .is-invalid
+// =============================================================================
+.is-valid {
+  ~ .valid-feedback,
+  ~ .valid-tooltip {
+    display: block;
+  }
+}
+
+.is-invalid {
+  ~ .invalid-feedback,
+  ~ .invalid-tooltip {
+    display: block;
+  }
+}
+
+// form-control
+.form-control {
+  &.is-valid {
+    border-color: var(--ds-success);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%2316a34a' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.25rem) center;
+    background-size: calc(0.75em + 0.5rem) calc(0.75em + 0.5rem);
+    padding-right: calc(1.5em + 1rem);
+
+    &:focus {
+      border-color: var(--ds-success);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(22, 163, 74, 0.25);
+    }
+  }
+
+  &.is-invalid {
+    border-color: var(--ds-danger);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc2626'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc2626' stroke='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.25rem) center;
+    background-size: calc(0.75em + 0.5rem) calc(0.75em + 0.5rem);
+    padding-right: calc(1.5em + 1rem);
+
+    &:focus {
+      border-color: var(--ds-danger);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(220, 38, 38, 0.25);
+    }
+  }
+}
+
+// form-select
+.form-select {
+  &.is-valid {
+    border-color: var(--ds-success);
+
+    &:focus {
+      border-color: var(--ds-success);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(22, 163, 74, 0.25);
+    }
+  }
+
+  &.is-invalid {
+    border-color: var(--ds-danger);
+
+    &:focus {
+      border-color: var(--ds-danger);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(220, 38, 38, 0.25);
+    }
+  }
+}
+
+// form-check
+.form-check-input {
+  &.is-valid {
+    border-color: var(--ds-success);
+
+    &:checked {
+      background-color: var(--ds-success);
+    }
+
+    ~ .form-check-label {
+      color: var(--ds-success-dark);
+    }
+  }
+
+  &.is-invalid {
+    border-color: var(--ds-danger);
+
+    &:checked {
+      background-color: var(--ds-danger);
+    }
+
+    ~ .form-check-label {
+      color: var(--ds-danger-dark);
+    }
+  }
+}
+
+// =============================================================================
+// .was-validated — activation après soumission du formulaire
+// =============================================================================
+.was-validated {
+  .form-control:valid {
+    border-color: var(--ds-success);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%2316a34a' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.25rem) center;
+    background-size: calc(0.75em + 0.5rem) calc(0.75em + 0.5rem);
+    padding-right: calc(1.5em + 1rem);
+
+    &:focus {
+      border-color: var(--ds-success);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(22, 163, 74, 0.25);
+    }
+
+    ~ .valid-feedback,
+    ~ .valid-tooltip {
+      display: block;
+    }
+  }
+
+  .form-control:invalid {
+    border-color: var(--ds-danger);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc2626'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc2626' stroke='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.25rem) center;
+    background-size: calc(0.75em + 0.5rem) calc(0.75em + 0.5rem);
+    padding-right: calc(1.5em + 1rem);
+
+    &:focus {
+      border-color: var(--ds-danger);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(220, 38, 38, 0.25);
+    }
+
+    ~ .invalid-feedback,
+    ~ .invalid-tooltip {
+      display: block;
+    }
+  }
+
+  .form-select:valid {
+    border-color: var(--ds-success);
+
+    &:focus {
+      border-color: var(--ds-success);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(22, 163, 74, 0.25);
+    }
+
+    ~ .valid-feedback,
+    ~ .valid-tooltip {
+      display: block;
+    }
+  }
+
+  .form-select:invalid {
+    border-color: var(--ds-danger);
+
+    &:focus {
+      border-color: var(--ds-danger);
+      box-shadow: 0 0 0 var(--ds-focus-ring-width) rgba(220, 38, 38, 0.25);
+    }
+
+    ~ .invalid-feedback,
+    ~ .invalid-tooltip {
+      display: block;
+    }
+  }
+
+  .form-check-input:valid {
+    border-color: var(--ds-success);
+
+    &:checked {
+      background-color: var(--ds-success);
+    }
+
+    ~ .form-check-label {
+      color: var(--ds-success-dark);
+    }
+    ~ .valid-feedback,
+    ~ .valid-tooltip {
+      display: block;
+    }
+  }
+
+  .form-check-input:invalid {
+    border-color: var(--ds-danger);
+
+    &:checked {
+      background-color: var(--ds-danger);
+    }
+
+    ~ .form-check-label {
+      color: var(--ds-danger-dark);
+    }
+    ~ .invalid-feedback,
+    ~ .invalid-tooltip {
+      display: block;
+    }
+  }
+}

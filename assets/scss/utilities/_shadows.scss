@@ -1,0 +1,26 @@
+// =============================================================================
+// utilities/_shadows.scss
+// .shadow-*, .shadow-none
+// =============================================================================
+
+.shadow-none {
+  box-shadow: var(--ds-shadow-none) !important;
+}
+.shadow-sm {
+  box-shadow: var(--ds-shadow-sm) !important;
+}
+.shadow {
+  box-shadow: var(--ds-shadow) !important;
+}
+.shadow-md {
+  box-shadow: var(--ds-shadow-md) !important;
+}
+.shadow-lg {
+  box-shadow: var(--ds-shadow-lg) !important;
+}
+.shadow-xl {
+  box-shadow: var(--ds-shadow-xl) !important;
+}
+.shadow-2xl {
+  box-shadow: var(--ds-shadow-2xl) !important;
+}

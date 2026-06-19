@@ -1,40 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-  <!--Swiper slider css-->
-  <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-  {% block css %} {% endblock %}
+  {% block css %}{% endblock %}
 {% endblock %}
 
 {% block javascripts %}
-  <!--Swiper slider js-->
-  <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
-  <!--job landing init -->
-  <script src="{{ asset('assets/js/pages/job-lading.init.js') }}"></script>
+  <script src="{{ asset('js/main.js') }}"></script>
   {% block js %}{% endblock %}
 {% endblock %}
 
 {% block body %}
-  
-    <!-- Begin page -->
-    <div class="layout-wrapper landing">
-        
-      {% include 'fragments/_navbar_app.html.twig' %}
+  {# ── Enveloppe principale de l'application (Mobile First) ──────────────── #}
+  <div class="app-wrapper">
 
-      {# Start Hero section #}
-      {% block hero %}{% endblock %}
-      {# End Hero section #}
+    {# Section hero (optionnelle, surchargeable depuis les vues enfants) #}
+    {% block hero %}{% endblock %}
 
-      {# Start Main content #}
-      {% block content %}
-        <section class="section" style="min-height: 50vh;"></section>
-      {% endblock %}
-      {# End Main content #}
+    {# Contenu principal #}
+    <main class="container-fluid" id="main-content">
+      {% include 'fragments/_flash_messages.html.twig' %}
+      {% block content %}{% endblock %}
+    </main>
 
-      {% include 'fragments/_footer_app.html.twig' %}
-      
-      {% include 'fragments/_top_button.html.twig' %}
+    {# Bouton "Retour en haut de page" #}
+    {% include 'fragments/_top_button.html.twig' %}
 
-    </div>
-    <!-- end layout wrapper -->
+    {# Barre de navigation inférieure — visible uniquement sur mobile (< 992 px) #}
+    {% include 'fragments/_bottom_nav.html.twig' %}
+
+  </div>
+  {# end app-wrapper #}
 {% endblock %}

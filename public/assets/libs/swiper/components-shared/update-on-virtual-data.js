@@ -1,1 +1,0 @@
-export const updateOnVirtualData=a=>{!a||a.destroyed||!a.params.virtual||a.params.virtual&&!a.params.virtual.enabled||(a.updateSlides(),a.updateProgress(),a.updateSlidesClasses(),a.parallax&&a.params.parallax&&a.params.parallax.enabled&&a.parallax.setTranslate())};

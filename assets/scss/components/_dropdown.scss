@@ -1,0 +1,241 @@
+// =============================================================================
+// components/_dropdown.scss
+// Déclencheur : data-bs-toggle="dropdown"
+// Menu affiché via la classe .show (ajoutée par le TS).
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Conteneur
+// =============================================================================
+.dropdown,
+.dropup,
+.dropend,
+.dropstart {
+  position: relative;
+}
+
+// =============================================================================
+// Toggle
+// =============================================================================
+.dropdown-toggle {
+  white-space: nowrap;
+
+  // Caret CSS
+  &::after {
+    display: inline-block;
+    margin-left: 0.4em;
+    vertical-align: 0.15em;
+    content: '';
+    border-top: 0.35em solid;
+    border-right: 0.35em solid transparent;
+    border-bottom: 0;
+    border-left: 0.35em solid transparent;
+  }
+
+  &:empty::after {
+    margin-left: 0;
+  }
+}
+
+// Caret orienté vers le haut pour .dropup
+.dropup .dropdown-toggle::after {
+  border-top: 0;
+  border-bottom: 0.35em solid;
+}
+
+// Caret orienté à droite pour .dropend
+.dropend .dropdown-toggle::after {
+  border-top: 0.35em solid transparent;
+  border-right: 0;
+  border-bottom: 0.35em solid transparent;
+  border-left: 0.35em solid;
+  vertical-align: 0;
+}
+
+// Caret orienté à gauche pour .dropstart
+.dropstart .dropdown-toggle::before {
+  display: inline-block;
+  margin-right: 0.4em;
+  vertical-align: 0;
+  content: '';
+  border-top: 0.35em solid transparent;
+  border-right: 0.35em solid;
+  border-bottom: 0.35em solid transparent;
+}
+
+.dropstart .dropdown-toggle::after {
+  display: none;
+}
+
+// =============================================================================
+// Menu
+// =============================================================================
+.dropdown-menu {
+  --dropdown-min-width: 10rem;
+  --dropdown-padding-x: 0;
+  --dropdown-padding-y: 0.5rem;
+  --dropdown-spacer: 0.125rem;
+  --dropdown-font-size: var(--ds-font-size-base);
+  --dropdown-color: var(--ds-body-color);
+  --dropdown-bg: var(--ds-surface-bg-raised);
+  --dropdown-border-color: var(--ds-border-color);
+  --dropdown-border-radius: var(--ds-border-radius);
+  --dropdown-border-width: var(--ds-border-width);
+  --dropdown-item-padding-x: 1rem;
+  --dropdown-item-padding-y: 0.375rem;
+  --dropdown-item-color: var(--ds-body-color);
+  --dropdown-item-hover-color: var(--ds-body-color);
+  --dropdown-item-hover-bg: var(--ds-neutral-100);
+  --dropdown-item-active-color: #ffffff;
+  --dropdown-item-active-bg: var(--ds-primary);
+  --dropdown-item-disabled-color: var(--ds-neutral-400);
+  --dropdown-divider-bg: var(--ds-border-color);
+  --dropdown-divider-margin-y: 0.5rem;
+  --dropdown-header-color: var(--ds-neutral-500);
+  --dropdown-header-padding-x: var(--dropdown-item-padding-x);
+  --dropdown-header-padding-y: 0.5rem;
+
+  position: absolute;
+  z-index: var(--ds-z-dropdown);
+  display: none;
+  min-width: var(--dropdown-min-width);
+  padding: var(--dropdown-padding-y) var(--dropdown-padding-x);
+  margin: 0;
+  font-size: var(--dropdown-font-size);
+  color: var(--dropdown-color);
+  text-align: left;
+  list-style: none;
+  background-color: var(--dropdown-bg);
+  background-clip: padding-box;
+  border: var(--dropdown-border-width) solid var(--dropdown-border-color);
+  border-radius: var(--dropdown-border-radius);
+  box-shadow: var(--ds-shadow-md);
+
+  &.show {
+    display: block;
+  }
+
+  // Alignement à droite
+  &.dropdown-menu-end {
+    right: 0;
+    left: auto;
+  }
+
+  // Alignement responsive
+  @each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+    &.dropdown-menu-#{$bp}-end {
+      @include bp-up($bp) {
+        right: 0;
+        left: auto;
+      }
+    }
+
+    &.dropdown-menu-#{$bp}-start {
+      @include bp-up($bp) {
+        right: auto;
+        left: 0;
+      }
+    }
+  }
+}
+
+// Positionnement selon la direction
+.dropup .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: var(--dropdown-spacer);
+}
+
+.dropend .dropdown-menu {
+  top: 0;
+  right: auto;
+  left: 100%;
+  margin-top: 0;
+  margin-left: var(--dropdown-spacer);
+}
+
+.dropstart .dropdown-menu {
+  top: 0;
+  right: 100%;
+  left: auto;
+  margin-top: 0;
+  margin-right: var(--dropdown-spacer);
+}
+
+// =============================================================================
+// Items
+// =============================================================================
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+  clear: both;
+  font-weight: var(--ds-font-weight-normal);
+  color: var(--dropdown-item-color);
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  @include transition(color background-color, fast);
+
+  &:hover,
+  &:focus {
+    color: var(--dropdown-item-hover-color);
+    background-color: var(--dropdown-item-hover-bg);
+  }
+
+  &.active,
+  &:active {
+    color: var(--dropdown-item-active-color);
+    background-color: var(--dropdown-item-active-bg);
+    text-decoration: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    color: var(--dropdown-item-disabled-color);
+    pointer-events: none;
+    background-color: transparent;
+  }
+}
+
+// =============================================================================
+// Divider
+// =============================================================================
+.dropdown-divider {
+  height: 0;
+  margin: var(--dropdown-divider-margin-y) 0;
+  overflow: hidden;
+  border-top: var(--dropdown-border-width) solid var(--dropdown-divider-bg);
+  opacity: 1;
+}
+
+// =============================================================================
+// Header
+// =============================================================================
+.dropdown-header {
+  display: block;
+  padding: var(--dropdown-header-padding-y) var(--dropdown-header-padding-x);
+  margin-bottom: 0;
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--dropdown-header-color);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// =============================================================================
+// Texte non-interactif
+// =============================================================================
+.dropdown-item-text {
+  display: block;
+  padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+  color: var(--dropdown-item-color);
+}

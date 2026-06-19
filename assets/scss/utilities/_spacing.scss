@@ -1,0 +1,134 @@
+// =============================================================================
+// utilities/_spacing.scss
+// Margin, Padding, Gap — nomenclature Bootstrap 5, échelle étendue.
+// Classes avec !important pour toujours prendre le dessus.
+// =============================================================================
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+@use '../variables' as vars;
+@use '../mixins' as *;
+
+// =============================================================================
+// Génération des classes de spacing
+// =============================================================================
+$spacing-properties: (
+  'm': 'margin',
+  'mt': 'margin-top',
+  'mb': 'margin-bottom',
+  'ms': 'margin-left',
+  'me': 'margin-right',
+  'mx': (
+    'margin-left',
+    'margin-right',
+  ),
+  'my': (
+    'margin-top',
+    'margin-bottom',
+  ),
+  'p': 'padding',
+  'pt': 'padding-top',
+  'pb': 'padding-bottom',
+  'ps': 'padding-left',
+  'pe': 'padding-right',
+  'px': (
+    'padding-left',
+    'padding-right',
+  ),
+  'py': (
+    'padding-top',
+    'padding-bottom',
+  ),
+);
+
+// Classes sans breakpoint
+@each $prefix, $prop in $spacing-properties {
+  @each $key, $value in vars.$spacers {
+    .#{$prefix}-#{$key} {
+      @if meta.type-of($prop) == 'list' {
+        @each $p in $prop {
+          #{$p}: #{$value} !important;
+        }
+      } @else {
+        #{$prop}: #{$value} !important;
+      }
+    }
+  }
+
+  // Auto uniquement pour les marges
+  @if string.slice($prefix, 1, 1) == 'm' {
+    .#{$prefix}-auto {
+      @if meta.type-of($prop) == 'list' {
+        @each $p in $prop {
+          #{$p}: auto !important;
+        }
+      } @else {
+        #{$prop}: auto !important;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Classes responsives — m-{bp}-{n}, p-{bp}-{n}
+// =============================================================================
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  @include bp-up($bp) {
+    @each $prefix, $prop in $spacing-properties {
+      @each $key, $value in vars.$spacers {
+        .#{$prefix}-#{$bp}-#{$key} {
+          @if meta.type-of($prop) == 'list' {
+            @each $p in $prop {
+              #{$p}: #{$value} !important;
+            }
+          } @else {
+            #{$prop}: #{$value} !important;
+          }
+        }
+      }
+
+      @if string.slice($prefix, 1, 1) == 'm' {
+        .#{$prefix}-#{$bp}-auto {
+          @if meta.type-of($prop) == 'list' {
+            @each $p in $prop {
+              #{$p}: auto !important;
+            }
+          } @else {
+            #{$prop}: auto !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Gap
+// =============================================================================
+@each $key, $value in vars.$spacers {
+  .gap-#{$key} {
+    gap: #{$value} !important;
+  }
+  .gap-x-#{$key} {
+    column-gap: #{$value} !important;
+  }
+  .gap-y-#{$key} {
+    row-gap: #{$value} !important;
+  }
+}
+
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  @include bp-up($bp) {
+    @each $key, $value in vars.$spacers {
+      .gap-#{$bp}-#{$key} {
+        gap: #{$value} !important;
+      }
+      .gap-x-#{$bp}-#{$key} {
+        column-gap: #{$value} !important;
+      }
+      .gap-y-#{$bp}-#{$key} {
+        row-gap: #{$value} !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,218 @@
+// =============================================================================
+// components/_card.scss
+// Structure : header, body, footer, images, overlay, group
+// =============================================================================
+
+.card {
+  --card-spacer-x: 1.25rem;
+  --card-spacer-y: 1rem;
+  --card-border-radius: var(--ds-border-radius);
+  --card-border-width: var(--ds-border-width);
+  --card-border-color: var(--ds-border-color);
+  --card-bg: var(--ds-surface-bg-raised);
+  --card-cap-bg: var(--ds-surface-bg);
+  --card-cap-color: inherit;
+  --card-img-overlay-padding: 1rem;
+  --card-color: inherit;
+  --card-inner-radius: calc(
+    var(--card-border-radius) - var(--card-border-width)
+  );
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--card-bg);
+  background-clip: border-box;
+  border: var(--card-border-width) solid var(--card-border-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--ds-shadow-sm);
+  color: var(--card-color);
+
+  > hr {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  > .list-group {
+    border-top: inherit;
+    border-bottom: inherit;
+
+    &:first-child {
+      border-top-width: 0;
+      border-top-left-radius: var(--card-inner-radius);
+      border-top-right-radius: var(--card-inner-radius);
+    }
+
+    &:last-child {
+      border-bottom-width: 0;
+      border-bottom-left-radius: var(--card-inner-radius);
+      border-bottom-right-radius: var(--card-inner-radius);
+    }
+  }
+}
+
+// =============================================================================
+// Body
+// =============================================================================
+.card-body {
+  flex: 1 1 auto;
+  padding: var(--card-spacer-y) var(--card-spacer-x);
+  color: var(--card-color);
+}
+
+// =============================================================================
+// Textes
+// =============================================================================
+.card-title {
+  margin-bottom: 0.5rem;
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.card-subtitle {
+  margin-top: -0.25rem;
+  margin-bottom: 0;
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-neutral-500);
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-link {
+  &:hover {
+    text-decoration: none;
+  }
+
+  + .card-link {
+    margin-left: var(--card-spacer-x);
+  }
+}
+
+// =============================================================================
+// Header & Footer
+// =============================================================================
+.card-header {
+  padding: calc(var(--card-spacer-y) * 0.75) var(--card-spacer-x);
+  color: var(--card-cap-color);
+  background-color: var(--card-cap-bg);
+  border-bottom: var(--card-border-width) solid var(--card-border-color);
+
+  &:first-child {
+    border-radius: var(--card-inner-radius) var(--card-inner-radius) 0 0;
+  }
+}
+
+.card-footer {
+  padding: calc(var(--card-spacer-y) * 0.75) var(--card-spacer-x);
+  color: var(--card-cap-color);
+  background-color: var(--card-cap-bg);
+  border-top: var(--card-border-width) solid var(--card-border-color);
+
+  &:last-child {
+    border-radius: 0 0 var(--card-inner-radius) var(--card-inner-radius);
+  }
+}
+
+// =============================================================================
+// Images
+// =============================================================================
+.card-img-top {
+  width: 100%;
+  display: block;
+  border-top-left-radius: var(--card-inner-radius);
+  border-top-right-radius: var(--card-inner-radius);
+}
+
+.card-img-bottom {
+  width: 100%;
+  display: block;
+  border-bottom-right-radius: var(--card-inner-radius);
+  border-bottom-left-radius: var(--card-inner-radius);
+}
+
+.card-img {
+  width: 100%;
+  display: block;
+  border-radius: var(--card-inner-radius);
+}
+
+.card-img-overlay {
+  position: absolute;
+  inset: 0;
+  padding: var(--card-img-overlay-padding);
+  border-radius: var(--card-inner-radius);
+}
+
+// =============================================================================
+// Card horizontal
+// =============================================================================
+.card-horizontal {
+  flex-direction: row;
+
+  .card-img,
+  .card-img-start {
+    width: auto;
+    max-width: 40%;
+    border-radius: var(--card-inner-radius) 0 0 var(--card-inner-radius);
+    object-fit: cover;
+  }
+
+  .card-img-end {
+    width: auto;
+    max-width: 40%;
+    border-radius: 0 var(--card-inner-radius) var(--card-inner-radius) 0;
+    object-fit: cover;
+  }
+}
+
+// =============================================================================
+// Card Group
+// =============================================================================
+.card-group {
+  display: flex;
+  flex-flow: row wrap;
+
+  > .card {
+    flex: 1 0 0%;
+    margin-bottom: 0;
+
+    + .card {
+      margin-left: 0;
+      border-left: 0;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      .card-img-top,
+      .card-header {
+        border-top-right-radius: 0;
+      }
+
+      .card-img-bottom,
+      .card-footer {
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+
+      .card-img-top,
+      .card-header {
+        border-top-left-radius: 0;
+      }
+
+      .card-img-bottom,
+      .card-footer {
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}

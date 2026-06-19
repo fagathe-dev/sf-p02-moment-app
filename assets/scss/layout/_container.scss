@@ -1,0 +1,51 @@
+// =============================================================================
+// layout/_container.scss
+// Containers : .container, .container-fluid, .container-{bp}
+// Nomenclature identique à Bootstrap 5.
+// =============================================================================
+@use 'sass:map';
+@use '../variables' as vars;
+@use '../mixins' as *;
+
+// Propriétés communes extraites en placeholder
+%container-base {
+  width: 100%;
+  padding-right: vars.$container-padding-x;
+  padding-left: vars.$container-padding-x;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// -----------------------------------------------------------------------------
+// .container — largeur fixe par palier de breakpoint (mobile-first)
+// -----------------------------------------------------------------------------
+.container {
+  @extend %container-base;
+
+  @each $bp, $max-width in vars.$container-max-widths {
+    @include bp-up($bp) {
+      max-width: $max-width;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// .container-fluid — toujours 100% de largeur
+// -----------------------------------------------------------------------------
+.container-fluid {
+  @extend %container-base;
+}
+
+// -----------------------------------------------------------------------------
+// .container-{bp} — fluid jusqu'au breakpoint cible, puis fixe
+// Ex : .container-md est 100% sur xs/sm, max-width: 720px à partir de md
+// -----------------------------------------------------------------------------
+@each $bp, $max-width in vars.$container-max-widths {
+  .container-#{$bp} {
+    @extend %container-base;
+
+    @include bp-up($bp) {
+      max-width: $max-width;
+    }
+  }
+}

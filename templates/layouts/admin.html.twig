@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {% block css %}{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/main.js') }}"></script>
+  {% block js %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+  {# ── Enveloppe principale du panneau d'administration (Desktop First) ───── #}
+  <div class="admin-wrapper">
+
+    {# ── Barre latérale ────────────────────────────────────────────────────── #}
+    <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navigation de l'administration">
+      {% include 'fragments/_sidebar_dashboard.html.twig' %}
+    </aside>
+
+    {# ── Colonne principale ────────────────────────────────────────────────── #}
+    <div class="admin-main">
+
+      {# Top bar #}
+      <header class="admin-header" id="admin-header">
+        {% include 'fragments/_navbar_dashboard.html.twig' %}
+      </header>
+
+      {# Zone de contenu #}
+      <main class="admin-content" id="main-content">
+        <div class="admin-content__inner">
+
+          {# Fil d'Ariane (affiché si la variable `breadcrumb` est définie par le contrôleur) #}
+          {% include 'fragments/_breadcrumb.html.twig' %}
+
+          {# Messages flash #}
+          {% include 'fragments/_flash_messages.html.twig' %}
+
+          {# ── Pilules de catégorisation (style Apple Finder) ─────────────── #}
+          {# Surcharger ce block depuis les vues enfants pour afficher des tags de filtrage #}
+          {% block category_pills %}{% endblock %}
+
+          {# ── Contenu principal de la page ──────────────────────────────── #}
+          {% block content %}{% endblock %}
+
+        </div>
+        {# end admin-content__inner #}
+      </main>
+      {# end main #}
+
+      {# Pied de page #}
+      {% include 'fragments/_footer_dashboard.html.twig' %}
+
+    </div>
+    {# end admin-main #}
+
+  </div>
+  {# end admin-wrapper #}
+{% endblock %}

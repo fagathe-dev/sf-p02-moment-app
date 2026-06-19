@@ -1,0 +1,276 @@
+// =============================================================================
+// components/_button.scss
+// Variants : solid, outline, soft, ghost, link
+// Tailles   : sm, (default), lg
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Base
+// =============================================================================
+.btn {
+  --btn-padding-x: 0.75rem;
+  --btn-padding-y: 0.45rem;
+  --btn-font-size: var(--ds-font-size-base);
+  --btn-font-weight: var(--ds-font-weight-medium);
+  --btn-line-height: var(--ds-line-height-snug);
+  --btn-border-radius: var(--ds-border-radius);
+  --btn-border-width: var(--ds-border-width);
+  --btn-color: var(--ds-body-color);
+  --btn-bg: transparent;
+  --btn-border-color: transparent;
+  --btn-hover-color: var(--ds-body-color);
+  --btn-hover-bg: transparent;
+  --btn-hover-border-color: transparent;
+  --btn-active-color: var(--ds-body-color);
+  --btn-active-bg: transparent;
+  --btn-active-border-color: transparent;
+  --btn-disabled-opacity: 0.65;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: var(--btn-line-height);
+  color: var(--btn-color);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--btn-bg);
+  border: var(--btn-border-width) solid var(--btn-border-color);
+  border-radius: var(--btn-border-radius);
+  @include transition(color background-color border-color box-shadow, fast);
+
+  &:hover {
+    color: var(--btn-hover-color);
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border-color);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    color: var(--btn-hover-color);
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border-color);
+    @include focus-ring;
+  }
+
+  &:active,
+  &.active {
+    color: var(--btn-active-color);
+    background-color: var(--btn-active-bg);
+    border-color: var(--btn-active-border-color);
+  }
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    opacity: var(--btn-disabled-opacity);
+  }
+}
+
+// =============================================================================
+// Tailles
+// =============================================================================
+.btn-sm {
+  --btn-padding-x: 0.625rem;
+  --btn-padding-y: 0.3rem;
+  --btn-font-size: var(--ds-font-size-sm);
+  --btn-border-radius: var(--ds-border-radius-sm);
+}
+
+.btn-lg {
+  --btn-padding-x: 1.25rem;
+  --btn-padding-y: 0.625rem;
+  --btn-font-size: var(--ds-font-size-lg);
+  --btn-border-radius: var(--ds-border-radius-lg);
+}
+
+// =============================================================================
+// Variant Link
+// =============================================================================
+.btn-link {
+  --btn-color: var(--ds-link-color);
+  --btn-hover-color: var(--ds-link-hover-color);
+  --btn-border-color: transparent;
+  font-weight: var(--ds-font-weight-normal);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// =============================================================================
+// Variant Solid
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'info', 'dark') {
+  .btn-#{$color} {
+    --btn-color: #ffffff;
+    --btn-bg: var(--ds-#{$color});
+    --btn-border-color: var(--ds-#{$color});
+    --btn-hover-color: #ffffff;
+    --btn-hover-bg: var(--ds-#{$color}-dark);
+    --btn-hover-border-color: var(--ds-#{$color}-dark);
+    --btn-active-color: #ffffff;
+    --btn-active-bg: var(--ds-#{$color}-dark);
+    --btn-active-border-color: var(--ds-#{$color}-dark);
+  }
+}
+
+// Warning & Light nécessitent du texte sombre (contraste WCAG)
+.btn-warning {
+  --btn-color: var(--ds-dark);
+  --btn-bg: var(--ds-warning);
+  --btn-border-color: var(--ds-warning);
+  --btn-hover-color: var(--ds-dark);
+  --btn-hover-bg: var(--ds-warning-dark);
+  --btn-hover-border-color: var(--ds-warning-dark);
+  --btn-active-color: var(--ds-dark);
+  --btn-active-bg: var(--ds-warning-dark);
+  --btn-active-border-color: var(--ds-warning-dark);
+}
+
+.btn-light {
+  --btn-color: var(--ds-dark);
+  --btn-bg: var(--ds-light);
+  --btn-border-color: var(--ds-border-color);
+  --btn-hover-color: var(--ds-dark);
+  --btn-hover-bg: var(--ds-neutral-200);
+  --btn-hover-border-color: var(--ds-neutral-300);
+  --btn-active-color: var(--ds-dark);
+  --btn-active-bg: var(--ds-neutral-200);
+  --btn-active-border-color: var(--ds-neutral-300);
+}
+
+// =============================================================================
+// Variant Outline
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'info', 'dark') {
+  .btn-outline-#{$color} {
+    --btn-color: var(--ds-#{$color});
+    --btn-bg: transparent;
+    --btn-border-color: var(--ds-#{$color});
+    --btn-hover-color: #ffffff;
+    --btn-hover-bg: var(--ds-#{$color});
+    --btn-hover-border-color: var(--ds-#{$color});
+    --btn-active-color: #ffffff;
+    --btn-active-bg: var(--ds-#{$color}-dark);
+    --btn-active-border-color: var(--ds-#{$color}-dark);
+  }
+}
+
+.btn-outline-warning {
+  --btn-color: var(--ds-warning);
+  --btn-bg: transparent;
+  --btn-border-color: var(--ds-warning);
+  --btn-hover-color: var(--ds-dark);
+  --btn-hover-bg: var(--ds-warning);
+  --btn-hover-border-color: var(--ds-warning);
+  --btn-active-color: var(--ds-dark);
+  --btn-active-bg: var(--ds-warning-dark);
+  --btn-active-border-color: var(--ds-warning-dark);
+}
+
+.btn-outline-light {
+  --btn-color: var(--ds-light);
+  --btn-bg: transparent;
+  --btn-border-color: var(--ds-light);
+  --btn-hover-color: var(--ds-dark);
+  --btn-hover-bg: var(--ds-light);
+  --btn-hover-border-color: var(--ds-light);
+}
+
+// =============================================================================
+// Variant Soft (fond teinté, texte coloré)
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .btn-soft-#{$color} {
+    --btn-color: var(--ds-#{$color}-dark);
+    --btn-bg: var(--ds-#{$color}-light);
+    --btn-border-color: transparent;
+    --btn-hover-color: var(--ds-#{$color}-dark);
+    --btn-hover-bg: var(--ds-#{$color}-light);
+    --btn-hover-border-color: var(--ds-#{$color});
+    --btn-active-color: var(--ds-#{$color}-dark);
+    --btn-active-bg: var(--ds-#{$color}-light);
+    --btn-active-border-color: var(--ds-#{$color});
+  }
+}
+
+// =============================================================================
+// Variant Ghost (transparent, hover léger)
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .btn-ghost-#{$color} {
+    --btn-color: var(--ds-#{$color});
+    --btn-bg: transparent;
+    --btn-border-color: transparent;
+    --btn-hover-color: var(--ds-#{$color}-dark);
+    --btn-hover-bg: var(--ds-#{$color}-light);
+    --btn-hover-border-color: transparent;
+    --btn-active-color: var(--ds-#{$color}-dark);
+    --btn-active-bg: var(--ds-#{$color}-light);
+    --btn-active-border-color: transparent;
+  }
+}
+
+// =============================================================================
+// Button Group
+// =============================================================================
+.btn-group,
+.btn-group-vertical {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+
+  > .btn {
+    position: relative;
+    flex: 1 1 auto;
+
+    &:focus-visible,
+    &:hover,
+    &:active,
+    &.active {
+      z-index: 1;
+    }
+  }
+}
+
+.btn-group {
+  > .btn:not(:first-child) {
+    margin-left: calc(-1 * var(--ds-border-width));
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  > .btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.btn-group-vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  > .btn:not(:first-child) {
+    margin-top: calc(-1 * var(--ds-border-width));
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  > .btn:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}

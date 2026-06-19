@@ -1,4 +1,4 @@
-{% extends 'layouts/dashboard.html.twig' %}
+{% extends 'layouts/app.html.twig' %}
 
 {% block content %}
   <div class="card">
@@ -7,17 +7,17 @@
         <div class="text-center">
           <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
             {% if app.user.avatar %}
-              <img src="{{ asset(app.user.avatar) }}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+              <img src="{{ asset(app.user.avatar) }}" class="avatar avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
             {% else %}
-              <div class="avatar-xl shadow rounded-circle">
+              <div class="avatar avatar-xl shadow rounded-circle">
                 <div class="avatar-title rounded-circle bg-primary-subtle text-primary fs-22">{{ app.user.username|first|upper }}</div>
               </div>
             {% endif %}
-            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-              <input id="profile-img-file-input" type="file" class="profile-img-file-input"> <!-- TODO: Handle file upload using `onchange` event -->
-              <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+            <div class="avatar avatar-xs p-0 rounded-circle profile-photo-edit">
+              <input id="profile-img-file-input d-none" type="file" class="profile-img-file-input"> <!-- TODO: Handle file upload using `onchange` event -->
+              <label for="profile-img-file-input" class="profile-photo-edit avatar avatar-xs">
                 <span class="avatar-title rounded-circle bg-light text-body shadow">
-                  <i class="ri-camera-fill"></i>
+                  <i class="mdi mdi-camera"></i>
                 </span>
               </label>
             </div>

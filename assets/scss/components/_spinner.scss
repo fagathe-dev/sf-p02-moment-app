@@ -1,0 +1,78 @@
+// =============================================================================
+// components/_spinner.scss
+// .spinner-border, .spinner-grow — tailles sm
+// =============================================================================
+
+// =============================================================================
+// Keyframes
+// =============================================================================
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// =============================================================================
+// Spinner Border (anneau tournant)
+// =============================================================================
+.spinner-border {
+  --spinner-width: 2rem;
+  --spinner-height: 2rem;
+  --spinner-border-width: 0.25em;
+  --spinner-animation-speed: 0.75s;
+  --spinner-color: currentColor;
+
+  display: inline-block;
+  width: var(--spinner-width);
+  height: var(--spinner-height);
+  vertical-align: -0.125em;
+  border: var(--spinner-border-width) solid var(--spinner-color);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border var(--spinner-animation-speed) linear infinite;
+}
+
+.spinner-border-sm {
+  --spinner-width: 1rem;
+  --spinner-height: 1rem;
+  --spinner-border-width: 0.2em;
+}
+
+// =============================================================================
+// Spinner Grow (pulsation)
+// =============================================================================
+.spinner-grow {
+  --spinner-width: 2rem;
+  --spinner-height: 2rem;
+  --spinner-animation-speed: 0.75s;
+  --spinner-color: currentColor;
+
+  display: inline-block;
+  width: var(--spinner-width);
+  height: var(--spinner-height);
+  vertical-align: -0.125em;
+  background-color: var(--spinner-color);
+  border-radius: 50%;
+  opacity: 0;
+  animation: spinner-grow var(--spinner-animation-speed) linear infinite;
+}
+
+.spinner-grow-sm {
+  --spinner-width: 1rem;
+  --spinner-height: 1rem;
+}
+
+// =============================================================================
+// Couleurs via .text-{color}
+// La couleur est héritée via currentColor
+// =============================================================================

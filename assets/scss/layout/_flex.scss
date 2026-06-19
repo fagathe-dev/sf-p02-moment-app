@@ -1,0 +1,298 @@
+// =============================================================================
+// layout/_flex.scss
+// Utilitaires Flexbox & Display — nomenclature Bootstrap 5.
+//
+// Classes générées :
+//   .d-{none|block|inline|inline-block|flex|inline-flex|grid}
+//   .d-{bp}-{value}
+//   .flex-{row|column|row-reverse|column-reverse}
+//   .flex-{wrap|nowrap|wrap-reverse}
+//   .flex-fill, .flex-grow-{0|1}, .flex-shrink-{0|1}
+//   .justify-content-{start|end|center|between|around|evenly}
+//   .align-items-{start|end|center|baseline|stretch}
+//   .align-self-{auto|start|end|center|baseline|stretch}
+//   .align-content-{start|end|center|between|around|stretch}
+//   Versions responsives de toutes ces classes.
+// =============================================================================
+@use '../variables' as vars;
+@use '../mixins' as *;
+
+// -----------------------------------------------------------------------------
+// Display
+// -----------------------------------------------------------------------------
+$display-values: (
+  'none': none,
+  'inline': inline,
+  'inline-block': inline-block,
+  'block': block,
+  'flex': flex,
+  'inline-flex': inline-flex,
+  'grid': grid,
+  'inline-grid': inline-grid,
+  'table': table,
+  'table-row': table-row,
+  'table-cell': table-cell,
+);
+
+@each $name, $value in $display-values {
+  .d-#{$name} {
+    display: $value !important;
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $name, $value in $display-values {
+      .d-#{$bp}-#{$name} {
+        display: $value !important;
+      }
+    }
+  }
+}
+
+// Print utilities
+@media print {
+  .d-print-none {
+    display: none !important;
+  }
+  .d-print-inline {
+    display: inline !important;
+  }
+  .d-print-inline-block {
+    display: inline-block !important;
+  }
+  .d-print-block {
+    display: block !important;
+  }
+  .d-print-flex {
+    display: flex !important;
+  }
+  .d-print-inline-flex {
+    display: inline-flex !important;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Flex direction
+// -----------------------------------------------------------------------------
+.flex-row {
+  flex-direction: row !important;
+}
+.flex-column {
+  flex-direction: column !important;
+}
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+.flex-column-reverse {
+  flex-direction: column-reverse !important;
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .flex-#{$bp}-row {
+      flex-direction: row !important;
+    }
+    .flex-#{$bp}-column {
+      flex-direction: column !important;
+    }
+    .flex-#{$bp}-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+    .flex-#{$bp}-column-reverse {
+      flex-direction: column-reverse !important;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Flex wrap
+// -----------------------------------------------------------------------------
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse !important;
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .flex-#{$bp}-wrap {
+      flex-wrap: wrap !important;
+    }
+    .flex-#{$bp}-nowrap {
+      flex-wrap: nowrap !important;
+    }
+    .flex-#{$bp}-wrap-reverse {
+      flex-wrap: wrap-reverse !important;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Flex grow / shrink / fill
+// -----------------------------------------------------------------------------
+.flex-fill {
+  flex: 1 1 auto !important;
+}
+.flex-grow-0 {
+  flex-grow: 0 !important;
+}
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+.flex-shrink-1 {
+  flex-shrink: 1 !important;
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .flex-#{$bp}-fill {
+      flex: 1 1 auto !important;
+    }
+    .flex-#{$bp}-grow-0 {
+      flex-grow: 0 !important;
+    }
+    .flex-#{$bp}-grow-1 {
+      flex-grow: 1 !important;
+    }
+    .flex-#{$bp}-shrink-0 {
+      flex-shrink: 0 !important;
+    }
+    .flex-#{$bp}-shrink-1 {
+      flex-shrink: 1 !important;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Justify content
+// -----------------------------------------------------------------------------
+$justify-content-values: (
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'between': space-between,
+  'around': space-around,
+  'evenly': space-evenly,
+);
+
+@each $name, $value in $justify-content-values {
+  .justify-content-#{$name} {
+    justify-content: $value !important;
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $name, $value in $justify-content-values {
+      .justify-content-#{$bp}-#{$name} {
+        justify-content: $value !important;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Align items
+// -----------------------------------------------------------------------------
+$align-items-values: (
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'baseline': baseline,
+  'stretch': stretch,
+);
+
+@each $name, $value in $align-items-values {
+  .align-items-#{$name} {
+    align-items: $value !important;
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $name, $value in $align-items-values {
+      .align-items-#{$bp}-#{$name} {
+        align-items: $value !important;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Align self
+// -----------------------------------------------------------------------------
+$align-self-values: (
+  'auto': auto,
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'baseline': baseline,
+  'stretch': stretch,
+);
+
+@each $name, $value in $align-self-values {
+  .align-self-#{$name} {
+    align-self: $value !important;
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $name, $value in $align-self-values {
+      .align-self-#{$bp}-#{$name} {
+        align-self: $value !important;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Align content
+// -----------------------------------------------------------------------------
+$align-content-values: (
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'between': space-between,
+  'around': space-around,
+  'stretch': stretch,
+);
+
+@each $name, $value in $align-content-values {
+  .align-content-#{$name} {
+    align-content: $value !important;
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $name, $value in $align-content-values {
+      .align-content-#{$bp}-#{$name} {
+        align-content: $value !important;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Gap (utilitaire grid/flex complémentaire)
+// -----------------------------------------------------------------------------
+@each $key, $value in vars.$spacers {
+  .gap-#{$key} {
+    gap: $value !important;
+  }
+  .gap-x-#{$key} {
+    column-gap: $value !important;
+  }
+  .gap-y-#{$key} {
+    row-gap: $value !important;
+  }
+}

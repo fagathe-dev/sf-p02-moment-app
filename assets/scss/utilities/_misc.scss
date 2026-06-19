@@ -1,0 +1,305 @@
+// =============================================================================
+// utilities/_misc.scss
+// Overflow, position, width, height, cursor, pointer-events, z-index,
+// object-fit, user-select, visibility, float, sizing
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Overflow
+// =============================================================================
+.overflow-auto {
+  overflow: auto !important;
+}
+.overflow-hidden {
+  overflow: hidden !important;
+}
+.overflow-visible {
+  overflow: visible !important;
+}
+.overflow-scroll {
+  overflow: scroll !important;
+}
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+.overflow-y-hidden {
+  overflow-y: hidden !important;
+}
+
+// =============================================================================
+// Position
+// =============================================================================
+.position-static {
+  position: static !important;
+}
+.position-relative {
+  position: relative !important;
+}
+.position-absolute {
+  position: absolute !important;
+}
+.position-fixed {
+  position: fixed !important;
+}
+.position-sticky {
+  position: sticky !important;
+}
+
+// Inset utils
+.top-0 {
+  top: 0 !important;
+}
+.top-50 {
+  top: 50% !important;
+}
+.top-100 {
+  top: 100% !important;
+}
+.bottom-0 {
+  bottom: 0 !important;
+}
+.bottom-50 {
+  bottom: 50% !important;
+}
+.bottom-100 {
+  bottom: 100% !important;
+}
+.start-0 {
+  left: 0 !important;
+}
+.start-50 {
+  left: 50% !important;
+}
+.start-100 {
+  left: 100% !important;
+}
+.end-0 {
+  right: 0 !important;
+}
+.end-50 {
+  right: 50% !important;
+}
+.end-100 {
+  right: 100% !important;
+}
+
+// Translate center
+.translate-middle {
+  transform: translate(-50%, -50%) !important;
+}
+
+.translate-middle-x {
+  transform: translateX(-50%) !important;
+}
+
+.translate-middle-y {
+  transform: translateY(-50%) !important;
+}
+
+// Fixed utilitaires
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--ds-z-fixed);
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--ds-z-fixed);
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--ds-z-sticky);
+}
+
+// =============================================================================
+// Width & Height
+// =============================================================================
+.w-25 {
+  width: 25% !important;
+}
+.w-50 {
+  width: 50% !important;
+}
+.w-75 {
+  width: 75% !important;
+}
+.w-100 {
+  width: 100% !important;
+}
+.w-auto {
+  width: auto !important;
+}
+
+.h-25 {
+  height: 25% !important;
+}
+.h-50 {
+  height: 50% !important;
+}
+.h-75 {
+  height: 75% !important;
+}
+.h-100 {
+  height: 100% !important;
+}
+.h-auto {
+  height: auto !important;
+}
+
+.mw-100 {
+  max-width: 100% !important;
+}
+.mh-100 {
+  max-height: 100% !important;
+}
+
+.min-vw-100 {
+  min-width: 100vw !important;
+}
+.min-vh-100 {
+  min-height: 100vh !important;
+}
+.vw-100 {
+  width: 100vw !important;
+}
+.vh-100 {
+  height: 100vh !important;
+}
+
+// =============================================================================
+// Object fit
+// =============================================================================
+.object-fit-contain {
+  object-fit: contain !important;
+}
+.object-fit-cover {
+  object-fit: cover !important;
+}
+.object-fit-fill {
+  object-fit: fill !important;
+}
+.object-fit-scale {
+  object-fit: scale-down !important;
+}
+.object-fit-none {
+  object-fit: none !important;
+}
+
+// =============================================================================
+// Float
+// =============================================================================
+.float-start {
+  float: left !important;
+}
+.float-end {
+  float: right !important;
+}
+.float-none {
+  float: none !important;
+}
+
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  @include bp-up($bp) {
+    .float-#{$bp}-start {
+      float: left !important;
+    }
+    .float-#{$bp}-end {
+      float: right !important;
+    }
+    .float-#{$bp}-none {
+      float: none !important;
+    }
+  }
+}
+
+// =============================================================================
+// Visibility
+// =============================================================================
+.visible {
+  visibility: visible !important;
+}
+.invisible {
+  visibility: hidden !important;
+}
+
+// =============================================================================
+// User select
+// =============================================================================
+.user-select-all {
+  user-select: all !important;
+}
+.user-select-auto {
+  user-select: auto !important;
+}
+.user-select-none {
+  user-select: none !important;
+}
+
+// =============================================================================
+// Pointer events
+// =============================================================================
+.pe-none {
+  pointer-events: none !important;
+}
+.pe-auto {
+  pointer-events: auto !important;
+}
+
+// =============================================================================
+// Cursor
+// =============================================================================
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.cursor-default {
+  cursor: default !important;
+}
+.cursor-wait {
+  cursor: wait !important;
+}
+.cursor-text {
+  cursor: text !important;
+}
+.cursor-move {
+  cursor: move !important;
+}
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
+// =============================================================================
+// Z-index
+// =============================================================================
+.z-0 {
+  z-index: 0 !important;
+}
+.z-1 {
+  z-index: 1 !important;
+}
+.z-2 {
+  z-index: 2 !important;
+}
+.z-3 {
+  z-index: 3 !important;
+}
+.z-n1 {
+  z-index: -1 !important;
+}
+.z-auto {
+  z-index: auto !important;
+}

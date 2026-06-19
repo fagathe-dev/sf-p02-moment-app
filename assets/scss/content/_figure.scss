@@ -1,0 +1,19 @@
+// =============================================================================
+// content/_figure.scss
+// .figure, .figure-img, .figure-caption
+// =============================================================================
+
+.figure {
+  display: inline-block;
+}
+
+.figure-img {
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  border-radius: var(--ds-border-radius);
+}
+
+.figure-caption {
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-neutral-500);
+}

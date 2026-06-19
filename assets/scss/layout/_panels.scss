@@ -1,0 +1,96 @@
+// =============================================================================
+// layout/_panels.scss
+// Mise en page commune aux tableaux de bord (dashboard & admin).
+//
+// Structure HTML attendue (remplacer "dashboard" par "admin" selon le layout) :
+//
+//   <div class="dashboard-wrapper">
+//     <aside class="dashboard-sidebar">...</aside>
+//     <div class="dashboard-main">
+//       <header class="dashboard-header">...</header>
+//       <main class="dashboard-content">
+//         <div class="dashboard-content__inner">...</div>
+//       </main>
+//       <footer class="footer">...</footer>
+//     </div>
+//   </div>
+//
+// TOKENS :
+//   --panel-sidebar-width  Largeur de la barre latérale  (défaut : 260px)
+//   --panel-header-height  Hauteur de la barre de navigation (défaut : 60px)
+// =============================================================================
+@use '../mixins' as *;
+
+// ── Valeurs par défaut des tokens de mise en page ────────────────────────────
+:root {
+  --panel-sidebar-width: 260px;
+  --panel-header-height: 60px;
+}
+
+// =============================================================================
+// Mixin — génère le layout complet pour un préfixe donné
+// Utilisé pour `.dashboard-*` et `.admin-*`
+// =============================================================================
+@mixin panel-layout($prefix) {
+  // ── Enveloppe principale ──────────────────────────────────────────────────
+  .#{$prefix}-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--ds-body-bg);
+  }
+
+  // ── Barre latérale ────────────────────────────────────────────────────────
+  .#{$prefix}-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--panel-sidebar-width);
+    z-index: 1020;
+    background-color: var(--ds-surface-bg-raised);
+    border-right: var(--ds-border-width) solid var(--ds-border-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+    // Scrollbar discrète
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-neutral-300) transparent;
+  }
+
+  // ── Colonne principale ────────────────────────────────────────────────────
+  .#{$prefix}-main {
+    flex: 1;
+    margin-left: var(--panel-sidebar-width);
+    min-width: 0; // empêche le débordement en contexte flex
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  // ── En-tête / top bar ─────────────────────────────────────────────────────
+  .#{$prefix}-header {
+    position: sticky;
+    top: 0;
+    z-index: 1010;
+    height: var(--panel-header-height);
+    background-color: var(--ds-surface-bg-raised);
+    border-bottom: var(--ds-border-width) solid var(--ds-border-color);
+    display: flex;
+    align-items: center;
+  }
+
+  // ── Zone de contenu ───────────────────────────────────────────────────────
+  .#{$prefix}-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .#{$prefix}-content__inner {
+    padding: 1.5rem;
+  }
+}
+
+// =============================================================================
+// Génération des deux layouts
+// =============================================================================
+@include panel-layout('dashboard');
+@include panel-layout('admin');

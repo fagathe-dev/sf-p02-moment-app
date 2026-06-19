@@ -1,1 +1,0 @@
-import{inject}from"vue";export const useSwiperSlide=()=>inject("swiperSlide");export const useSwiper=()=>inject("swiper");

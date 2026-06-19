@@ -1,1 +1,0 @@
-export default function removeClasses(){const{el:s,classNames:e}=this;s.classList.remove(...e),this.emitContainerClasses()}

@@ -1,0 +1,114 @@
+// =============================================================================
+// utilities/_colors.scss
+// .text-{color}, .bg-{color}, .border-{color}
+// =============================================================================
+
+// =============================================================================
+// Background
+// =============================================================================
+.bg-primary {
+  background-color: var(--ds-primary) !important;
+}
+.bg-secondary {
+  background-color: var(--ds-secondary) !important;
+}
+.bg-success {
+  background-color: var(--ds-success) !important;
+}
+.bg-danger {
+  background-color: var(--ds-danger) !important;
+}
+.bg-warning {
+  background-color: var(--ds-warning) !important;
+}
+.bg-info {
+  background-color: var(--ds-info) !important;
+}
+.bg-light {
+  background-color: var(--ds-light) !important;
+}
+.bg-dark {
+  background-color: var(--ds-dark) !important;
+}
+.bg-body {
+  background-color: var(--ds-body-bg) !important;
+}
+.bg-surface {
+  background-color: var(--ds-surface-bg-raised) !important;
+}
+.bg-white {
+  background-color: #ffffff !important;
+}
+.bg-black {
+  background-color: #000000 !important;
+}
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+// Soft variants (fond clair teinté)
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .bg-soft-#{$color} {
+    background-color: var(--ds-#{$color}-light) !important;
+  }
+}
+
+// =============================================================================
+// Border color
+// =============================================================================
+.border-primary {
+  border-color: var(--ds-primary) !important;
+}
+.border-secondary {
+  border-color: var(--ds-secondary) !important;
+}
+.border-success {
+  border-color: var(--ds-success) !important;
+}
+.border-danger {
+  border-color: var(--ds-danger) !important;
+}
+.border-warning {
+  border-color: var(--ds-warning) !important;
+}
+.border-info {
+  border-color: var(--ds-info) !important;
+}
+.border-light {
+  border-color: var(--ds-light) !important;
+}
+.border-dark {
+  border-color: var(--ds-dark) !important;
+}
+.border-body {
+  border-color: var(--ds-border-color) !important;
+}
+.border-white {
+  border-color: #ffffff !important;
+}
+.border-black {
+  border-color: #000000 !important;
+}
+.border-transparent {
+  border-color: transparent !important;
+}
+
+// =============================================================================
+// Opacity (bg + text)
+// =============================================================================
+.opacity-0 {
+  opacity: 0 !important;
+}
+.opacity-25 {
+  opacity: 0.25 !important;
+}
+.opacity-50 {
+  opacity: 0.5 !important;
+}
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+.opacity-100 {
+  opacity: 1 !important;
+}

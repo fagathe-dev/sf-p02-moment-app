@@ -1,0 +1,40 @@
+// =============================================================================
+// components/_close.scss
+// Bouton de fermeture : .btn-close
+// Utilisé dans : .alert-dismissible, .modal, .toast, .offcanvas
+// =============================================================================
+@use '../mixins' as *;
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3E%3Cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3E%3C/svg%3E")
+    center / 1em auto no-repeat;
+  border: 0;
+  border-radius: var(--ds-border-radius-sm);
+  opacity: 0.5;
+  cursor: pointer;
+  @include transition(opacity, fast);
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    @include focus-ring;
+  }
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.25;
+  }
+}
+
+[data-bs-theme='dark'] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}

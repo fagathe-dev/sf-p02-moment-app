@@ -5,7 +5,7 @@
         <!-- LOGO -->
         <div class="navbar-brand-box horizontal-logo">
           <a href="/" class="logo">
-            <img src="{{ asset(APP_LOGO) }}" alt="" height="30">
+            <img src="{{ asset(APP_LOGO) }}" alt="" height="30" style="height: 30px;">
           </a>
         </div>
 
@@ -25,7 +25,7 @@
             {% if app.user.avatar %}
               <img class="rounded-circle header-profile-user" src="{{ asset(app.user.avatar) }}" alt="Header Avatar">
             {% else %}
-              <div class="avatar-xs shadow rounded-circle">
+              <div class="avatar avatar-xs shadow rounded-circle">
                 <div class="avatar-title rounded-circle bg-primary-subtle text-primary fs-16">{{ app.user.username|first|upper }}</div>
               </div>
             {% endif %}

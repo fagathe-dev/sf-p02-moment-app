@@ -1,0 +1,104 @@
+// =============================================================================
+// components/_pagination.scss
+// .pagination, .page-item, .page-link — tailles sm/lg
+// =============================================================================
+@use '../mixins' as *;
+
+.pagination {
+  --pagination-padding-x: 0.75rem;
+  --pagination-padding-y: 0.375rem;
+  --pagination-font-size: var(--ds-font-size-base);
+  --pagination-border-radius: var(--ds-border-radius);
+  --pagination-border-width: var(--ds-border-width);
+  --pagination-border-color: var(--ds-border-color);
+  --pagination-color: var(--ds-link-color);
+  --pagination-bg: var(--ds-surface-bg-raised);
+  --pagination-hover-color: var(--ds-link-hover-color);
+  --pagination-hover-bg: var(--ds-neutral-100);
+  --pagination-hover-border-color: var(--ds-border-color);
+  --pagination-focus-color: var(--ds-link-hover-color);
+  --pagination-focus-bg: var(--ds-neutral-100);
+  --pagination-active-color: #ffffff;
+  --pagination-active-bg: var(--ds-primary);
+  --pagination-active-border-color: var(--ds-primary);
+  --pagination-disabled-color: var(--ds-neutral-400);
+  --pagination-disabled-bg: var(--ds-surface-bg-raised);
+  --pagination-disabled-border-color: var(--ds-border-color);
+
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: var(--pagination-padding-y) var(--pagination-padding-x);
+  font-size: var(--pagination-font-size);
+  color: var(--pagination-color);
+  text-decoration: none;
+  background-color: var(--pagination-bg);
+  border: var(--pagination-border-width) solid var(--pagination-border-color);
+  @include transition(color background-color border-color, fast);
+
+  &:hover {
+    z-index: 2;
+    color: var(--pagination-hover-color);
+    background-color: var(--pagination-hover-bg);
+    border-color: var(--pagination-hover-border-color);
+  }
+
+  &:focus-visible {
+    z-index: 3;
+    color: var(--pagination-focus-color);
+    background-color: var(--pagination-focus-bg);
+    @include focus-ring;
+  }
+}
+
+.page-item {
+  &:not(:first-child) .page-link {
+    margin-left: calc(-1 * var(--pagination-border-width));
+  }
+
+  &:first-child .page-link {
+    border-top-left-radius: var(--pagination-border-radius);
+    border-bottom-left-radius: var(--pagination-border-radius);
+  }
+
+  &:last-child .page-link {
+    border-top-right-radius: var(--pagination-border-radius);
+    border-bottom-right-radius: var(--pagination-border-radius);
+  }
+
+  &.active .page-link {
+    z-index: 3;
+    color: var(--pagination-active-color);
+    background-color: var(--pagination-active-bg);
+    border-color: var(--pagination-active-border-color);
+  }
+
+  &.disabled .page-link {
+    color: var(--pagination-disabled-color);
+    pointer-events: none;
+    background-color: var(--pagination-disabled-bg);
+    border-color: var(--pagination-disabled-border-color);
+  }
+}
+
+// =============================================================================
+// Tailles
+// =============================================================================
+.pagination-sm {
+  --pagination-padding-x: 0.5rem;
+  --pagination-padding-y: 0.25rem;
+  --pagination-font-size: var(--ds-font-size-sm);
+  --pagination-border-radius: var(--ds-border-radius-sm);
+}
+
+.pagination-lg {
+  --pagination-padding-x: 1rem;
+  --pagination-padding-y: 0.5rem;
+  --pagination-font-size: var(--ds-font-size-lg);
+  --pagination-border-radius: var(--ds-border-radius-lg);
+}

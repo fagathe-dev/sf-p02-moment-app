@@ -1,40 +1,78 @@
-.layout-wrapper.landing {
-  min-height: 100vh;
-  height: auto;
-}
+// =============================================================================
+// custom.scss — Point d'entrée du Design System
+//
+// Ordre d'import :
+//   1. Tokens SCSS            (palette, typographie, espacement, breakpoints…)
+//   2. Mixins utilitaires     (breakpoints, focus-ring, truncate…)
+//   3. Thème global           (CSS custom properties sur :root + dark mode)
+//   4. Base / Reset           (reboot normalisé, styles par défaut)
+//   5. Layout                 (container, grid, flex)
+//   6. Content                (table, typography, figures)
+//   7. Forms                  (input, select, checkbox, radio, textarea…)
+//   8. Components             (alert, badge, button, card, modal, navbar…)
+//   9. Utilities              (spacing, display, text, colors, shadows…)
+// =============================================================================
 
-.landing .navbar .navbar-toggler {
-  border: none;
-  outline: 0;
-  i {
-    font-size: 30px;
-  }
-  &:focus {
-    border: none;
-    outline: 0;
-    box-shadow: none;
-  }
-}
+// 1. Tokens
+@use 'variables' as *;
 
-[type=email], [type=number], [type=tel], [type=url] {
-    direction: ltr;
-}
+// 2. Mixins
+@use 'mixins' as *;
 
-.page-title-box .breadcrumb {
-  margin-block-end: 0;
-}
+// 3. Thème
+@use 'theme' as *;
 
-.form-group {
-  margin-block-end: 1rem;
-}
+// 4. Base
+@use 'base/reset' as *;
 
-.jumbotron {
-  padding: 1.5rem 1rem;
-  box-shadow: var(--vz-box-shadow);
-  border-radius: .3rem;
-  background-color: #f3f4f6;
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--vz-dark);
-  margin-block-end: .5rem;
-}
+// 5. Layout
+@use 'layout/container' as *;
+@use 'layout/grid' as *;
+@use 'layout/flex' as *;
+@use 'layout/panels' as *;
+
+// 6. Content
+@use 'content/table' as *;
+@use 'content/typography' as *;
+@use 'content/figure' as *;
+
+// 7. Forms
+@use 'forms/form-control' as *;
+@use 'forms/form-select' as *;
+@use 'forms/form-check' as *;
+@use 'forms/form-floating' as *;
+@use 'forms/form-validation' as *;
+
+// 8. Components
+@use 'components/close' as *;
+@use 'components/button' as *;
+@use 'components/badge' as *;
+@use 'components/breadcrumb' as *;
+@use 'components/alert' as *;
+@use 'components/card' as *;
+@use 'components/collapse' as *;
+@use 'components/accordion' as *;
+@use 'components/dropdown' as *;
+@use 'components/modal' as *;
+@use 'components/nav' as *;
+@use 'components/navbar' as *;
+@use 'components/pagination' as *;
+@use 'components/list-group' as *;
+@use 'components/toast' as *;
+@use 'components/spinner' as *;
+@use 'components/placeholder' as *;
+@use 'components/avatar' as *;
+@use 'components/bottom-nav' as *;
+@use 'components/top-button' as *;
+
+// 9. Utilities (en dernier pour prendre le dessus sur les composants)
+@use 'utilities/spacing' as *;
+@use 'utilities/colors' as *;
+@use 'utilities/borders' as *;
+@use 'utilities/shadows' as *;
+@use 'utilities/misc' as *;
+
+@use 'layout/flex' as *;
+
+@use 'pages/app' as *;
+@use 'pages/dashboard' as *;

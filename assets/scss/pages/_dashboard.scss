@@ -1,0 +1,419 @@
+// =============================================================================
+// pages/_dashboard.scss
+// Styles des fragments internes aux layouts dashboard et admin.
+//
+// Ce fichier gère les éléments HTML générés par :
+//   fragments/_sidebar_dashboard.html.twig
+//   fragments/_navbar_dashboard.html.twig
+//   fragments/_footer_dashboard.html.twig
+//
+// La mise en page structurelle (sidebar fixe, header sticky, main scrollable)
+// est gérée dans layout/_panels.scss.
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Tokens locaux
+// =============================================================================
+:root {
+  --panel-sidebar-item-px: 1rem;
+  --panel-sidebar-item-py: 0.625rem;
+  --panel-sidebar-brand-h: var(--panel-header-height); // aligne logo / top bar
+  --panel-link-radius: var(--ds-border-radius);
+  --panel-link-active-bg: var(--ds-neutral-100);
+  --panel-link-active-color: var(--ds-neutral-900);
+  --panel-link-hover-bg: var(--ds-neutral-50);
+  --panel-footer-h: 3rem;
+}
+
+// =============================================================================
+// Sidebar — éléments internes
+// Scoped dans .dashboard-sidebar et .admin-sidebar
+// =============================================================================
+.dashboard-sidebar,
+.admin-sidebar {
+  // ── .app-menu / .navbar-menu ──────────────────────────────────────────────
+  .app-menu,
+  .navbar-menu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  // ── Zone logo (haut de la sidebar) ───────────────────────────────────────
+  .navbar-brand-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--panel-sidebar-brand-h);
+    padding: 0 var(--panel-sidebar-item-px);
+    flex-shrink: 0;
+    border-bottom: var(--ds-border-width) solid var(--ds-border-color);
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+
+      img {
+        height: 28px;
+        width: auto;
+      }
+    }
+
+    // Bouton toggle collapse sidebar
+    .btn-vertical-sm-hover {
+      color: var(--ds-neutral-400);
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.25rem;
+      border-radius: var(--ds-border-radius-full);
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+
+      &:hover {
+        color: var(--ds-neutral-700);
+        background-color: var(--panel-link-hover-bg);
+      }
+    }
+  }
+
+  // ── Zone scrollable de la nav ─────────────────────────────────────────────
+  #scrollbar {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.75rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-neutral-200) transparent;
+  }
+
+  // ── Liste de navigation principale ────────────────────────────────────────
+  .navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  // ── Titre de section ──────────────────────────────────────────────────────
+  .menu-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem var(--panel-sidebar-item-px) 0.25rem;
+    font-size: 0.6875rem; // 11 px
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-neutral-400);
+
+    i {
+      font-size: 0.875rem;
+    }
+  }
+
+  // ── Item de navigation ────────────────────────────────────────────────────
+  .nav-item {
+    padding: 0 0.5rem;
+  }
+
+  // ── Lien de navigation ────────────────────────────────────────────────────
+  .nav-link.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: var(--panel-sidebar-item-py) var(--panel-sidebar-item-px);
+    border-radius: var(--panel-link-radius);
+    color: var(--ds-neutral-600);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+
+    i {
+      font-size: 1.125rem;
+      flex-shrink: 0;
+      width: 1.25rem;
+      text-align: center;
+    }
+
+    span {
+      flex: 1;
+    }
+
+    &:hover {
+      color: var(--panel-link-active-color);
+      background-color: var(--panel-link-hover-bg);
+    }
+
+    &.active,
+    &[aria-expanded='true'] {
+      color: var(--panel-link-active-color);
+      background-color: var(--panel-link-active-bg);
+      font-weight: 600;
+    }
+  }
+
+  // ── Sous-menu dropdown ────────────────────────────────────────────────────
+  .menu-dropdown {
+    padding-left: calc(
+      var(--panel-sidebar-item-px) + 1.875rem
+    ); // indenté sous l'icône
+
+    .nav-link {
+      font-size: 0.8125rem;
+      padding: 0.375rem 0.5rem;
+      color: var(--ds-neutral-500);
+      border-radius: var(--panel-link-radius);
+      transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+
+      &:hover {
+        color: var(--panel-link-active-color);
+        background-color: var(--panel-link-hover-bg);
+      }
+      &.active {
+        color: var(--panel-link-active-color);
+        font-weight: 600;
+      }
+    }
+  }
+
+  // ── Overlay de fond (mobile, sidebar ouverte) ─────────────────────────────
+  .sidebar-background,
+  .vertical-overlay {
+    display: none; // géré par JS si nécessaire
+  }
+}
+
+// =============================================================================
+// Header / Top bar — éléments internes
+// Scoped dans .dashboard-header et .admin-header
+// =============================================================================
+.dashboard-header,
+.admin-header {
+  // L'élément <header id="page-topbar"> n'a pas de style propre ;
+  // c'est .dashboard-header qui positionne. On réinitialise les
+  // éventuels styles hérités de Velzon.
+  #page-topbar {
+    width: 100%;
+    height: 100%;
+  }
+
+  // ── Conteneur de largeur ─────────────────────────────────────────────────
+  .layout-width,
+  .navbar-header {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 1.25rem;
+  }
+
+  .navbar-header {
+    justify-content: space-between;
+    .dropdown-menu {
+      top: 55px;
+    }
+  }
+
+  // ── Logo horizontal (mode collapsed / panel secondaire) ───────────────────
+  .navbar-brand-box.horizontal-logo {
+    display: flex;
+    align-items: center;
+
+    .logo img {
+      height: 26px;
+      width: auto;
+    }
+  }
+
+  // ── Bouton hamburger ──────────────────────────────────────────────────────
+  .topnav-hamburger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--ds-border-radius);
+    cursor: pointer;
+    color: var(--ds-neutral-500);
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--panel-link-hover-bg);
+    }
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    pointer-events: none;
+
+    span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      border-radius: 2px;
+      background-color: currentColor;
+      transition:
+        transform 0.25s ease,
+        opacity 0.25s ease,
+        width 0.25s ease;
+
+      &:nth-child(2) {
+        width: 14px;
+      } // ligne centrale plus courte
+    }
+  }
+
+  // ── Zone droite (user dropdown, etc.) ─────────────────────────────────────
+  .header-item {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ds-neutral-600);
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--ds-neutral-900);
+    }
+  }
+
+  // ── Avatar profil dans le header ──────────────────────────────────────────
+  .header-profile-user {
+    width: 2rem;
+    height: 2rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  // ── Textes user ───────────────────────────────────────────────────────────
+  .user-name-text {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--ds-neutral-800);
+  }
+  .user-name-sub-text {
+    font-size: 0.75rem;
+    color: var(--ds-neutral-500);
+  }
+}
+
+// =============================================================================
+// Footer
+// =============================================================================
+.dashboard-content,
+.admin-content {
+  .footer {
+    padding: 0 1.25rem;
+    height: var(--panel-footer-h);
+    display: flex;
+    align-items: center;
+    border-top: var(--ds-border-width) solid var(--ds-border-color);
+    font-size: 0.8125rem;
+    color: var(--ds-neutral-400);
+    flex-shrink: 0;
+  }
+}
+
+// =============================================================================
+// Category pills (Apple Finder-style)
+// Structure attendue dans {% block category_pills %} :
+//
+//   <div class="category-pills">
+//     <button class="category-pill category-pill--active">Tous</button>
+//     <button class="category-pill category-pill--red">Urgent</button>
+//     <button class="category-pill category-pill--green">Validé</button>
+//     <button class="category-pill category-pill--blue">En cours</button>
+//   </div>
+// =============================================================================
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.category-pill {
+  // ── Tokens locaux ──────────────────────────────────────────────────────────
+  --pill-bg: var(--ds-neutral-100);
+  --pill-color: var(--ds-neutral-600);
+  --pill-bg-hover: var(--ds-neutral-200);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: var(--ds-border-radius-pill);
+  background-color: var(--pill-bg);
+  color: var(--pill-color);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  // Pastille colorée optionnelle
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--pill-dot, transparent);
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--pill-bg-hover);
+  }
+
+  &--active {
+    --pill-bg: var(--ds-neutral-800);
+    --pill-color: var(--ds-neutral-50);
+    --pill-bg-hover: var(--ds-neutral-700);
+  }
+
+  // ── Variantes de couleur (style Apple Finder) ─────────────────────────────
+  &--red {
+    --pill-dot: #ef4444;
+  }
+  &--orange {
+    --pill-dot: #f97316;
+  }
+  &--yellow {
+    --pill-dot: #eab308;
+  }
+  &--green {
+    --pill-dot: #22c55e;
+  }
+  &--blue {
+    --pill-dot: #3b82f6;
+  }
+  &--purple {
+    --pill-dot: #a855f7;
+  }
+  &--gray {
+    --pill-dot: var(--ds-neutral-400);
+  }
+}

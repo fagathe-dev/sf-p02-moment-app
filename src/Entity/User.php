@@ -65,9 +65,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?array $preferences = null;
 
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'owner')]
+    private Collection $categories;
+
+    /**
+     * @var Collection<int, EntryMedia>
+     */
+    #[ORM\OneToMany(targetEntity: EntryMedia::class, mappedBy: 'owner')]
+    private Collection $entryMedia;
+
+    /**
+     * @var Collection<int, Entry>
+     */
+    #[ORM\OneToMany(targetEntity: Entry::class, mappedBy: 'owner')]
+    private Collection $entries;
+
     public function __construct()
     {
         $this->userRequests = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->entryMedia = new ArrayCollection();
+        $this->entries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,6 +296,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPreferences(?array $preferences): static
     {
         $this->preferences = $preferences;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getOwner() === $this) {
+                $category->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EntryMedia>
+     */
+    public function getEntryMedia(): Collection
+    {
+        return $this->entryMedia;
+    }
+
+    public function addEntryMedium(EntryMedia $entryMedium): static
+    {
+        if (!$this->entryMedia->contains($entryMedium)) {
+            $this->entryMedia->add($entryMedium);
+            $entryMedium->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntryMedium(EntryMedia $entryMedium): static
+    {
+        if ($this->entryMedia->removeElement($entryMedium)) {
+            // set the owning side to null (unless already changed)
+            if ($entryMedium->getOwner() === $this) {
+                $entryMedium->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Entry>
+     */
+    public function getEntries(): Collection
+    {
+        return $this->entries;
+    }
+
+    public function addEntry(Entry $entry): static
+    {
+        if (!$this->entries->contains($entry)) {
+            $this->entries->add($entry);
+            $entry->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntry(Entry $entry): static
+    {
+        if ($this->entries->removeElement($entry)) {
+            // set the owning side to null (unless already changed)
+            if ($entry->getOwner() === $this) {
+                $entry->setOwner(null);
+            }
+        }
 
         return $this;
     }

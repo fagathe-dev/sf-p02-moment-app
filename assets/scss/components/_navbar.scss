@@ -1,0 +1,226 @@
+// =============================================================================
+// components/_navbar.scss
+// .navbar, .navbar-expand-{bp}, collapse mobile, brand, toggler
+// =============================================================================
+@use '../mixins' as *;
+
+// =============================================================================
+// Base
+// =============================================================================
+.navbar {
+  --navbar-padding-x: 0.75rem;
+  --navbar-padding-y: 0.625rem;
+  --navbar-color: var(--ds-body-color);
+  --navbar-hover-color: var(--ds-primary);
+  --navbar-active-color: var(--ds-primary);
+  --navbar-disabled-color: var(--ds-neutral-400);
+  --navbar-brand-font-size: var(--ds-font-size-lg);
+  --navbar-brand-color: var(--ds-body-color);
+  --navbar-brand-hover-color: var(--ds-primary);
+  --navbar-toggler-border-color: var(--ds-border-color);
+  --navbar-toggler-border-radius: var(--ds-border-radius-sm);
+  --navbar-toggler-icon-color: var(--ds-body-color);
+  --navbar-toggler-focus-width: var(--ds-focus-ring-width);
+  --navbar-bg: var(--ds-surface-bg-raised);
+  --navbar-border-color: var(--ds-border-color);
+
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--navbar-padding-y) var(--navbar-padding-x);
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--navbar-border-color);
+}
+
+// =============================================================================
+// Brand
+// =============================================================================
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 1rem;
+  font-size: var(--navbar-brand-font-size);
+  font-weight: var(--ds-font-weight-bold);
+  color: var(--navbar-brand-color);
+  text-decoration: none;
+  white-space: nowrap;
+  @include transition(color, fast);
+
+  &:hover,
+  &:focus {
+    color: var(--navbar-brand-hover-color);
+  }
+}
+
+// =============================================================================
+// Nav items
+// =============================================================================
+.navbar-nav {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    color: var(--navbar-color);
+
+    &:hover,
+    &:focus {
+      color: var(--navbar-hover-color);
+    }
+
+    &.active {
+      color: var(--navbar-active-color);
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    &.disabled {
+      color: var(--navbar-disabled-color);
+    }
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+  }
+}
+
+// =============================================================================
+// Text & misc inline
+// =============================================================================
+.navbar-text {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: var(--navbar-color);
+}
+
+// =============================================================================
+// Collapse container
+// =============================================================================
+.navbar-collapse {
+  flex-basis: 100%;
+  flex-grow: 1;
+  align-items: center;
+}
+
+// =============================================================================
+// Toggler (hamburger)
+// =============================================================================
+.navbar-toggler {
+  padding: 0.375rem 0.5rem;
+  font-size: var(--ds-font-size-lg);
+  line-height: 1;
+  color: var(--navbar-toggler-icon-color);
+  background-color: transparent;
+  border: 1px solid var(--navbar-toggler-border-color);
+  border-radius: var(--navbar-toggler-border-radius);
+  cursor: pointer;
+  @include transition(box-shadow, fast);
+
+  &:focus-visible {
+    @include focus-ring;
+    text-decoration: none;
+  }
+}
+
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23404040' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+[data-bs-theme='dark'] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23d4d4d4' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+// =============================================================================
+// Responsive expand — .navbar-expand-{bp}
+// =============================================================================
+@each $bp in ('sm', 'md', 'lg', 'xl', 'xxl') {
+  .navbar-expand-#{$bp} {
+    @include bp-up($bp) {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+
+      .navbar-nav {
+        flex-direction: row;
+        gap: 0.25rem;
+
+        .nav-link {
+          padding-right: var(--nav-link-padding-x, 0.75rem);
+          padding-left: var(--nav-link-padding-x, 0.75rem);
+        }
+
+        .dropdown-menu {
+          position: absolute;
+          box-shadow: var(--ds-shadow-md);
+        }
+      }
+
+      .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+      }
+
+      .navbar-toggler {
+        display: none;
+      }
+    }
+  }
+}
+
+// .navbar-expand (jamais collapsé)
+.navbar-expand {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+
+  .navbar-toggler {
+    display: none;
+  }
+}
+
+// =============================================================================
+// Variante sticky / fixed
+// =============================================================================
+.navbar.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--ds-z-fixed);
+}
+
+.navbar.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--ds-z-sticky);
+}
+
+// =============================================================================
+// Bg-body-tertiary (Bootstrap compat)
+// =============================================================================
+.bg-body-tertiary {
+  background-color: var(--ds-neutral-100) !important;
+}

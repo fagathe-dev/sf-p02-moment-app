@@ -1,0 +1,214 @@
+// =============================================================================
+// layout/_grid.scss
+// Système de grille 12 colonnes — nomenclature Bootstrap 5.
+//
+// Classes générées :
+//   .row, .row-cols-{1-6}, .row-cols-{bp}-{1-6}
+//   .col, .col-auto, .col-{1-12}
+//   .col-{bp}, .col-{bp}-auto, .col-{bp}-{1-12}
+//   .offset-{0-11}, .offset-{bp}-{0-11}
+//   .order-first, .order-last, .order-{0-5}
+//   .order-{bp}-first, .order-{bp}-last, .order-{bp}-{0-5}
+//   .g-{0-5}, .gx-{0-5}, .gy-{0-5}
+//   .g-{bp}-{0-5}, .gx-{bp}-{0-5}, .gy-{bp}-{0-5}
+// =============================================================================
+@use 'sass:math';
+@use 'sass:map';
+@use '../variables' as vars;
+@use '../mixins' as *;
+
+// -----------------------------------------------------------------------------
+// Row
+// -----------------------------------------------------------------------------
+.row {
+  --bs-gutter-x: #{vars.$grid-gutter-width};
+  --bs-gutter-y: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+
+  > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(0.5 * var(--bs-gutter-x));
+    padding-left: calc(0.5 * var(--bs-gutter-x));
+    margin-top: var(--bs-gutter-y);
+  }
+}
+
+// Row cols : divise la row en N colonnes égales
+// Ex : .row-cols-3 → chaque enfant prend 1/3
+@for $i from 1 through 6 {
+  .row-cols-#{$i} > * {
+    flex: 0 0 auto;
+    width: math.percentage(math.div(1, $i));
+  }
+}
+
+.row-cols-auto > * {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .row-cols-#{$bp}-auto > * {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    @for $i from 1 through 6 {
+      .row-cols-#{$bp}-#{$i} > * {
+        flex: 0 0 auto;
+        width: math.percentage(math.div(1, $i));
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Colonnes sans breakpoint (mobile-first / xs)
+// -----------------------------------------------------------------------------
+
+// Colonne flexible
+.col {
+  flex: 1 0 0%;
+}
+
+// Largeur automatique (contenu)
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+// Colonnes fixes .col-1 à .col-12
+@for $i from 1 through vars.$grid-columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    width: math.percentage(math.div($i, vars.$grid-columns));
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Colonnes par breakpoint
+// -----------------------------------------------------------------------------
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .col-#{$bp} {
+      flex: 1 0 0%;
+    }
+
+    .col-#{$bp}-auto {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    @for $i from 1 through vars.$grid-columns {
+      .col-#{$bp}-#{$i} {
+        flex: 0 0 auto;
+        width: math.percentage(math.div($i, vars.$grid-columns));
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Offsets
+// -----------------------------------------------------------------------------
+@for $i from 0 through vars.$grid-columns - 1 {
+  .offset-#{$i} {
+    @if $i == 0 {
+      margin-left: 0;
+    } @else {
+      margin-left: math.percentage(math.div($i, vars.$grid-columns));
+    }
+  }
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @for $i from 0 through vars.$grid-columns - 1 {
+      .offset-#{$bp}-#{$i} {
+        @if $i == 0 {
+          margin-left: 0;
+        } @else {
+          margin-left: math.percentage(math.div($i, vars.$grid-columns));
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Order
+// -----------------------------------------------------------------------------
+.order-first {
+  order: -1;
+}
+.order-last {
+  order: #{vars.$grid-columns + 1};
+}
+
+@for $i from 0 through 5 {
+  .order-#{$i} {
+    order: $i;
+  }
+}
+
+@each $bp, $value in vars.$breakpoints {
+  @include bp-up($bp) {
+    .order-#{$bp}-first {
+      order: -1;
+    }
+    .order-#{$bp}-last {
+      order: #{vars.$grid-columns + 1};
+    }
+
+    @for $i from 0 through 5 {
+      .order-#{$bp}-#{$i} {
+        order: $i;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Gutters — .g-{n}, .gx-{n}, .gy-{n}
+// -----------------------------------------------------------------------------
+@each $key, $value in vars.$spacers {
+  .g-#{$key} {
+    --bs-gutter-x: #{$value};
+    --bs-gutter-y: #{$value};
+  }
+
+  .gx-#{$key} {
+    --bs-gutter-x: #{$value};
+  }
+
+  .gy-#{$key} {
+    --bs-gutter-y: #{$value};
+  }
+}
+
+@each $bp, $bp-value in vars.$breakpoints {
+  @include bp-up($bp) {
+    @each $key, $value in vars.$spacers {
+      .g-#{$bp}-#{$key} {
+        --bs-gutter-x: #{$value};
+        --bs-gutter-y: #{$value};
+      }
+
+      .gx-#{$bp}-#{$key} {
+        --bs-gutter-x: #{$value};
+      }
+
+      .gy-#{$bp}-#{$key} {
+        --bs-gutter-y: #{$value};
+      }
+    }
+  }
+}

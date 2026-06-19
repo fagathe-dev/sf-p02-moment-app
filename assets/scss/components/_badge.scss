@@ -1,0 +1,82 @@
+// =============================================================================
+// components/_badge.scss
+// Variants : solid, soft, outline
+// =============================================================================
+
+.badge {
+  --badge-padding-x: 0.65em;
+  --badge-padding-y: 0.25em;
+  --badge-font-size: 0.75em;
+  --badge-font-weight: var(--ds-font-weight-semibold);
+  --badge-border-radius: var(--ds-border-radius-sm);
+  --badge-color: var(--ds-body-color);
+  --badge-bg: var(--ds-neutral-100);
+  --badge-border-color: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: var(--badge-padding-y) var(--badge-padding-x);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: 1;
+  color: var(--badge-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: var(--badge-bg);
+  border: 1px solid var(--badge-border-color);
+  border-radius: var(--badge-border-radius);
+
+  &:empty {
+    display: none;
+  }
+}
+
+// =============================================================================
+// Variant Solid
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'info', 'dark') {
+  .badge-#{$color} {
+    --badge-color: #ffffff;
+    --badge-bg: var(--ds-#{$color});
+    --badge-border-color: var(--ds-#{$color});
+  }
+}
+
+.badge-warning {
+  --badge-color: var(--ds-dark);
+  --badge-bg: var(--ds-warning);
+  --badge-border-color: var(--ds-warning);
+}
+
+.badge-light {
+  --badge-color: var(--ds-dark);
+  --badge-bg: var(--ds-light);
+  --badge-border-color: var(--ds-border-color);
+}
+
+// =============================================================================
+// Variant Soft
+// =============================================================================
+@each $color in ('primary', 'secondary', 'success', 'danger', 'warning', 'info')
+{
+  .badge-soft-#{$color} {
+    --badge-color: var(--ds-#{$color}-dark);
+    --badge-bg: var(--ds-#{$color}-light);
+    --badge-border-color: transparent;
+  }
+}
+
+// =============================================================================
+// Variant Outline
+// =============================================================================
+@each $color
+  in ('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark')
+{
+  .badge-outline-#{$color} {
+    --badge-color: var(--ds-#{$color});
+    --badge-bg: transparent;
+    --badge-border-color: var(--ds-#{$color});
+  }
+}

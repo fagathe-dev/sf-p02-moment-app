@@ -1,0 +1,198 @@
+// =============================================================================
+// _theme.scss
+// CSS Custom Properties globales — seule couche que les composants consomment.
+//
+// Règles :
+//   • Le light mode est défini sur :root
+//   • Le dark mode est activé via [data-bs-theme="dark"] (Bootstrap-compatible)
+//   • Nommage : --ds-* pour nos tokens, --bs-* pour la compatibilité Bootstrap
+// =============================================================================
+@use 'variables' as vars;
+
+// -----------------------------------------------------------------------------
+// Light mode (défaut)
+// -----------------------------------------------------------------------------
+:root {
+  color-scheme: light;
+
+  // ── Palette brute exposée (utile pour les overrides runtime) ──────────────
+
+  // Neutral
+  --ds-neutral-50: #{vars.$neutral-50};
+  --ds-neutral-100: #{vars.$neutral-100};
+  --ds-neutral-200: #{vars.$neutral-200};
+  --ds-neutral-300: #{vars.$neutral-300};
+  --ds-neutral-400: #{vars.$neutral-400};
+  --ds-neutral-500: #{vars.$neutral-500};
+  --ds-neutral-600: #{vars.$neutral-600};
+  --ds-neutral-700: #{vars.$neutral-700};
+  --ds-neutral-800: #{vars.$neutral-800};
+  --ds-neutral-900: #{vars.$neutral-900};
+  --ds-neutral-950: #{vars.$neutral-950};
+
+  // Olive
+  --ds-olive-50: #{vars.$olive-50};
+  --ds-olive-100: #{vars.$olive-100};
+  --ds-olive-200: #{vars.$olive-200};
+  --ds-olive-300: #{vars.$olive-300};
+  --ds-olive-400: #{vars.$olive-400};
+  --ds-olive-500: #{vars.$olive-500};
+  --ds-olive-600: #{vars.$olive-600};
+  --ds-olive-700: #{vars.$olive-700};
+  --ds-olive-800: #{vars.$olive-800};
+  --ds-olive-900: #{vars.$olive-900};
+  --ds-olive-950: #{vars.$olive-950};
+
+  // ── Couleurs sémantiques ──────────────────────────────────────────────────
+
+  --ds-primary: #{vars.$primary};
+  --ds-primary-light: #{vars.$primary-light};
+  --ds-primary-dark: #{vars.$primary-dark};
+
+  --ds-secondary: #{vars.$secondary};
+  --ds-secondary-light: #{vars.$secondary-light};
+  --ds-secondary-dark: #{vars.$secondary-dark};
+
+  --ds-success: #{vars.$success};
+  --ds-success-light: #{vars.$success-light};
+  --ds-success-dark: #{vars.$success-dark};
+
+  --ds-danger: #{vars.$danger};
+  --ds-danger-light: #{vars.$danger-light};
+  --ds-danger-dark: #{vars.$danger-dark};
+
+  --ds-warning: #{vars.$warning};
+  --ds-warning-light: #{vars.$warning-light};
+  --ds-warning-dark: #{vars.$warning-dark};
+
+  --ds-info: #{vars.$info};
+  --ds-info-light: #{vars.$info-light};
+  --ds-info-dark: #{vars.$info-dark};
+
+  --ds-light: #{vars.$light};
+  --ds-dark: #{vars.$dark};
+
+  // ── Corps ────────────────────────────────────────────────────────────────
+
+  --ds-body-bg: #{vars.$body-bg};
+  --ds-body-color: #{vars.$body-color};
+
+  // ── Surface (cards, modals, popovers) ───────────────────────────────────
+
+  --ds-surface-bg: #{vars.$surface-bg};
+  --ds-surface-bg-raised: #{vars.$surface-bg-raised};
+
+  // ── Liens ────────────────────────────────────────────────────────────────
+
+  --ds-link-color: #{vars.$link-color};
+  --ds-link-hover-color: #{vars.$link-hover-color};
+
+  // ── Bordures ─────────────────────────────────────────────────────────────
+
+  --ds-border-color: #{vars.$border-color};
+  --ds-border-width: #{vars.$border-width};
+
+  // ── Border radius ────────────────────────────────────────────────────────
+
+  --ds-border-radius: #{vars.$border-radius};
+  --ds-border-radius-sm: #{vars.$border-radius-sm};
+  --ds-border-radius-lg: #{vars.$border-radius-lg};
+  --ds-border-radius-xl: #{vars.$border-radius-xl};
+  --ds-border-radius-2xl: #{vars.$border-radius-2xl};
+  --ds-border-radius-pill: #{vars.$border-radius-pill};
+  --ds-border-radius-full: #{vars.$border-radius-full};
+
+  // ── Typographie ──────────────────────────────────────────────────────────
+
+  --ds-font-family: #{vars.$font-family-sans-serif};
+  --ds-font-family-mono: #{vars.$font-family-mono};
+
+  --ds-font-size-base: #{vars.$font-size-base};
+  --ds-font-size-xs: #{vars.$font-size-xs};
+  --ds-font-size-sm: #{vars.$font-size-sm};
+  --ds-font-size-lg: #{vars.$font-size-lg};
+  --ds-font-size-xl: #{vars.$font-size-xl};
+  --ds-font-size-2xl: #{vars.$font-size-2xl};
+  --ds-font-size-3xl: #{vars.$font-size-3xl};
+  --ds-font-size-4xl: #{vars.$font-size-4xl};
+
+  --ds-font-weight-light: #{vars.$font-weight-light};
+  --ds-font-weight-normal: #{vars.$font-weight-normal};
+  --ds-font-weight-medium: #{vars.$font-weight-medium};
+  --ds-font-weight-semibold: #{vars.$font-weight-semibold};
+  --ds-font-weight-bold: #{vars.$font-weight-bold};
+
+  --ds-line-height-tight: #{vars.$line-height-tight};
+  --ds-line-height-snug: #{vars.$line-height-snug};
+  --ds-line-height-base: #{vars.$line-height-base};
+  --ds-line-height-relaxed: #{vars.$line-height-relaxed};
+
+  // ── Ombres ───────────────────────────────────────────────────────────────
+
+  --ds-shadow-sm: #{vars.$shadow-sm};
+  --ds-shadow: #{vars.$shadow};
+  --ds-shadow-md: #{vars.$shadow-md};
+  --ds-shadow-lg: #{vars.$shadow-lg};
+  --ds-shadow-xl: #{vars.$shadow-xl};
+  --ds-shadow-2xl: #{vars.$shadow-2xl};
+  --ds-shadow-none: #{vars.$shadow-none};
+
+  // ── Transitions ──────────────────────────────────────────────────────────
+
+  --ds-transition-base: #{vars.$transition-base};
+  --ds-transition-fade: #{vars.$transition-fade};
+  --ds-transition-collapse: #{vars.$transition-collapse};
+
+  // ── Z-index ──────────────────────────────────────────────────────────────
+
+  --ds-z-dropdown: #{vars.$z-index-dropdown};
+  --ds-z-sticky: #{vars.$z-index-sticky};
+  --ds-z-fixed: #{vars.$z-index-fixed};
+  --ds-z-backdrop: #{vars.$z-index-backdrop};
+  --ds-z-offcanvas: #{vars.$z-index-offcanvas};
+  --ds-z-modal: #{vars.$z-index-modal};
+  --ds-z-popover: #{vars.$z-index-popover};
+  --ds-z-tooltip: #{vars.$z-index-tooltip};
+  --ds-z-toast: #{vars.$z-index-toast};
+
+  // ── Focus ring ───────────────────────────────────────────────────────────
+
+  --ds-focus-ring-width: #{vars.$focus-ring-width};
+  --ds-focus-ring-offset: #{vars.$focus-ring-offset};
+  --ds-focus-ring-color: rgb(64 64 64 / 0.25); // neutral-700 @ 25%
+
+  // ── Bootstrap compatibility (grille, composants) ─────────────────────────
+
+  --bs-gutter-x: #{vars.$grid-gutter-width};
+  --bs-gutter-y: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Dark mode — activé par [data-bs-theme="dark"] sur <html> ou tout conteneur
+// -----------------------------------------------------------------------------
+[data-bs-theme='dark'] {
+  color-scheme: dark;
+
+  --ds-body-bg: #{vars.$body-bg-dark};
+  --ds-body-color: #{vars.$body-color-dark};
+
+  --ds-surface-bg: #{vars.$surface-bg-dark};
+  --ds-surface-bg-raised: #{vars.$surface-bg-raised-dark};
+
+  --ds-link-color: #{vars.$link-color-dark};
+  --ds-link-hover-color: #{vars.$link-hover-color-dark};
+
+  --ds-border-color: #{vars.$border-color-dark};
+
+  // Surcharges sémantiques dark
+  --ds-primary: #{vars.$neutral-300};
+  --ds-primary-light: #{vars.$neutral-800};
+  --ds-primary-dark: #{vars.$neutral-100};
+
+  --ds-secondary: #{vars.$olive-300};
+  --ds-secondary-light: #{vars.$olive-800};
+  --ds-secondary-dark: #{vars.$olive-100};
+
+  // Focus ring adapté dark
+  --ds-focus-ring-color: rgb(212 212 212 / 0.3); // neutral-300 @ 30%
+}

@@ -1,1 +1,0 @@
-import{createElement,getSlideTransformEl}from"./utils.js";export default function createShadow(e,r,t){const l="swiper-slide-shadow"+(t?`-${t}`:""),o=getSlideTransformEl(r);let s=o.querySelector(`.${l}`);return s||(s=createElement("div","swiper-slide-shadow"+(t?`-${t}`:"")),o.append(s)),s}
