@@ -44,7 +44,7 @@ security:
         - { path: ^/auth/profile, roles: PUBLIC_ACCESS } # IS_AUTHENTICATED_FULLY
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/app, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/app, roles: ROLE_USER }
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
 
 when@test:

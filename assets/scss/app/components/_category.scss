@@ -1,0 +1,76 @@
+// =============================================================================
+// components/_category-card.scss
+// =============================================================================
+@use '../../mixins' as *;
+
+.category-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 0.75rem 1rem;
+  background-color: var(--ds-surface-bg-raised);
+  border: var(--ds-border-width) solid var(--ds-border-color);
+  border-radius: var(--ds-border-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+
+  @include transition(box-shadow border-color, fast);
+
+  &:hover {
+    border-color: var(--ds-neutral-300);
+    box-shadow: var(--ds-shadow-md);
+  }
+
+  // ── Pastille couleur ───────────────────────────────────────────────────────
+
+  &__color-dot {
+    flex-shrink: 0;
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: var(--ds-border-radius-full);
+    border: 1px solid rgb(0 0 0 / 0.08);
+  }
+
+  // ── Nom ───────────────────────────────────────────────────────────────────
+
+  &__name {
+    flex: 1;
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-body-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+  &__actions {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
+
+  &__toggle {
+    // Taille réduite, invisible au repos
+    padding: 0.2rem 0.35rem;
+    opacity: 0;
+    @include transition(opacity, fast);
+  }
+
+  // Affiche le bouton au survol de la card
+  &:hover &__toggle,
+  &__toggle[aria-expanded='true'] {
+    opacity: 1;
+  }
+}

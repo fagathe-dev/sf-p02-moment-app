@@ -13,11 +13,15 @@
   {# ── Enveloppe principale de l'application (Mobile First) ──────────────── #}
   <div class="app-wrapper">
 
+
+    {# Contenu principal de l'application (à droite de la sidebar) #}
+
     {# Section hero (optionnelle, surchargeable depuis les vues enfants) #}
     {% block hero %}{% endblock %}
 
     {# Contenu principal #}
     <main class="container-fluid" id="main-content">
+      {% include 'fragments/_breadcrumb.html.twig' %}
       {% include 'fragments/_flash_messages.html.twig' %}
       {% block content %}{% endblock %}
     </main>

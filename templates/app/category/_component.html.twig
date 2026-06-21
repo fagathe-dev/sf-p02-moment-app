@@ -1,0 +1,58 @@
+{#
+  Composant Card — Category
+  ─────────────────────────────────────────────────────────────────────────────
+  Paramètres :
+    category (Category) — obligatoire
+#}
+
+<div class="category-card">
+
+  {# Pastille couleur #}
+  {% if category.color %}
+    <span class="category-card__color-dot bg-{{ category.color.value }}" aria-hidden="true"></span>
+  {% endif %}
+
+  {# Nom #}
+  <a class="category-card__link" href="{{ url('app_category_edit', {id: category.id}) }}">
+    <span class="category-card__name">{{ category.name }}</span>
+  </a>
+
+  {# Dropdown actions #}
+  <div class="category-card__actions dropdown">
+
+    <button
+      type="button"
+      class="category-card__toggle btn btn-ghost-primary btn-sm"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      aria-label="Actions pour {{ category.name }}"
+    >
+      <i class="ri-more-2-fill" aria-hidden="true"></i>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <a class="dropdown-item" href="{{ path('app_category_edit', { id: category.id }) }}">
+          <i class="ri-pencil-line me-2" aria-hidden="true"></i>
+          Modifier
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <form
+          action="{{ path('app_category_delete', { id: category.id }) }}"
+          method="post"
+          onsubmit="return confirm('Supprimer la catégorie « {{ category.name }} » ?');"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <input type="hidden" name="_token" value="{{ csrf_token('delete-category-' ~ category.id) }}">
+          <button type="submit" class="dropdown-item text-danger">
+            <i class="ri-delete-bin-line me-2" aria-hidden="true"></i>
+            Supprimer
+          </button>
+        </form>
+      </li>
+    </ul>
+
+  </div>
+</div>

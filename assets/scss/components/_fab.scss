@@ -1,0 +1,104 @@
+// =============================================================================
+// components/_fab.scss
+// Floating Action Button — inspiré de Google Keep
+// Un seul thème : primary
+// =============================================================================
+@use '../mixins' as *;
+@use '../variables' as *;
+
+.fab {
+  --fab-size: 3.25rem;
+  --fab-bg: var(--ds-primary-light);
+  --fab-color: var(--ds-primary);
+  --fab-hover-bg: var(--ds-primary-light);
+  --fab-hover-color: var(--ds-primary-dark);
+  --fab-active-bg: var(--ds-primary-light);
+  --fab-border-radius: var(--ds-border-radius);
+  --fab-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  --fab-hover-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+  --fab-icon-size: 1.87rem;
+
+  // Positionnement fixe — coin bas droit
+  position: fixed;
+  inset-block-end: 75px;
+  inset-inline-end: 1.5rem;
+  z-index: var(--ds-z-fixed);
+
+  // Apparence — aligne sur .btn
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+
+  block-size: var(--fab-size);
+  min-inline-size: var(--fab-size);
+  padding-inline: 0.87rem;
+
+  color: var(--fab-color);
+  background-color: var(--fab-bg);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: var(--fab-shadow);
+
+  font-size: var(--ds-font-size);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-line-height-snug);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  @include transition(color background-color box-shadow transform, fast);
+
+  // ── États ────────────────────────────────────────────────────────────────
+
+  &:hover {
+    color: var(--fab-hover-color);
+    background-color: var(--fab-hover-bg);
+    box-shadow: var(--fab-hover-shadow);
+    text-decoration: none;
+  }
+
+  &:active {
+    color: var(--fab-color);
+    background-color: var(--fab-active-bg);
+    box-shadow: var(--fab-shadow);
+  }
+
+  &:focus-visible {
+    color: var(--fab-hover-color);
+    background-color: var(--fab-hover-bg);
+    @include focus-ring;
+  }
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+
+  // ── Icône ────────────────────────────────────────────────────────────────
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: var(--fab-icon-size);
+    line-height: 1;
+  }
+
+  // ── Label (version étendue) ───────────────────────────────────────────────
+
+  &__label {
+    display: none;
+  }
+
+  &--extended {
+    padding-inline: 1.25rem;
+
+    .fab__label {
+      display: inline;
+    }
+  }
+}

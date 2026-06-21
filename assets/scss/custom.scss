@@ -44,15 +44,16 @@
 @use 'forms/form-validation' as *;
 
 // 8. Components
-@use 'components/close' as *;
-@use 'components/button' as *;
+@use 'components/accordion' as *;
+@use 'components/alert' as *;
 @use 'components/badge' as *;
 @use 'components/breadcrumb' as *;
-@use 'components/alert' as *;
+@use 'components/button' as *;
 @use 'components/card' as *;
+@use 'components/close' as *;
 @use 'components/collapse' as *;
-@use 'components/accordion' as *;
 @use 'components/dropdown' as *;
+@use 'components/fab' as *;
 @use 'components/modal' as *;
 @use 'components/nav' as *;
 @use 'components/navbar' as *;
@@ -60,6 +61,8 @@
 @use 'components/list-group' as *;
 @use 'components/toast' as *;
 @use 'components/spinner' as *;
+@use 'components/selectable-dropdown' as *;
+@use 'components/selectable-card' as *;
 @use 'components/placeholder' as *;
 @use 'components/avatar' as *;
 @use 'components/bottom-nav' as *;
@@ -76,3 +79,73 @@
 
 @use 'pages/app' as *;
 @use 'pages/dashboard' as *;
+
+@use 'app/index.scss' as *;
+
+// -----------------------------------------------------------------------------
+// Couleurs des pastilles — valeurs issues de ColorEnum (calquées sur Velzon)
+// Génèrent les classes .bg-{color} utilisées dans les composants SelectableCard
+// et CustomSelector via data-color.
+// -----------------------------------------------------------------------------
+
+.bg-blue {
+  background-color: #3577f1 !important;
+}
+.bg-indigo {
+  background-color: #4b38b3 !important;
+}
+.bg-purple {
+  background-color: #6559cc !important;
+}
+.bg-pink {
+  background-color: #f672a7 !important;
+}
+.bg-red {
+  background-color: #f06548 !important;
+}
+.bg-orange {
+  background-color: #f1963b !important;
+}
+.bg-yellow {
+  background-color: #ffbe0b !important;
+}
+.bg-green {
+  background-color: #45cb85 !important;
+}
+.bg-teal {
+  background-color: #02a8b5 !important;
+}
+.bg-cyan {
+  background-color: #299cdb !important;
+}
+.bg-dark {
+  background-color: #212529 !important;
+}
+
+// -----------------------------------------------------------------------------
+// Utilitaires généraux
+// -----------------------------------------------------------------------------
+
+.form-group {
+  margin-block-end: 1rem;
+}
+
+[type='email'],
+[type='number'],
+[type='tel'],
+[type='url'] {
+  direction: ltr;
+}
+
+// -----------------------------------------------------------------------------
+// Feedback visuel sélection d'un tag / option
+// -----------------------------------------------------------------------------
+
+.js-selector-option[aria-selected='true'] {
+  border-color: var(--ds-primary) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--ds-primary) 8%,
+    transparent
+  ) !important;
+}

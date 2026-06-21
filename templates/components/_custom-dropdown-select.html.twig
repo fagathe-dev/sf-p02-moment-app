@@ -1,0 +1,70 @@
+{# templates/components/_custom-dropdown-select.html.twig #}
+
+{# Définition des valeurs par défaut intelligentes #}
+{% set cds_mode = cds_mode | default(field.vars.cds_mode | default('single-nullable')) %}
+{% set cds_placeholder = cds_placeholder | default(field.vars.cds_placeholder | default('Sélectionner une option...')) %}
+
+<div class="dropdown-select js-dropdown-select" data-input-id="{{ field.vars.id }}" data-dcs-mode="{{ cds_mode }}" data-dcs-placeholder="{{ cds_placeholder }}">
+    
+    <div class="d-none">
+      {{ form_widget(field) }}
+    </div>
+
+    <div class="dropdown">
+      <button class="btn btn-white border d-flex align-items-center gap-2 w-100 text-start js-selector-button-content shadow-none" 
+        type="button"
+        data-bs-toggle="dropdown" 
+        data-bs-auto-close="outside">
+        <span class="text-muted">Sélectionner...</span>
+        <i class="ri-settings-3-line ms-auto text-muted"></i>
+      </button>
+
+        <div class="dropdown-menu shadow-lg p-0 border" style="width: 320px;">
+            
+          <div class="p-2 border-bottom bg-light">
+            <div class="search-box">
+              <input type="text" class="form-control form-control-sm js-dropdown-search" placeholder="Rechercher...">
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
+
+          <div class="p-1" style="max-height: 280px; overflow-y: auto;">
+            {% for choice in field.vars.choices %}
+              <a href="#" class="dropdown-item d-flex align-items-start gap-2 py-2 px-2 rounded js-selector-option"
+                data-value="{{ choice.value }}"
+                aria-selected="false"> 
+                
+                <div class="mt-1 custom-checkbox-icon">
+                  <i class="ri-checkbox-blank-line text-muted unchecked-icon fs-16"></i>
+                  <i class="ri-checkbox-fill text-primary checked-icon fs-16" style="display: none;"></i>
+                </div>
+
+                  {% if choice.attr['data-color'] is defined %}
+                    <span class="mt-1 flex-shrink-0 border bg-{{ choice.attr['data-color'] }}" style="width: 14px; height: 14px; border-radius: 50%;">
+                    </span>
+                  {% endif %}
+
+                  <div class="flex-grow-1 overflow-hidden text-wrap">
+                    <div class="fw-medium text-body" style="font-size: 14px;">{{ choice.label }}</div>
+                    {% if choice.attr['data-description'] is defined and choice.attr['data-description'] %}
+                      <div class="text-muted mt-1" style="font-size: 12px; line-height: 1.3;">
+                        {{ choice.attr['data-description'] }}
+                      </div>
+                    {% endif %}
+                  </div>
+              </a>
+            {% endfor %}
+          </div>
+          
+          {% if manage_url is defined %}
+            <div class="p-2 border-top bg-light text-center rounded-bottom">
+              <a href="{{ manage_url }}" class="text-decoration-none text-muted fs-13 fw-medium">
+                <i class="ri-edit-line align-bottom me-1"></i> Gérer
+              </a>
+            </div>
+          {% endif %}
+      </div>
+  </div>
+</div>
+
+{% do field.setRendered() %}

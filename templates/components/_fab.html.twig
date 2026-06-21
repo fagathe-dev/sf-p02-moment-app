@@ -1,0 +1,38 @@
+{#
+  Composant Floating Action Button
+  ─────────────────────────────────────────────────────────────────────────────
+  Paramètres :
+    href      (string)       URL de destination  — génère un <a>
+    route     (string)       Nom de route Twig   — génère un <a> via path()
+    route_params (object)    Paramètres de route — utilisé avec `route`
+    label     (string)       Texte accessible (aria-label) + label visible si --extended
+    icon      (string)       Classe Remix Icon   — défaut : ri-add-line
+    variant   (string)       Variante CSS : '' | 'secondary' | 'success' | 'danger'
+    extended  (bool)         Affiche le label à côté de l'icône — défaut : false
+    id        (string)       Attribut id optionnel
+
+  Exemples :
+    {% include 'components/_fab.html.twig' with { route: 'app_entry_new', label: 'Nouvelle entrée' } %}
+    {% include 'components/_fab.html.twig' with { href: '#', label: 'Ajouter', extended: true } %}
+#}
+
+{% set fab_icon    = icon     ?? 'ri-add-line' %}
+{% set fab_variant = variant  ?? '' %}
+{% set fab_label   = label    ?? 'Ajouter' %}
+{% set fab_href    = href     ?? (route is defined ? path(route, route_params ?? {}) : '#') %}
+{% set fab_class   = 'fab' ~ (fab_variant ? ' fab--' ~ fab_variant) ~ (extended ?? false ? ' fab--extended') %}
+
+<a
+  href="{{ fab_href }}"
+  class="{{ fab_class }}"
+  aria-label="{{ fab_label }}"
+  {% if id is defined %}id="{{ id }}"{% endif %}
+>
+  <span class="fab__icon" aria-hidden="true">
+    <i class="{{ fab_icon }}"></i>
+  </span>
+
+  {% if extended ?? false %}
+    <span class="fab__label">{{ fab_label }}</span>
+  {% endif %}
+</a>
