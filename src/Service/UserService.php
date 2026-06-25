@@ -519,10 +519,67 @@ final class UserService
         }
     }
 
+
+    /**
+     * Définit ou met à jour le code confidentiel d'un utilisateur.
+     *
+     * Vérifie le code actuel si un code existe déjà, valide la longueur minimale,
+     * puis hache le nouveau code avec le même hasher que le mot de passe.
+     *
+     * @return array{success: bool, error?: string}
+     */
+    public function saveConfidentialCode(User $user, string $newCode, ?string $currentCode = null): array
+    {
+        // Si un code existe déjà, vérifier l'ancien avant d'écraser
+        if ($user->getContentSecret() !== null) {
+            if ($currentCode === null) {
+                return ['success' => false, 'error' => 'Le code actuel est requis.'];
+            }
+
+            if (!$this->hasher->isPasswordValid($user, $currentCode)) {
+                return ['success' => false, 'error' => 'Le code actuel est incorrect.'];
+            }
+        }
+
+        if (mb_strlen($newCode) < 4) {
+            return ['success' => false, 'error' => 'Le code doit contenir au moins 4 caractères.'];
+        }
+
+        // On réutilise le hasher de mot de passe — même sécurité, même algorithme
+        $hashed = $this->hasher->hashPassword($user, $newCode);
+        $user->setContentSecret($hashed);
+
+        $saved = $this->saveUser($user, false);
+
+        if (!$saved) {
+            return ['success' => false, 'error' => 'Une erreur est survenue lors de la sauvegarde.'];
+        }
+
+        $this->generateLog(
+            LoggerLevelEnum::Info,
+            ['message' => 'Code confidentiel mis à jour', 'user_id' => $user->getId()],
+            ['action' => 'user.confidential_code.update.success']
+        );
+
+        return ['success' => true];
+    }
+
+    /**
+     * Vérifie si le code fourni correspond au code confidentiel de l'utilisateur.
+     */
+    public function verifyConfidentialCode(User $user, string $code): bool
+    {
+        if ($user->getContentSecret() === null) {
+            return false;
+        }
+
+        return $this->hasher->isPasswordValid($user, $code);
+    }
+
     /**
      * Rafraîchit la session de l'utilisateur pour éviter une déconnexion
      * après un changement d'identifiant (email) ou de mot de passe.
-     * * @param User $user L'utilisateur dont on veut maintenir la session
+     * @param User $user L'utilisateur dont on veut maintenir la session
      */
     public function refreshSession(User $user): void
     {

@@ -1,0 +1,38 @@
+{#
+  templates/auth/profile/tabs/_journal-confidential-code.html.twig
+  ─────────────────────────────────────────────────────────────────────────────
+  Paramètres :
+    confidential_form (FormView) — ConfidentialCodeType passé depuis ProfileController::index()
+#}
+
+{{ form_start(confidentialForm, {
+  'attr': {
+    'id':    'confidential-code-form',
+    'class': 'confidential-form',
+  }
+}) }}
+
+  <div class="confidential-form__header">
+    <p class="confidential-form__desc">
+      Protège l'accès aux entrées marquées comme confidentielles.
+      Minimum 4 caractères.
+    </p>
+  </div>
+
+  <div class="confidential-form__fields">
+
+    {# Champ "code actuel" — rendu uniquement si un code existe déjà #}
+    {% if confidentialForm.current_code is defined %}
+      {{ form_row(confidentialForm.current_code) }}
+    {% endif %}
+
+    {{ form_row(confidentialForm.new_code.first) }}
+    {{ form_row(confidentialForm.new_code.second) }}
+
+  </div>
+
+  <div class="d-flex justify-content-end">
+    {{ form_widget(confidentialForm.save) }}
+  </div>
+
+{{ form_end(confidentialForm) }}

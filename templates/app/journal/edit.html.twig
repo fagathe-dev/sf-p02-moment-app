@@ -1,0 +1,11 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block content %}
+  <h1 class="mb-4">Modifier l'entrée</h1>
+
+  {% include 'app/journal/_form.html.twig' with { entry: entry, categories: categories, moods: moods, colors: colors } only %}
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/app/journal.js') }}"></script>
+{% endblock %}

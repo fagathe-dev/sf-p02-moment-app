@@ -3,41 +3,77 @@
 namespace App\Repository;
 
 use App\Entity\Entry;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Fagathe\CorePhp\Trait\DatetimeTrait;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Entry>
  */
 class EntryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    use DatetimeTrait;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly Security $security
+    ) {
         parent::__construct($registry, Entry::class);
     }
 
-    //    /**
-//     * @return Entry[] Returns an array of Entry objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function remove(Entry $entry, bool $flush = true): bool
+    {
+        try {
+            $this->getEntityManager()->remove($entry);
 
-    //    public function findOneBySomeField($value): ?Entry
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+
+            return true;
+        } catch (ORMException) {
+            return false;
+        }
+    }
+
+    public function save(Entry $entry, bool $flush = true, bool $isCreation = false): bool
+    {
+        $now = $this->now();
+
+        if ($isCreation) {
+            $entry->setCreatedAt($now);
+        } else {
+            $entry->setUpdatedAt($now);
+        }
+
+        try {
+            $this->getEntityManager()->persist($entry);
+
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+
+            return true;
+        } catch (ORMException) {
+            return false;
+        }
+    }
+
+    /**
+     * @return Entry[]
+     */
+    public function findByOwnerOrderedByDate(User $user): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.owner = :owner')
+            ->andWhere('e.is_private = false')
+            ->setParameter('owner', $user)
+            ->orderBy('e.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

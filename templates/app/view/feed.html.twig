@@ -1,0 +1,23 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block content %}
+
+
+  <div class="container-fluid container-lg">
+    {% include 'components/_fab.html.twig' with { route: 'app_journal_add', label: 'Nouvelle entrée' } only %}
+
+    <div class="entry-list">
+      {% for entry in entries %}
+        {% include 'app/entry/_component.html.twig' with { entry: entry } only %}
+      {% else %}
+        <div class="entry-list__empty">
+          <p class="text-muted">Aucune entrée pour l'instant.<br>Commencez à écrire !</p>
+          <a href="{{ path('app_journal_add') }}" class="btn btn-primary mt-3">
+            <i class="ri-add-line me-1"></i> Nouvelle entrée
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,639 @@
+// =============================================================================
+// components/_entry-card.scss
+// Card journal — liste verticale pleine largeur
+// =============================================================================
+@use '../../mixins' as *;
+@use '../../variables' as *;
+@use 'sass:map';
+ 
+.entry-card {
+  position: relative;
+  background-color: var(--ds-surface-bg-raised);
+  border: var(--ds-border-width) solid var(--ds-border-color);
+  border-radius: var(--ds-border-radius-2xl);
+  overflow: hidden;
+  @include transition(box-shadow border-color transform, fast);
+ 
+  // Lien fantôme qui couvre toute la card
+  &__link {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+  }
+ 
+  // Tous les éléments internes passent au-dessus du lien fantôme
+  // sauf le lien du titre (déjà cliquable)
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+ 
+  &:hover {
+    border-color: var(--ds-neutral-300);
+    box-shadow: var(--ds-shadow-md);
+    transform: translateY(-1px);
+  }
+ 
+  &:has(&__link:focus-visible) {
+    @include focus-ring;
+  }
+ 
+  // ── Header ────────────────────────────────────────────────────────────────
+ 
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1rem 0.75rem;
+  }
+ 
+  &__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    flex: 1;
+    min-width: 0;
+  }
+ 
+  // ── Date ──────────────────────────────────────────────────────────────────
+ 
+  &__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 0.1rem;
+  }
+ 
+  &__date-month {
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-neutral-500);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+ 
+  &__date-day {
+    font-size: var(--ds-font-size-2xl);
+    font-weight: var(--ds-font-weight-bold);
+    color: var(--ds-body-color);
+    line-height: 1.1;
+  }
+ 
+  // ── Titre & catégories ────────────────────────────────────────────────────
+ 
+  &__title-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+ 
+  &__title {
+    font-size: var(--ds-font-size-lg);
+    font-weight: var(--ds-font-weight-semibold);
+    line-height: var(--ds-line-height-tight);
+    color: var(--ds-body-color);
+    margin: 0;
+ 
+    a {
+      color: inherit;
+      text-decoration: none;
+      position: relative;
+      z-index: 2;
+ 
+      &:hover {
+        color: var(--ds-primary);
+      }
+    }
+  }
+ 
+  &__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+ 
+  &__category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-neutral-600);
+    background-color: var(--ds-neutral-100);
+    border: var(--ds-border-width) solid var(--ds-border-color);
+    border-radius: var(--ds-border-radius-pill);
+    padding: 0.15rem 0.55rem;
+    white-space: nowrap;
+  }
+ 
+  &__category-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--ds-border-radius-full);
+    flex-shrink: 0;
+  }
+ 
+  // ── Humeur ────────────────────────────────────────────────────────────────
+ 
+  &__mood {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.25rem;
+    background-color: var(--ds-neutral-100);
+    border-radius: var(--ds-border-radius-lg);
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+  }
+ 
+ 
+  // ── Localisation ──────────────────────────────────────────────────────────
+ 
+  &__location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0 1rem 0;
+    padding: 0.25rem 0.6rem;
+    background-color: var(--ds-neutral-100);
+    border-radius: var(--ds-border-radius-pill);
+    width: fit-content;
+    position: relative;
+    z-index: 1;
+  }
+ 
+  &__location-icon {
+    font-size: 0.8rem;
+    color: var(--ds-neutral-500);
+    flex-shrink: 0;
+  }
+ 
+  &__location-label {
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-neutral-600);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 14rem;
+  }
+ 
+  // ── Grille médias ─────────────────────────────────────────────────────────
+ 
+  &__medias {
+    box-shadow: var(--ds-shadow);
+    margin: 0.625rem 0.75rem 0;
+    overflow: hidden;
+    padding: 0.25rem;
+    border-radius: var(--ds-border-radius-xl);
+ 
+    // max-height adaptative selon le breakpoint
+    // mobile-first : contrainte serrée sur petits écrans, plus généreuse ensuite
+    max-height: 220px;
+ 
+    @media (min-width: map.get($breakpoints, 'sm')) {
+      max-height: 280px;
+    }
+ 
+    @media (min-width: map.get($breakpoints, 'md')) {
+      max-height: 340px;
+    }
+ 
+    @media (min-width: map.get($breakpoints, 'lg')) {
+      max-height: 400px;
+    }
+ 
+    // 1 seul média — pleine largeur
+    &--single {
+      .entry-card__media-item {
+        aspect-ratio: 16 / 9;
+        max-height: inherit;
+      }
+    }
+ 
+    // Grille 2-3 médias
+    &--grid {
+      display: grid;
+      gap: 3px;
+ 
+      &.entry-card__medias--count-2 {
+        grid-template-columns: 2fr 1fr;
+ 
+        .entry-card__media-item {
+          aspect-ratio: unset;
+ 
+          &:first-child {
+            aspect-ratio: 4 / 3;
+          }
+          &:last-child {
+            aspect-ratio: 1 / 1;
+          }
+        }
+      }
+ 
+      &.entry-card__medias--count-3 {
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr 1fr;
+ 
+        .entry-card__media-item {
+          &:first-child {
+            grid-row: 1 / 3;
+            aspect-ratio: 3 / 4;
+          }
+          &:nth-child(2),
+          &:nth-child(3) {
+            aspect-ratio: 1 / 1;
+          }
+        }
+      }
+    }
+  }
+ 
+  &__media-item {
+    margin: 0;
+    overflow: hidden;
+ 
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 0.125rem;
+      object-fit: contain;   // contain : ajuste l'image pour qu'elle soit entièrement visible sans la recadrer
+      display: block;
+      @include transition(transform, fast);
+    }
+  }
+ 
+  &:hover &__media-item img {
+    transform: scale(1.02);
+  }
+ 
+  // ── Extrait ───────────────────────────────────────────────────────────────
+ 
+  &__excerpt {
+    margin: 0;
+    padding: 0.625rem 1rem 1rem;
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-neutral-500);
+    line-height: var(--ds-line-height-relaxed);
+ 
+    // Clamp à 3 lignes
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+ 
+// =============================================================================
+// components/_entry-list.scss
+// Conteneur de la liste des entrées + état vide
+// =============================================================================
+ 
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+ 
+  // Évite que le FAB recouvre la dernière card
+  padding-block-end: 5rem;
+}
+ 
+// =============================================================================
+// État vide
+// =============================================================================
+.entry-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 4rem 1.5rem;
+  min-height: 60vh;
+}
+ 
+.entry-list__empty-icon {
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--ds-neutral-300);
+}
+ 
+.entry-list__empty-title {
+  font-size: var(--ds-font-size-xl);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-body-color);
+  margin: 0;
+}
+ 
+.entry-list__empty-text {
+  font-size: var(--ds-font-size-sm);
+  color: var(--ds-neutral-500);
+  max-width: 28rem;
+  line-height: var(--ds-line-height-relaxed);
+  margin: 0;
+}
+ 
+.entry-view {
+ 
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: 1.5rem;
+  }
+ 
+  // ── En-tête ───────────────────────────────────────────────────────────────
+ 
+  &__header {
+    margin-block-end: 1.5rem;
+  }
+ 
+  &__date {
+    display: block;
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-neutral-500);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-block-end: 0.375rem;
+  }
+ 
+  &__title {
+    font-size: var(--ds-font-size-3xl);
+    font-weight: var(--ds-font-weight-bold);
+    line-height: var(--ds-line-height-tight);
+    color: var(--ds-body-color);
+    margin: 0 0 1rem;
+  }
+ 
+  // ── Métadonnées ───────────────────────────────────────────────────────────
+ 
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+    border-top: var(--ds-border-width) solid var(--ds-border-color);
+    border-bottom: var(--ds-border-width) solid var(--ds-border-color);
+  }
+ 
+  &__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-neutral-600);
+  }
+ 
+  &__mood-emoji {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+ 
+  &__meta-icon {
+    font-size: 0.9rem;
+    color: var(--ds-neutral-500);
+  }
+ 
+  &__meta-label {
+    font-weight: var(--ds-font-weight-medium);
+  }
+ 
+  &__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+ 
+  &__category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-neutral-600);
+    background-color: var(--ds-neutral-100);
+    border: var(--ds-border-width) solid var(--ds-border-color);
+    border-radius: var(--ds-border-radius-pill);
+    padding: 0.15rem 0.55rem;
+    white-space: nowrap;
+  }
+ 
+  &__category-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--ds-border-radius-full);
+    flex-shrink: 0;
+  }
+ 
+  // ── Médias ────────────────────────────────────────────────────────────────
+ 
+  &__medias {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-block: 1.5rem;
+  }
+ 
+  // Grille images
+  &__media-grid {
+    display: grid;
+    gap: 4px;
+    border-radius: var(--ds-border-radius-xl);
+    overflow: hidden;
+ 
+    &--count-1 { grid-template-columns: 1fr; }
+ 
+    &--count-2 {
+      grid-template-columns: 2fr 1fr;
+    }
+ 
+    &--count-3 {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+ 
+      .entry-view__media-figure:first-child {
+        grid-row: 1 / 3;
+      }
+    }
+  }
+ 
+  &__media-figure {
+    margin: 0;
+    overflow: hidden;
+    max-height: 360px;
+ 
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+ 
+  // Vidéos
+  &__media-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+ 
+    .entry-view__media-figure {
+      max-height: none;
+ 
+      video {
+        width: 100%;
+        border-radius: var(--ds-border-radius-xl);
+        background: var(--ds-neutral-900);
+        display: block;
+      }
+    }
+  }
+ 
+  &__media-caption {
+    font-size: var(--ds-font-size-xs);
+    color: var(--ds-neutral-500);
+    margin-block-start: 0.375rem;
+    display: flex;
+    align-items: center;
+  }
+ 
+  // Audios
+  &__media-audios {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+ 
+  &__media-audio {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--ds-neutral-100);
+    border-radius: var(--ds-border-radius-lg);
+  }
+ 
+  &__audio-icon {
+    font-size: 1.25rem;
+    color: var(--ds-neutral-500);
+    flex-shrink: 0;
+  }
+ 
+  &__audio-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+ 
+  &__audio-name {
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-body-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ 
+    audio {
+      width: 100%;
+    }
+  }
+ 
+  // ── Contenu Markdown ──────────────────────────────────────────────────────
+ 
+  &__content {
+    margin-block-start: 1.5rem;
+    font-size: var(--ds-font-size-base);
+    line-height: var(--ds-line-height-relaxed);
+    color: var(--ds-body-color);
+ 
+    h1, h2, h3, h4 {
+      font-weight: var(--ds-font-weight-semibold);
+      margin-block: 1.25rem 0.5rem;
+      line-height: var(--ds-line-height-tight);
+    }
+ 
+    p { margin-block-end: 1rem; }
+ 
+    strong { font-weight: var(--ds-font-weight-semibold); }
+ 
+    blockquote {
+      border-left: 3px solid var(--ds-primary);
+      padding-inline-start: 1rem;
+      color: var(--ds-neutral-600);
+      font-style: italic;
+      margin-inline: 0;
+    }
+ 
+    code {
+      background: var(--ds-neutral-100);
+      border-radius: var(--ds-border-radius);
+      padding: 0.1em 0.4em;
+      font-size: 0.875em;
+    }
+ 
+    pre code {
+      background: none;
+      padding: 0;
+    }
+ 
+    mark { background: #fff3cd; border-radius: 2px; padding: 0 2px; }
+ 
+    ul, ol { padding-inline-start: 1.5rem; margin-block-end: 1rem; }
+  }
+}
+ 
+// =============================================================================
+// components/_confidential-form.scss
+// Formulaire de code confidentiel dans le profil
+// =============================================================================
+ 
+.confidential-form {
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    margin-block-end: 1.25rem;
+  }
+ 
+  &__icon {
+    font-size: 1.75rem;
+    color: var(--ds-primary);
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+ 
+  &__title {
+    font-size: var(--ds-font-size-base);
+    font-weight: var(--ds-font-weight-semibold);
+    margin: 0 0 0.25rem;
+    color: var(--ds-body-color);
+  }
+ 
+  &__desc {
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-neutral-500);
+    margin: 0;
+  }
+ 
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-block-end: 1.25rem;
+  }
+}

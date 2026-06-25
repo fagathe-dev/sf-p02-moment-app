@@ -87,6 +87,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Entry::class, mappedBy: 'owner')]
     private Collection $entries;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $content_secret = null;
+
     public function __construct()
     {
         $this->userRequests = new ArrayCollection();
@@ -390,6 +393,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $entry->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getContentSecret(): ?string
+    {
+        return $this->content_secret;
+    }
+
+    public function setContentSecret(?string $content_secret): static
+    {
+        $this->content_secret = $content_secret;
 
         return $this;
     }

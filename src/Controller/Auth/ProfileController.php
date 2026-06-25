@@ -5,6 +5,7 @@ use App\Entity\User;
 use App\Enum\UserPreference\ThemePreferenceEnum;
 use App\Form\Auth\Profile\ChangeEmailType;
 use App\Form\Auth\Profile\ChangePasswordType;
+use App\Form\Auth\Profile\ConfidentialCodeType;
 use App\Form\Auth\Profile\ProfileInfoType;
 use App\Security\Authenticator\FormLoginAuthenticator;
 use App\Service\UserRequest\UserRequestService;
@@ -31,7 +32,8 @@ final class ProfileController extends AbstractController
     #[Route(path: '', name: 'index', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
-        $user = $this->getUser() ?? new User;
+        /** @var User $user */
+        $user = $this->getUser();
         $infoForm = $this->createForm(ProfileInfoType::class, $user);
         $infoForm->handleRequest($request);
 
@@ -93,7 +95,33 @@ final class ProfileController extends AbstractController
             return $this->redirectToRoute('auth_profile_index', ['t' => 'settings']);
         }
 
-        return $this->render('auth/profile/index.html.twig', compact('infoForm', 'emailForm', 'passwordForm', 'user', 'themePreferences'));
+        $confidentialForm = $this->createForm(ConfidentialCodeType::class, null, [
+            'has_existing_code' => $user->getContentSecret() !== null,
+        ]);
+        $confidentialForm->handleRequest($request);
+
+        if ($confidentialForm->isSubmitted() && $confidentialForm->isValid()) {
+
+            /** @var User $user */
+            $user = $this->getUser();
+
+            $newCode     = $confidentialForm->get('new_code')->getData();
+            $currentCode = $user->getContentSecret() !== null
+                ? $confidentialForm->get('current_code')->getData()
+                : null;
+
+            $result = $this->userService->saveConfidentialCode($user, $newCode, $currentCode);
+
+            if ($result['success']) {
+                $this->addFlash('success', 'Code confidentiel mis à jour avec succès.');
+            } else {
+                $this->addFlash('error', $result['error'] ?? 'Une erreur est survenue.');
+            }
+
+            return $this->redirectToRoute('auth_profile_index', ['t' => 'confidential-code-form']);
+        }
+
+        return $this->render('auth/profile/index.html.twig', compact('infoForm', 'emailForm', 'passwordForm', 'confidentialForm', 'user', 'themePreferences'));
     }
 
     #[Route(path: '/update', name: 'update', methods: ['POST'])]
@@ -157,6 +185,7 @@ final class ProfileController extends AbstractController
         $this->addFlash('error', 'Une erreur est survenue lors de la suppression du compte.');
         return $this->redirectToRoute('auth_profile_index', ['t' => 'settings']);
     }
+
 
     // 🔥 LA NOUVELLE ROUTE MAGIQUE 🔥
     #[Route(path: '/confirm-email/{token}', name: 'confirm_email', methods: ['GET'])]

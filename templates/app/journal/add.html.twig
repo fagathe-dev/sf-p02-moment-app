@@ -1,0 +1,11 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block content %}
+  <h1 class="mb-4">Nouvelle entrée</h1>
+
+  {% include 'app/journal/_form.html.twig' with { entry: null, categories: categories, moods: moods } only %}
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/app/journal.js') }}"></script>
+{% endblock %}

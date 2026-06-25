@@ -1,0 +1,104 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block content %}
+
+  <h1 class="mb-4">Mes statistiques</h1>
+
+  {# ── Stats globales ──────────────────────────────────────────────────────── #}
+  {% if stats is not empty %}
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+          <div class="fs-2 fw-bold text-primary">{{ stats.total_entries }}</div>
+          <div class="text-muted small">Entrées</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+          <div class="fs-2 fw-bold text-success">{{ stats.entries_with_media }}</div>
+          <div class="text-muted small">Avec médias</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+          <div class="fs-2 fw-bold text-info">{{ stats.entries_with_location }}</div>
+          <div class="text-muted small">Avec localisation</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+          <div class="fs-2 fw-bold text-warning">{{ stats.total_locations_visited }}</div>
+          <div class="text-muted small">Lieux visités</div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+
+    {# ── Distribution des humeurs ────────────────────────────────────────────── #}
+    {% if moodDistribution is not empty %}
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header fw-semibold">
+            <i class="ri-emotion-line me-1"></i> Humeurs
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for key, item in moodDistribution %}
+              <li class="list-group-item d-flex align-items-center gap-2">
+                <span class="fs-5">{{ item.emoji }}</span>
+                <span class="flex-grow-1">{{ item.label }}</span>
+                <span class="badge bg-primary rounded-pill">{{ item.count }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    {# ── Top catégories ──────────────────────────────────────────────────────── #}
+    {% if topCategories is not empty %}
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header fw-semibold">
+            <i class="ri-folder-line me-1"></i> Catégories les plus utilisées
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for category in topCategories %}
+              <li class="list-group-item d-flex align-items-center gap-2">
+                {% if category.color %}
+                  <span class="rounded-circle bg-{{ category.color.value }}" style="width:12px;height:12px;flex-shrink:0;"></span>
+                {% endif %}
+                <span class="flex-grow-1">{{ category.name }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    {# ── Top localisations ───────────────────────────────────────────────────── #}
+    {% if topLocations is not empty %}
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header fw-semibold">
+            <i class="ri-map-pin-line me-1"></i> Lieux
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for location in topLocations %}
+              <li class="list-group-item">
+                <i class="ri-map-pin-2-line me-1 text-muted"></i>
+                {{ location.city ?? location.name }}
+                {% if location.country %}
+                  <span class="text-muted small ms-1">— {{ location.country }}</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+{% endblock %}

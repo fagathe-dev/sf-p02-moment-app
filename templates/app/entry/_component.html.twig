@@ -1,0 +1,83 @@
+{#
+  Composant Entry Card
+  ─────────────────────────────────────────────────────────────────────────────
+  Paramètres :
+    entry (Entry) — obligatoire
+
+  Structure de Entry attendue :
+    entry.id
+    entry.title          string
+    entry.content        string (texte brut ou HTML)
+    entry.createdAt      DateTimeImmutable
+    entry.mood           string|null  (emoji : "😊", "😢"…)
+    entry.categories     Collection<Category>
+    entry.medias         Collection<Media>  — getUrl() sur chaque média
+#}
+
+{% set has_medias     = entry.entryMedia is defined and entry.entryMedia|length > 0 %}
+{% set has_categories = entry.categories is defined and entry.categories|length > 0 %}
+{% set media_count    = has_medias ? entry.entryMedia|length : 0 %}
+
+<article class="entry-card" aria-label="{{ entry.title }}">
+  <a href="{{ path('app_journal_show', { id: entry.id, slug: entry.slug }) }}" class="entry-card__link" tabindex="-1" aria-hidden="true"></a>
+
+  {# ── Header ────────────────────────────────────────────────────────────── #}
+  <header class="entry-card__header">
+
+    <div class="entry-card__meta">
+      <time class="entry-card__date" datetime="{{ entry.createdAt|date('Y-m-d') }}">
+        <span class="entry-card__date-month">{{ entry.createdAt|date('M')|upper }}</span>
+        <span class="entry-card__date-day">{{ entry.createdAt|date('d') }}</span>
+      </time>
+
+      <div class="entry-card__title-group">
+        <h2 class="entry-card__title">
+          <a href="{{ path('app_journal_show', { id: entry.id, slug: entry.slug }) }}">{{ entry.title }}</a>
+        </h2>
+        {% if has_categories %}
+          <div class="entry-card__categories">
+            {% for category in entry.categories %}
+              <span class="entry-card__category-badge">
+                {% if category.color %}
+                  <span class="entry-card__category-dot bg-{{ category.color.value }}" aria-hidden="true"></span>
+                {% endif %}
+                {{ category.name }}
+              </span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Humeur #}
+    {% if entry.mood is defined and entry.mood %}
+      <span class="entry-card__mood" title="Humeur : {{ entry.mood.getLabel() }}" aria-label="Humeur : {{ entry.mood.value }}">
+        {{ entry.mood.getEmoji() }}
+      </span>
+    {% endif %}
+
+  </header>
+
+  {# ── Médias ────────────────────────────────────────────────────────────── #}
+  {% if has_medias %}
+    <div class="entry-card__medias entry-card__medias--{{ media_count > 1 ? 'grid' : 'single' }} entry-card__medias--count-{{ min(media_count, 3) }}">
+      {% for media in entry.entryMedia|slice(0, 3) %}
+        <figure class="entry-card__media-item">
+          <img
+            src="{{ asset(media.filePath) }}"
+            alt="{{ entry.title }} — photo {{ loop.index }}"
+            loading="lazy"
+          >
+        </figure>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {# ── Extrait ───────────────────────────────────────────────────────────── #}
+  {% if entry.content %}
+    <p class="entry-card__excerpt">
+      {{ entry.content|striptags|slice(0, 160) }}{% if entry.content|striptags|length > 160 %}…{% endif %}
+    </p>
+  {% endif %}
+
+</article>

@@ -6,23 +6,13 @@ use App\Repository\EntryMediaRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntryMediaRepository::class)]
-class EntryMedia
+class EntryMedia extends AbstractFile
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\ManyToOne(inversedBy: 'entryMedia')]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(inversedBy: 'entryMedia')]
     private ?Entry $entry = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getOwner(): ?User
     {

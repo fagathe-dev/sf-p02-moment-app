@@ -101,6 +101,32 @@ class CategoryRepository extends ServiceEntityRepository
         );
     }
 
+
+    /**
+     * Retourne les N catégories les plus utilisées par un utilisateur
+     * (triées par nombre d'entrées associées décroissant).
+     *
+     * @return Category[]
+     */
+    public function findTopByOwner(int $limit = 5): array
+    {
+        $user = $this->getUser();
+        if ($user === null) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.entries', 'e')
+            ->andWhere('c.owner = :owner')
+            ->setParameter('owner', $user)
+            ->groupBy('c.id')
+            ->orderBy('COUNT(e.id)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @return User|null
      */

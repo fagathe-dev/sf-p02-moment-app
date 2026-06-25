@@ -5,25 +5,41 @@
     <div class="card-body p-4">
       <div class="col-xl-2 col-lg-4 col-md-6">
         <div class="text-center">
-          <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-            {% if app.user.avatar %}
-              <img src="{{ asset(app.user.avatar) }}" class="avatar avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
-            {% else %}
-              <div class="avatar avatar-xl shadow rounded-circle">
-                <div class="avatar-title rounded-circle bg-primary-subtle text-primary fs-22">{{ app.user.username|first|upper }}</div>
+
+          {# ── Avatar avec bouton caméra en superposition ────────────────── #}
+          <div class="profile-user avatar avatar--2xl profile-avatar mx-auto mb-4" id="navbar-user-avatar">
+
+            <img
+              src="{% if app.user.avatar %}{{ asset(app.user.avatar) }}{% endif %}"
+              class="profile-avatar__img user-profile-image{% if not app.user.avatar %} d-none{% endif %}"
+              alt="Photo de profil de {{ app.user.username }}"
+            >
+            {% if not app.user.avatar %}
+              <div class="profile-avatar__fallback">
+                {{ app.user.username|first|upper }}
               </div>
             {% endif %}
-            <div class="avatar avatar-xs p-0 rounded-circle profile-photo-edit">
-              <input id="profile-img-file-input d-none" type="file" class="profile-img-file-input"> <!-- TODO: Handle file upload using `onchange` event -->
-              <label for="profile-img-file-input" class="profile-photo-edit avatar avatar-xs">
-                <span class="avatar-title rounded-circle bg-light text-body shadow">
-                  <i class="mdi mdi-camera"></i>
-                </span>
-              </label>
-            </div>
+
+            <label
+              class="profile-avatar__edit"
+              for="profile-img-file-input"
+              aria-label="Changer la photo de profil"
+              title="Changer la photo de profil"
+            >
+              <i class="ri-camera-line" aria-hidden="true"></i>
+              <input
+                id="profile-img-file-input"
+                type="file"
+                class="profile-img-file-input d-none"
+                accept="image/*"
+              >
+            </label>
+
           </div>
+
           <h5 class="fs-16 mb-1">@{{ app.user.username }}</h5>
           {# <p class="text-muted mb-0">{{ app.user.role }}</p> #}
+
         </div>
       </div>
     </div>

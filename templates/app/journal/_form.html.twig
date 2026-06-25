@@ -1,0 +1,283 @@
+{#
+  templates/app/journal/_form.html.twig
+  ─────────────────────────────────────────────────────────────────────────────
+  Paramètres :
+    entry       (Entry|null)    — null en création, entité en édition
+    categories  (Category[])    — catégories de l'utilisateur connecté
+    moods       (array)         — liste des humeurs issues de MoodEnum::cases()
+    colors      (array)         — liste des couleurs issues de EntryColorEnum::cases()
+#}
+
+{% set is_edit = entry is not null and entry.id is not null %}
+{% set api_url = is_edit
+  ? path('app_journal_api_update', { id: entry.id })
+  : path('app_journal_api_save') %}
+
+<form
+  id="journal-form"
+  class="journal-form"
+  data-url="{{ api_url }}"
+  data-csrf="{{ csrf_token('journal_save') }}"
+  data-redirect="{{ path('app_view_feed') }}"
+  novalidate
+>
+
+  {# ── Titre ──────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <input
+      type="text"
+      id="entry-title"
+      name="title"
+      class="journal-form__title-input"
+      placeholder="Titre (optionnel)"
+      value="{{ is_edit ? entry.title : '' }}"
+      maxlength="200"
+      autocomplete="off"
+    >
+  </div>
+
+  {# ── Contenu Markdown ───────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <textarea
+      id="entry-content"
+      name="content"
+      class="journal-form__editor"
+      placeholder="Écrivez votre entrée… (Markdown supporté)"
+      data-markdown="true"
+    >{{ is_edit ? entry.content : '' }}</textarea>
+  </div>
+
+  {# ── Humeur ─────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <label class="journal-form__label">
+      <i class="ri-emotion-line me-1" aria-hidden="true"></i>
+      Humeur
+    </label>
+    <div class="journal-form__mood-grid js-mood-grid">
+      {% for mood in moods %}
+        <button
+          type="button"
+          class="journal-form__mood-btn js-mood-btn"
+          data-value="{{ mood.value }}"
+          title="{{ mood.label }}"
+          aria-pressed="{{ is_edit and entry.mood and entry.mood.value == mood.value ? 'true' : 'false' }}"
+        >
+          {{ mood.emoji }}
+        </button>
+      {% endfor %}
+      <input type="hidden" name="mood" id="entry-mood" value="{{ is_edit and entry.mood ? entry.mood.value : '' }}">
+    </div>
+  </div>
+
+  {# ── Catégories ─────────────────────────────────────────────────────────── #}
+  {% if categories is not empty %}
+    <div class="journal-form__field">
+      <label class="journal-form__label">
+        <i class="ri-folder-line me-1" aria-hidden="true"></i>
+        Catégories
+      </label>
+      <div class="dropdown-select js-dropdown-select"
+        data-dcs-mode="multiple-nullable"
+        data-dcs-placeholder="Ajouter une catégorie…"
+      >
+        <div class="d-none">
+          <select name="categories[]" multiple id="entry-categories">
+            {% for category in categories %}
+              <option
+                value="{{ category.id }}"
+                data-color="{{ category.color ? category.color.value : '' }}"
+                {% if is_edit and entry.categories.contains(category) %}selected{% endif %}
+              >
+                {{ category.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="dropdown">
+          <button
+            class="btn btn-white border d-flex align-items-center gap-2 w-100 text-start js-selector-button-content shadow-none"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+          >
+            <span class="text-muted">Ajouter une catégorie…</span>
+            <i class="ri-folder-line ms-auto text-muted"></i>
+          </button>
+          <div class="dropdown-menu shadow-lg p-0 border" style="width: 320px;">
+            <div class="p-2 border-bottom bg-light">
+              <div class="search-box">
+                <input type="text" class="form-control form-control-sm js-dropdown-search" placeholder="Rechercher…">
+                <i class="ri-search-line search-icon"></i>
+              </div>
+            </div>
+            <div class="p-1" style="max-height: 280px; overflow-y: auto;">
+              {% for category in categories %}
+                <a href="#"
+                  class="dropdown-item d-flex align-items-center gap-2 py-2 px-2 rounded js-selector-option"
+                  data-value="{{ category.id }}"
+                  aria-selected="{{ is_edit and entry.categories.contains(category) ? 'true' : 'false' }}"
+                >
+                  <div class="custom-checkbox-icon">
+                    <i class="ri-checkbox-blank-line text-muted unchecked-icon fs-16"></i>
+                    <i class="ri-checkbox-fill text-primary checked-icon fs-16" style="display: none;"></i>
+                  </div>
+                  {% if category.color %}
+                    <span class="flex-shrink-0 border bg-{{ category.color.value }}" style="width:14px;height:14px;border-radius:50%;"></span>
+                  {% endif %}
+                  <span class="fw-medium text-body" style="font-size:14px;">{{ category.name }}</span>
+                </a>
+              {% endfor %}
+            </div>
+            <div class="p-2 border-top bg-light text-center rounded-bottom">
+              <a href="{{ path('app_category_index') }}" class="text-decoration-none text-muted fs-13 fw-medium">
+                <i class="ri-edit-line align-bottom me-1"></i> Gérer mes catégories
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {# ── Localisation ───────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <label class="journal-form__label">
+      <i class="ri-map-pin-line me-1" aria-hidden="true"></i>
+      Localisation
+    </label>
+    <div class="journal-form__location js-location-field">
+      <button type="button" class="btn btn-outline-secondary btn-sm js-location-trigger">
+        <i class="ri-map-pin-add-line me-1" aria-hidden="true"></i>
+        <span class="js-location-label">
+          {% if is_edit and entry.location %}
+            {{ entry.location.city ?? entry.location.name }}
+          {% else %}
+            Ajouter ma position
+          {% endif %}
+        </span>
+      </button>
+      <input type="hidden" name="location_lat"  id="entry-location-lat"  value="{{ is_edit and entry.location ? entry.location.latitude : '' }}">
+      <input type="hidden" name="location_lng"  id="entry-location-lng"  value="{{ is_edit and entry.location ? entry.location.longitude : '' }}">
+      <input type="hidden" name="location_name" id="entry-location-name" value="{{ is_edit and entry.location ? entry.location.name : '' }}">
+    </div>
+  </div>
+
+  {# ── Médias ─────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <label class="journal-form__label">
+      <i class="ri-image-line me-1" aria-hidden="true"></i>
+      Médias
+    </label>
+
+    {% if is_edit and entry.entryMedia is not empty %}
+      <div class="journal-form__existing-medias js-existing-medias">
+        {% for media in entry.entryMedia %}
+          <div class="journal-form__media-thumb" data-id="{{ media.id }}">
+            {% if media.mimeType starts with 'image/' %}
+              <img src="{{ asset(media.filePath) }}" alt="{{ media.originalName }}">
+            {% elseif media.mimeType starts with 'video/' %}
+              <i class="ri-video-line"></i>
+            {% else %}
+              <i class="ri-music-line"></i>
+            {% endif %}
+            <button type="button" class="journal-form__media-remove js-remove-existing-media" data-id="{{ media.id }}" aria-label="Supprimer">
+              <i class="ri-close-line"></i>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <label class="journal-form__upload-zone js-upload-zone" for="entry-medias">
+      <i class="ri-upload-cloud-line journal-form__upload-icon" aria-hidden="true"></i>
+      <span class="journal-form__upload-text">Glissez vos fichiers ou <u>parcourez</u></span>
+      <span class="journal-form__upload-hint">Images, vidéos, audios — 50 Mo max</span>
+      <input
+        type="file"
+        id="entry-medias"
+        name="medias[]"
+        class="journal-form__upload-input js-media-input"
+        multiple
+        accept="image/*,video/*,audio/*"
+      >
+    </label>
+    <div class="journal-form__previews js-media-previews"></div>
+  </div>
+
+  {# ── Couleur de la card ────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <label class="journal-form__label">
+      <i class="ri-palette-line me-1" aria-hidden="true"></i>
+      Couleur de la card
+    </label>
+    <div class="journal-form__color-grid js-selectable-container form-selectable" data-mode="radio">
+      {% for color in colors %}
+        <div class="form-selectable-item">
+          <input
+            type="radio"
+            class="form-selectable-input d-none"
+            name="color"
+            id="entry-color-{{ color.value }}"
+            value="{{ color.value }}"
+            {% if is_edit and entry.color and entry.color.value == color.value %}checked{% endif %}
+          >
+          <label
+            class="form-selectable-label color-swatch bg-soft-{{ color.value }}"
+            for="entry-color-{{ color.value }}"
+            title="{{ color.value|capitalize }}"
+          ></label>
+        </div>
+      {% endfor %}
+      {# Option "aucune couleur" #}
+      <div class="form-selectable-item">
+        <input
+          type="radio"
+          class="form-selectable-input d-none"
+          name="color"
+          id="entry-color-none"
+          value=""
+          {% if not is_edit or not entry.color %}checked{% endif %}
+        >
+        <label
+          class="form-selectable-label color-swatch color-swatch--none"
+          for="entry-color-none"
+          title="Aucune couleur"
+        >
+          <i class="ri-close-line" aria-hidden="true"></i>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  {# ── Confidentialité ─────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    <div class="journal-form__private-toggle">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="entry-is-private"
+        name="is_private"
+        value="1"
+        {% if is_edit and entry.isPrivate %}checked{% endif %}
+      >
+      <label class="journal-form__label mb-0" for="entry-is-private">
+        <i class="ri-lock-line me-1" aria-hidden="true"></i>
+        Entrée confidentielle
+      </label>
+    </div>
+    <small class="text-muted">Protégée par le code confidentiel défini dans votre profil.</small>
+  </div>
+
+  {# ── Actions ────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__actions">
+    <a href="{{ path('app_view_feed') }}" class="btn btn-light">Annuler</a>
+    <button type="submit" class="btn btn-primary js-submit-btn">
+      <span class="js-submit-label">{{ is_edit ? 'Mettre à jour' : 'Enregistrer' }}</span>
+      <span class="js-submit-spinner d-none">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Enregistrement…
+      </span>
+    </button>
+  </div>
+
+</form>

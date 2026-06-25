@@ -9,8 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: EntryRepository::class)]
+#[Assert\Callback([Entry::class, 'validateContentOrTitle'])]
 class Entry
 {
     #[ORM\Id]
@@ -19,9 +22,11 @@ class Entry
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 65535)]
     private ?string $content = null;
 
     #[ORM\Column(length: 200, nullable: true)]
+    #[Assert\Length(max: 200)]
     private ?string $title = null;
 
     #[ORM\Column(length: 30, nullable: true, enumType: EntryColorEnum::class)]
@@ -34,6 +39,8 @@ class Entry
     private Collection $categories;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Le slug ne peut contenir que des lettres minuscules, chiffres et tirets.')]
     private ?string $slug = null;
 
     /**
@@ -50,6 +57,15 @@ class Entry
 
     #[ORM\ManyToOne(inversedBy: 'entries')]
     private ?User $owner = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updated_at = null;
+
+    #[ORM\ManyToOne(inversedBy: 'entries')]
+    private ?Location $location = null;
 
     public function __construct()
     {
@@ -208,5 +224,50 @@ class Entry
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public static function validateContentOrTitle(self $entry, ExecutionContextInterface $context): void
+    {
+        if (empty(trim((string) $entry->getTitle())) && empty(trim((string) $entry->getContent()))) {
+            $context->buildViolation('Le titre ou le contenu est obligatoire.')
+                ->atPath('content')
+                ->addViolation();
+        }
     }
 }

@@ -75,10 +75,9 @@
 @use 'utilities/shadows' as *;
 @use 'utilities/misc' as *;
 
-@use 'layout/flex' as *;
-
 @use 'pages/app' as *;
 @use 'pages/dashboard' as *;
+@use 'pages/journal' as *;
 
 @use 'app/index.scss' as *;
 

@@ -1,7 +1,9 @@
 import { FileUploader } from 'core-ts';
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  const inputElement = document.querySelector<HTMLInputElement>('#profile-img-file-input');
+  const inputElement = document.querySelector<HTMLInputElement>(
+    '#profile-img-file-input',
+  );
 
   if (!inputElement) {
     return;
@@ -26,30 +28,16 @@ document.addEventListener('DOMContentLoaded', (): void => {
       const profileUser = document.querySelector<HTMLElement>('.profile-user');
       if (!profileUser) return;
 
-      const existingImg = profileUser.querySelector<HTMLImageElement>('.user-profile-image');
+      const img = profileUser.querySelector<HTMLImageElement>('img');
+      if (!img) return;
 
-      if (existingImg) {
-        existingImg.src = base64Url;
-        return;
-      }
-
-      // Cas du fallback (initiales) : créer l'image et supprimer le div fallback
-      const img = document.createElement('img');
       img.src = base64Url;
-      img.alt = 'user-profile-image';
-      img.classList.add('rounded-circle', 'avatar-xl', 'img-thumbnail', 'user-profile-image');
+      img.classList.remove('d-none');
 
-      const fileInputWrapper = inputElement.closest('.profile-photo-edit');
-      if (fileInputWrapper) {
-        profileUser.insertBefore(img, fileInputWrapper);
-      } else {
-        profileUser.prepend(img);
-      }
-
-      const fallback = profileUser.querySelector<HTMLElement>('.avatar-xl.shadow.rounded-circle');
-      if (fallback) {
-        fallback.remove();
-      }
+      const fallback = profileUser.querySelector<HTMLElement>(
+        '.profile-avatar__fallback',
+      );
+      if (fallback) fallback.classList.add('d-none');
     },
     onError(message: string): void {
       alert(message);
