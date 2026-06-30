@@ -17,6 +17,7 @@ services:
             string $environment: '%kernel.environment%'
             string $defaultUri: '%env(DEFAULT_URI)%'
             string $appName: '%env(APP_NAME)%'
+            string $supportEmail: '%env(MAILER_ADDRESS_SENDER)%'
             # string $defaultLocale: 'fr_FR'
         
     # makes classes in src/ available to be used as services
@@ -36,3 +37,6 @@ services:
     Fagathe\CorePhp\Twig\:
         tags: ['twig.extension']
         resource: '../vendor/fagathe-dev/core-php/src/Twig/'
+
+    App\EventListener\LoginSuccessListener:
+        tags: [kernel.event_listener]

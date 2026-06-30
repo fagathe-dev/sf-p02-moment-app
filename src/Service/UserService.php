@@ -34,15 +34,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
 
 /**
  * Service for managing user accounts.
- * 
- * Handles user registration, profile updates, and user data retrieval.
+ * * Handles user registration, profile updates, and user data retrieval.
  * Provides business logic layer above the repository for user management operations.
- * 
- * @author fagathe-dev <https://github.com/fagathe-dev/>
+ * * @author fagathe-dev <https://github.com/fagathe-dev/>
  */
 final class UserService
 {
@@ -51,16 +50,6 @@ final class UserService
 
     use LoggerTrait, DatetimeTrait, SessionFlashTrait, PaginationTrait;
 
-    /**
-     * @param UserRepository                   $repository Repository for user data access
-     * @param UserPasswordHasherInterface      $hasher     Password hashing service
-     * @param TokenGenerator                   $tokenGenerator Générateur de tokens
-     * @param Security                         $security   Security service
-     * @param EntityManagerInterface           $entityManager Gestionnaire d'entités
-     * @param SerializerInterface              $serializer    Service de sérialisation
-     * @param UrlGeneratorInterface            $urlGenerator  Générateur d'URL
-     * @param AccountConfirmationEmail         $accountConfirmationEmail Service d'envoi d'email de confirmation
-     */
     public function __construct(
         private readonly UserRepository $repository,
         private readonly UserPasswordHasherInterface $hasher,
@@ -75,27 +64,16 @@ final class UserService
         private readonly UserRequestService $userRequestService,
         private readonly UploaderService $uploaderService,
         private readonly UploaderValidationService $uploaderValidationService,
-        private readonly ProfileChangeEmailEmail $profileChangeEmailEmail, // 👈 Ajout
+        private readonly ProfileChangeEmailEmail $profileChangeEmailEmail,
         private readonly string $projectDir,
     ) {
         $this->filesystem = new Filesystem;
     }
 
-    /**
-     * Enregistre un nouvel utilisateur.
-     * 
-     * Crée un nouveau compte utilisateur en hashant le mot de passe
-     * et en définissant les propriétés par défaut.
-     * 
-     * @param User $user L'utilisateur à enregistrer
-     * 
-     * @return bool True si l'enregistrement a réussi, false en cas d'erreur
-     */
     public function register(User $user): bool
     {
         $now = $this->now();
 
-        // Création d'une demande de confirmation de compte
         $userRequest = new UserRequest();
         $userRequest->setType(UserRequestTypeEnum::AUTH_ACCOUNT_VERIFICATION)
             ->setToken($this->tokenGenerator->generate(40))
@@ -108,10 +86,7 @@ final class UserService
             ->setIsVerified(false);
 
         try {
-            // Sauvegarde de l'utilisateur avec le UserRequest
             $this->saveUser($user, true);
-
-            // Envoi de l'email de confirmation
             $emailSent = $this->accountConfirmationEmail->send($userRequest);
 
             if ($emailSent) {
@@ -141,7 +116,6 @@ final class UserService
             return true;
 
         } catch (Throwable $e) {
-            // Erreur critique - échec de l'inscription
             $this->generateLog(
                 LoggerLevelEnum::Critical,
                 [
@@ -156,27 +130,13 @@ final class UserService
         }
     }
 
-    /**
-     * Confirme un compte utilisateur via le token de vérification.
-     * Délègue la logique au UserRequestService.
-     * 
-     * @param string $token Le token de confirmation
-     * 
-     * @return bool True si la confirmation a réussi
-     */
     public function confirmAccount(string $token): bool
     {
         return $this->userRequestService->confirmAccount($token);
     }
 
-    /**
-     * @param User $user
-     * 
-     * @return bool
-     */
     public function createUser(User $user): bool
     {
-
         try {
             $userRequest = $this->userRequestService->createUserRequest(
                 UserRequestTypeEnum::AUTH_PASSWORD_RESET
@@ -187,7 +147,6 @@ final class UserService
             $user = $this->hashPassword($user);
 
             $user->addUserRequest($userRequest);
-
             $this->adminAccountCreatedEmail->send($userRequest, $plainPassword);
 
             $this->saveUser($user, true);
@@ -206,16 +165,6 @@ final class UserService
         }
     }
 
-    /**
-     * Met à jour un utilisateur existant.
-     * 
-     * Persiste les modifications d'un utilisateur en base de données
-     * en mettant à jour la date de modification.
-     * 
-     * @param User $user L'utilisateur à mettre à jour
-     * 
-     * @return bool True si la mise à jour a réussi, false en cas d'erreur
-     */
     public function update(User $user): bool
     {
         try {
@@ -246,41 +195,16 @@ final class UserService
         return compact('paginatedUsers', 'breadcrumb');
     }
 
-    /**
-     * Trouve un utilisateur par son identifiant.
-     * 
-     * @param int $id L'identifiant de l'utilisateur
-     * 
-     * @return User|null L'utilisateur trouvé ou null si non trouvé
-     */
     public function findById(int $id): ?User
     {
         return $this->repository->find($id);
     }
 
-    /**
-     * Trouve un utilisateur par son adresse email.
-     * 
-     * Les espaces en début et fin d'email sont automatiquement supprimés.
-     * 
-     * @param string $email L'adresse email de l'utilisateur
-     * 
-     * @return User|null L'utilisateur trouvé ou null si non trouvé
-     */
     public function findByEmail(string $email): ?User
     {
         return $this->repository->findOneBy(['email' => trim($email)]);
     }
 
-    /**
-     * Trouve un utilisateur par son nom d'utilisateur.
-     * 
-     * Les espaces en début et fin du nom d'utilisateur sont automatiquement supprimés.
-     * 
-     * @param string $username Le nom d'utilisateur
-     * 
-     * @return User|null L'utilisateur trouvé ou null si non trouvé
-     */
     public function findByUsername(string $username): ?User
     {
         return $this->repository->findOneBy(['username' => trim($username)]);
@@ -291,26 +215,11 @@ final class UserService
         return $this->repository->findBy([], ['registeredAt' => 'DESC']);
     }
 
-    /**
-     * Récupère une liste paginée d'utilisateurs.
-     * 
-     * Exemple d'utilisation de la méthode générique de pagination
-     * pour récupérer les utilisateurs avec tri et filtrage.
-     * 
-     * @param int    $page     Le numéro de page (commence à 1)
-     * @param int    $limit    Le nombre d'utilisateurs par page (défaut: 20)
-     * @param string $orderBy  Champ de tri (défaut: 'registeredAt')
-     * @param string $order    Direction du tri (ASC|DESC, défaut: 'DESC')
-     * 
-     * @return PaginationInterface Objet de pagination
-     */
     public function getPaginatedUsers(int $page = 1, int $limit = 20, string $orderBy = 'created_at', string $order = 'DESC'): PaginationInterface
     {
-        // Création du QueryBuilder pour les utilisateurs
         $queryBuilder = $this->repository->createQueryBuilder('u')
             ->orderBy("u.{$orderBy}", $order);
 
-        // Options de pagination pour les utilisateurs
         $options = [
             'defaultSortFieldName' => "u.{$orderBy}",
             'defaultSortDirection' => $order,
@@ -318,14 +227,12 @@ final class UserService
             'filterFieldWhitelist' => ['u.username', 'u.email']
         ];
 
-        // Contexte de log
         $logContext = [
             'entity_type' => 'User',
             'order_by' => $orderBy,
             'order_direction' => $order
         ];
 
-        // Utilisation de la méthode générique de pagination
         return $this->paginate(
             $queryBuilder,
             $page,
@@ -336,16 +243,6 @@ final class UserService
         );
     }
 
-    /**
-     * Hash le mot de passe d'un utilisateur.
-     * 
-     * Remplace le mot de passe en texte clair par sa version hashée
-     * en utilisant l'algorithme configuré dans Symfony.
-     * 
-     * @param User $user L'utilisateur dont on veut hasher le mot de passe
-     * 
-     * @return User L'utilisateur avec le mot de passe hashé
-     */
     public function hashPassword(User $user): User
     {
         return $user->setPassword(
@@ -353,27 +250,16 @@ final class UserService
         );
     }
 
-    /**
-     * Sauvegarde un utilisateur en base de données.
-     * 
-     * Gère automatiquement les dates de création/mise à jour et 
-     * les propriétés par défaut selon le type d'opération.
-     * 
-     * @param User $user       L'utilisateur à sauvegarder
-     * @param bool $isCreation True pour une création, false pour une mise à jour
-     * 
-     * @return bool
-     */
     public function saveUser(User $user, bool $isCreation = false): bool
     {
+        // Si c'est une création de compte et qu'aucun token n'est encore défini
+        if ($isCreation && !$user->getVaultTokenSession()) {
+            $user->setVaultTokenSession($this->generateStandardToken());
+        }
+        
         return $this->repository->save($user, true, $isCreation);
     }
 
-    /**
-     * @param int $id
-     * 
-     * @return bool
-     */
     public function deleteUser(int $id): bool
     {
         $user = $this->repository->find($id);
@@ -420,15 +306,8 @@ final class UserService
         }
     }
 
-    /**
-     * Génère le fil d'Ariane pour la gestion des utilisateurs.
-     * @param BreadcrumbItem[] $items Les éléments du fil d'Ariane
-     * 
-     * @return Breadcrumb
-     */
     public function breadcrumb(array $items = []): Breadcrumb
     {
-        // Implémentation spécifique pour UserService
         return new Breadcrumb([
             new BreadcrumbItem(name: 'Gestion des utilisateurs', link: $this->urlGenerator->generate('admin_user_index')),
             ...$items
@@ -481,22 +360,13 @@ final class UserService
         }
     }
 
-    // 2. Ajoute la méthode de traitement de la demande :
     public function requestEmailChange(User $user, string $newEmail): bool
     {
         try {
-            // Création de la demande
             $userRequest = $this->userRequestService->createUserRequest(UserRequestTypeEnum::AUTH_PROFILE_CHANGE_EMAIL);
-
-            // 🔥 On stocke le nouvel email dans le JSON
             $userRequest->setContent(['new_email' => $newEmail]);
-
             $user->addUserRequest($userRequest);
-
-            // Sauvegarde en BDD
             $this->saveUser($user, false);
-
-            // Envoi du mail
             $emailSent = $this->profileChangeEmailEmail->send($userRequest);
 
             if ($emailSent) {
@@ -519,24 +389,22 @@ final class UserService
         }
     }
 
-
     /**
-     * Définit ou met à jour le code confidentiel d'un utilisateur.
-     *
-     * Vérifie le code actuel si un code existe déjà, valide la longueur minimale,
-     * puis hache le nouveau code avec le même hasher que le mot de passe.
-     *
-     * @return array{success: bool, error?: string}
+     * @param User $user
+     * @param string $newCode
+     * @param string|null $currentCode
+     * 
+     * @return array
      */
     public function saveConfidentialCode(User $user, string $newCode, ?string $currentCode = null): array
     {
-        // Si un code existe déjà, vérifier l'ancien avant d'écraser
-        if ($user->getContentSecret() !== null) {
+        if ($user->getPrivateSecret() !== null) {
             if ($currentCode === null) {
                 return ['success' => false, 'error' => 'Le code actuel est requis.'];
             }
 
-            if (!$this->hasher->isPasswordValid($user, $currentCode)) {
+            // Vérification native avec l'ancien code
+            if (!password_verify($currentCode, $user->getPrivateSecret())) {
                 return ['success' => false, 'error' => 'Le code actuel est incorrect.'];
             }
         }
@@ -545,9 +413,9 @@ final class UserService
             return ['success' => false, 'error' => 'Le code doit contenir au moins 4 caractères.'];
         }
 
-        // On réutilise le hasher de mot de passe — même sécurité, même algorithme
-        $hashed = $this->hasher->hashPassword($user, $newCode);
-        $user->setContentSecret($hashed);
+        // Hachage natif sécurisé pour le nouveau PIN
+        $hashed = password_hash($newCode, PASSWORD_DEFAULT);
+        $user->setPrivateSecret($hashed);
 
         $saved = $this->saveUser($user, false);
 
@@ -565,22 +433,45 @@ final class UserService
     }
 
     /**
-     * Vérifie si le code fourni correspond au code confidentiel de l'utilisateur.
+     * @param string $code
+     * 
+     * @return bool
      */
-    public function verifyConfidentialCode(User $user, string $code): bool
+    public function verifyConfidentialCode(string $code): bool
     {
-        if ($user->getContentSecret() === null) {
+        $user = $this->getCurrentUser();
+
+        if ($user === null || $user->getPrivateSecret() === null) {
             return false;
         }
 
-        return $this->hasher->isPasswordValid($user, $code);
+        // Utilisation de la fonction native PHP pour vérifier le hash du secret
+        return password_verify($code, $user->getPrivateSecret());
     }
 
     /**
-     * Rafraîchit la session de l'utilisateur pour éviter une déconnexion
-     * après un changement d'identifiant (email) ou de mot de passe.
-     * @param User $user L'utilisateur dont on veut maintenir la session
+     * Vérifie si le token Base64 correspond à la session intime de l'utilisateur.
+     * Cette méthode décode le Base64 et compare avec le token natif en base.
      */
+    public function verifyVaultSession(string $base64Token): bool
+    {
+        $user = $this->getCurrentUser();
+        
+        if ($user === null || $user->getVaultTokenSession() === null) {
+            return false;
+        }
+
+        // On décode le base64 (le true active le mode strict pour éviter la corruption)
+        $decodedToken = base64_decode($base64Token, true);
+
+        if ($decodedToken === false) {
+            return false; 
+        }
+
+        // Comparaison stricte avec le token UUID v4 natif en base de données
+        return $user->getVaultTokenSession() === $decodedToken;
+    }
+
     public function refreshSession(User $user): void
     {
         $this->security->login($user, FormLoginAuthenticator::class, 'main');
@@ -589,5 +480,10 @@ final class UserService
             'message' => 'Session rafraîchie automatiquement',
             'user_id' => $user->getId(),
         ], ['action' => 'user.session.refreshed']);
+    }
+
+    public function generateStandardToken(): string
+    {
+        return Uuid::v4()->toRfc4122();
     }
 }

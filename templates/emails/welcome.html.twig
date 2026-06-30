@@ -1,5 +1,7 @@
 {#
   Template d'email de bienvenue
+
+  templates/emails/welcome.html.twig
   
   Variables requises:
     - user: Objet utilisateur avec les propriétés firstname, email
@@ -15,41 +17,38 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'h1',
     content: 'Bienvenue ' ~ user.firstname ~ ' !',
-    color: '#212529',
     margin: '0 0 20px 0'
   } %}
 
   {# Texte d'introduction #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Nous sommes ravis de vous accueillir sur <strong>' ~ app_name ~ '</strong>. Votre compte a été créé avec succès.',
-    color: '#495057'
+    content: 'Nous sommes ravis de vous accueillir sur <strong>' ~ app_name ~ '</strong>. Votre compte a été créé avec succès.'
   } %}
 
   {# Alerte info #}
   {% include 'emails/components/_alert.html.twig' with {
     type: 'info',
-    title: 'Informations de connexion',
-    content: 'Votre adresse email : <strong>' ~ user.email ~ '</strong>'
+    content: '<strong>Informations de connexion</strong><br>Votre adresse email : <strong>' ~ user.email ~ '</strong>'
   } %}
 
   {# Bouton d'activation (si URL fournie) #}
   {% if activation_url is defined and activation_url %}
     {% include 'emails/components/_text.html.twig' with {
       level: 'p',
-      content: 'Pour activer votre compte, veuillez cliquer sur le bouton ci-dessous :',
-      color: '#495057'
+      content: 'Pour activer votre compte, veuillez cliquer sur le bouton ci-dessous :'
     } %}
 
     {% include 'emails/components/_button.html.twig' with {
       url: activation_url,
-      label: 'Activer mon compte'
+      label: 'Activer mon compte',
+      custom_style: 'margin: 20px 0;'
     } %}
 
     {% include 'emails/components/_text.html.twig' with {
       level: 'small',
       content: 'Ce lien expire dans 24 heures.',
-      color: '#6c757d'
+      color: '#737373'
     } %}
   {% endif %}
 
@@ -58,12 +57,10 @@
   {# Ce que vous pouvez faire #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'h3',
-    content: 'Ce que vous pouvez faire maintenant :',
-    color: '#212529'
+    content: 'Ce que vous pouvez faire maintenant :'
   } %}
 
   {% include 'emails/components/_list.html.twig' with {
-    type: 'unordered',
     items: [
       'Compléter votre profil',
       'Découvrir nos fonctionnalités',
@@ -74,13 +71,11 @@
   {# Message de fin #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Si vous avez des questions, n\'hésitez pas à nous contacter.',
-    color: '#495057'
+    content: 'Si vous avez des questions ou besoin d\'aide, n\'hésitez pas à répondre à cet email. Notre équipe est là pour vous accompagner.'
   } %}
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'À très bientôt,<br><strong>L\'équipe ' ~ app_name ~ '</strong>',
-    color: '#495057'
+    content: 'À très bientôt !<br>L\'équipe ' ~ app_name
   } %}
 {% endblock %}

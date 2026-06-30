@@ -1,0 +1,68 @@
+{% set is_edit = entry is not null and entry.id is not null %}
+{% set api_url = is_edit
+  ? path('app_journal_api_update', { id: entry.id })
+  : path('app_journal_api_save') %}
+
+<form
+  id="journal-form"
+  class="journal-form vault-form"
+  data-url="{{ api_url }}"
+  data-csrf="{{ csrf_token('journal_save') }}"
+  data-redirect="{{ path('app_vault_journal_index') }}"
+  novalidate
+>
+  {# FORÇAGE DE LA CONFIDENTIALITÉ #}
+  <input type="hidden" name="is_private" value="1">
+
+  <div class="journal-form__field">
+    <input
+      type="text"
+      id="entry-title"
+      name="title"
+      class="journal-form__title-input"
+      placeholder="Titre du souvenir"
+      value="" {# SÉCURITÉ: Rempli via JS si édition #}
+      maxlength="200"
+      autocomplete="off"
+    >
+  </div>
+
+  <div class="journal-form__field">
+    <textarea
+      id="entry-content"
+      name="content"
+      class="journal-form__editor"
+      placeholder="Écrivez votre secret… (Markdown supporté)"
+      data-markdown="true"
+    ></textarea> {# SÉCURITÉ: Rempli via JS si édition #}
+  </div>
+
+  {# --- Le reste du formulaire est identique au journal public --- #}
+  
+  {# Humeur #}
+  <div class="journal-form__field">
+    <label class="journal-form__label"><i class="ri-emotion-line me-1"></i> Humeur</label>
+    <div class="journal-form__mood-grid js-mood-grid">
+      {% for mood in moods %}
+        <button type="button" class="journal-form__mood-btn js-mood-btn" data-value="{{ mood.value }}" aria-pressed="{{ is_edit and entry.mood and entry.mood.value == mood.value ? 'true' : 'false' }}">
+          {{ mood.emoji }}
+        </button>
+      {% endfor %}
+      <input type="hidden" name="mood" id="entry-mood" value="{{ is_edit and entry.mood ? entry.mood.value : '' }}">
+    </div>
+  </div>
+
+  {# Ajoute ici tes blocs Catégories, Localisation, Médias et Couleurs à l'identique de ton _form.html.twig public #}
+  {# ... #}
+
+  <div class="journal-form__actions mt-4">
+    <a href="{{ path('app_vault_journal_index') }}" class="btn btn-light">Annuler</a>
+    <button type="submit" class="btn btn-primary js-submit-btn">
+      <span class="js-submit-label">{{ is_edit ? 'Mettre à jour le secret' : 'Sceller le souvenir' }}</span>
+      <span class="js-submit-spinner d-none">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Chiffrement...
+      </span>
+    </button>
+  </div>
+</form>

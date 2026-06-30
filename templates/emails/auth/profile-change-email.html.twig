@@ -1,3 +1,17 @@
+{#
+  Template d'email de validation de changement d'adresse e-mail
+
+  templates/emails/auth/profile-change-email.html.twig
+
+  Variables requises:
+    - user: Objet utilisateur avec les propriétés firstname, username, email
+    - new_email: Nouvelle adresse e-mail à valider
+    - confirmationUrl: URL de confirmation du changement d'e-mail
+    - expires_in: Durée avant expiration du lien (ex: "24 heures")
+  Variables optionnelles:
+    - preview: Si true, on est en mode preview (pas d'envoi réel)
+#}
+
 {% extends 'layouts/email.html.twig' %}
 
 {% set subject = 'Validation de votre nouvelle adresse e-mail' %}
@@ -7,20 +21,17 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'h1',
     content: 'Changement d\'e-mail',
-    color: '#212529',
     custom_style: 'margin-bottom:20px'
   } %}
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher utilisateur'))) ~ '</strong>,',
-    color: '#495057'
+    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher utilisateur'))) ~ '</strong>,'
   } %}
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Vous avez demandé à modifier l\'adresse e-mail de votre compte pour utiliser <strong>' ~ new_email ~ '</strong>. Veuillez confirmer cette modification en cliquant sur le bouton ci-dessous :',
-    color: '#495057'
+    content: 'Vous avez demandé à modifier l\'adresse e-mail de votre compte pour utiliser <strong>' ~ new_email ~ '</strong>. Veuillez confirmer cette modification en cliquant sur le bouton ci-dessous :'
   } %}
 
   {% include 'emails/components/_button.html.twig' with {
@@ -31,8 +42,7 @@
 
   {% include 'emails/components/_alert.html.twig' with {
     type: 'warning',
-    title: 'Lien à durée limitée',
-    content: 'Ce lien expire dans <strong>' ~ (expires_in|default('24 heures')) ~ '</strong>. L\'ancienne adresse restera active tant que vous n\'aurez pas cliqué sur ce lien.',
+    content: '<strong>Lien à durée limitée</strong><br>Ce lien expire dans <strong>' ~ (expires_in|default('24 heures')) ~ '</strong>. L\'ancienne adresse restera active tant que vous n\'aurez pas cliqué sur ce lien.',
     custom_style: 'margin: 10px auto;'
   } %}
 
@@ -40,8 +50,8 @@
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'small',
-    content: 'Si vous n\'êtes pas à l\'origine de cette demande, vous pouvez ignorer cet e-mail en toute sécurité. Votre adresse e-mail actuelle ne sera pas modifiée.',
-    color: '#6c757d',
-    custom_style: 'margin: 10px 0;'
+    content: 'Si vous n\'avez pas demandé ce changement, veuillez ignorer cet e-mail. Votre compte est en sécurité.',
+    color: '#737373',
+    align: 'center'
   } %}
 {% endblock %}

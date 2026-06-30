@@ -18,6 +18,42 @@
        → changement de panneau délégué au composant Tab.ts
   ================================================================
 #}
+
+{# ── Détermination de la route active ─────────────────────────── #}
+{% set _route = app.request.attributes.get('_route')|default('') %}
+
+{# ── Configuration des liens de navigation ────────────────────── #}
+{% set app_nav_links = [
+  {
+    'id': 'feed',
+    'label': 'Feed',
+    'url': url('app_view_feed'),
+    'icon': 'mdi mdi-cards-variant',
+    'is_active': _route == 'app_view_feed' or (_route starts with 'app_journal_' and not (_route starts with 'app_vault_'))
+  },
+  {
+    'id': 'insights',
+    'label': 'Insights',
+    'url': url('app_view_insights'),
+    'icon': 'mdi mdi-widgets-outline',
+    'is_active': _route == 'app_view_insights' or _route starts with 'app_category_'
+  },
+  {
+    'id': 'vault',
+    'label': 'Coffre-fort',
+    'url': url('app_vault_journal_index'),
+    'icon': 'mdi mdi-lock-outline',
+    'is_active': _route starts with 'app_vault_'
+  },
+  {
+    'id': 'profile',
+    'label': 'Profil',
+    'url': url('auth_profile_index'),
+    'icon': 'mdi mdi-account-circle-outline',
+    'is_active': _route starts with 'auth_profile_'
+  }
+] %}
+
 <nav
   class="bottom-nav bottom-nav--stacked"
   id="bottomNav"
@@ -25,70 +61,34 @@
 >
   <ul class="bottom-nav__list" role="list">
 
-    {# ── Accueil ──────────────────────────────────────────────── #}
-    <li class="bottom-nav__item">
-      <a
-        class="bottom-nav__link active"
-        href="/"
-        aria-current="page"
-      >
-        <span class="bottom-nav__icon" aria-hidden="true">
-          <i class="mdi mdi-cards-variant"></i>
-        </span>
-        <span class="bottom-nav__label">Feed</span>
-      </a>
-    </li>
-
-    {# ── Insights ────────────────────────────────────────────── #}
-    <li class="bottom-nav__item">
-      <a
-        class="bottom-nav__link"
-        href="/insights"
-      >
-        <span class="bottom-nav__icon" aria-hidden="true">
-          <i class="mdi mdi-home-variant"></i>
-        </span>
-        <span class="bottom-nav__label">Insights</span>
-      </a>
-    </li>
-
-    {# ── Catégories ───────────────────────────────────────────── #}
-    <li class="bottom-nav__item">
-      <a
-        class="bottom-nav__link"
-        href="{{ url('app_category_index') }}"
-      >
-        <span class="bottom-nav__icon" aria-hidden="true">
-          <i class="mdi mdi-view-grid-outline"></i>
-        </span>
-        <span class="bottom-nav__label">Catégories</span>
-      </a>
-    </li>
-
-    {# ── Mon Compte ─────────────────────────────────────────────── #}
-    <li class="bottom-nav__item">
-      <a
-        class="bottom-nav__link"
-        href="{{ path('auth_profile_index') }}"
-      >
-        <span class="bottom-nav__icon" aria-hidden="true">
-          {% if app.user %}
-            {% if app.user.avatar %}
-              <span class="avatar avatar--sm">
-                <img src="{{ asset(app.user.avatar) }}" alt="">
-              </span>
+    {% for link in app_nav_links %}
+      <li class="bottom-nav__item">
+        <a
+          class="bottom-nav__link {{ link.is_active ? 'active' : '' }}"
+          href="{{ link.url }}"
+          {{ link.is_active ? 'aria-current="page"' : '' }}
+        >
+          <span class="bottom-nav__icon" aria-hidden="true">
+            {# Gestion spécifique de l'avatar pour le bouton Profil #}
+            {% if link.id == 'profile' and app.user %}
+              {% if app.user.avatar %}
+                <span class="avatar avatar--sm">
+                  <img src="{{ asset(app.user.avatar) }}" alt="">
+                </span>
+              {% else %}
+                <span class="avatar avatar--sm avatar--primary">
+                  {{ app.user.username|first|upper }}
+                </span>
+              {% endif %}
             {% else %}
-              <span class="avatar avatar--sm avatar--primary">
-                {{ app.user.username|first|upper }}
-              </span>
+              {# Affichage classique de l'icône #}
+              <i class="{{ link.icon }}"></i>
             {% endif %}
-          {% else %}
-            <i class="mdi mdi-account-circle-outline"></i>
-          {% endif %}
-        </span>
-        <span class="bottom-nav__label">Mon Compte</span>
-      </a>
-    </li>
+          </span>
+          <span class="bottom-nav__label">{{ link.label }}</span>
+        </a>
+      </li>
+    {% endfor %}
 
   </ul>
 </nav>

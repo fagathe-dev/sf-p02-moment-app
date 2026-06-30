@@ -65,8 +65,14 @@ class EntryRepository extends ServiceEntityRepository
     /**
      * @return Entry[]
      */
-    public function findByOwnerOrderedByDate(User $user): array
+    public function findByOwnerOrderedByDate(): array
     {
+        $user = $this->getCurrentUser();
+
+        if (!$user instanceof User) {
+            return [];
+        }
+
         return $this->createQueryBuilder('e')
             ->andWhere('e.owner = :owner')
             ->andWhere('e.is_private = false')
@@ -75,5 +81,37 @@ class EntryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return Entry[]
+     */
+    public function findPrivateByOwnerOrderedByDate(): array
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user instanceof User) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.owner = :owner')
+            ->andWhere('e.is_private = true') // Le filtre magique
+            ->setParameter('owner', $user)
+            ->orderBy('e.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function getCurrentUser(): ?User
+    {
+        $user = $this->security->getUser();
+
+        if ($user instanceof User) {
+            return $user;
+        }
+
+        return null;
     }
 }

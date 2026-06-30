@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Service\EntryMediaService;
 use App\Service\EntryService;
 use Fagathe\CorePhp\Breadcrumb\Breadcrumb;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Fagathe\CorePhp\Breadcrumb\BreadcrumbItem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,8 +38,9 @@ final class JournalController extends AbstractController
     public function add(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+        $entry = new Entry();
 
-        return $this->render('app/journal/add.html.twig', $this->formData());
+        return $this->render('app/journal/add.html.twig', $this->formData($entry));
     }
 
     #[Route('/edit/{id}', name: 'edit', methods: ['GET'])]
@@ -50,7 +52,7 @@ final class JournalController extends AbstractController
     }
 
     #[Route('/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['slug' => '[a-z0-9]+(?:-[a-z0-9]+)*', 'id' => '\d+'])]
-    public function show(#[MapEntity(mapping: ['id' ])] Entry $entry): Response
+    public function show(#[MapEntity(mapping: ['id' => 'id'])] Entry $entry): Response
     {
         $this->denyAccessUnlessGranted('OWNER', $entry);
 
@@ -103,7 +105,7 @@ final class JournalController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
         }
 
-        $success = $this->entryService->deleteEntry($entry->getId(), $this->currentUser());
+        $success = $this->entryService->deleteEntry($entry->getId(), $request);
 
         return $this->json(
             ['success' => $success, 'redirectUrl' => $this->generateUrl('app_view_feed')],
@@ -125,7 +127,7 @@ final class JournalController extends AbstractController
 
         return [
             'entry' => $entry,
-            'categories' => $this->categoryRepository->findByOwner($this->currentUser()),
+            'categories' => $this->categoryRepository->findByOwner(),
             'moods' => MoodEnum::cases(),
             'colors' => EntryColorEnum::cases(),
             'breadcrumb' => $breadcrumb,

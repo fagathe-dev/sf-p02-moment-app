@@ -17,9 +17,11 @@
 {% set has_medias     = entry.entryMedia is defined and entry.entryMedia|length > 0 %}
 {% set has_categories = entry.categories is defined and entry.categories|length > 0 %}
 {% set media_count    = has_medias ? entry.entryMedia|length : 0 %}
+{% set fromVault      = fromVault is defined and fromVault %}
+{% set entry_show_route = fromVault ? 'app_vault_journal_show' : 'app_journal_show' %}
 
 <article class="entry-card" aria-label="{{ entry.title }}">
-  <a href="{{ path('app_journal_show', { id: entry.id, slug: entry.slug }) }}" class="entry-card__link" tabindex="-1" aria-hidden="true"></a>
+  <a href="{{ path(entry_show_route, { id: entry.id, slug: entry.slug }) }}" class="entry-card__link" tabindex="-1" aria-hidden="true"></a>
 
   {# ── Header ────────────────────────────────────────────────────────────── #}
   <header class="entry-card__header">
@@ -32,7 +34,7 @@
 
       <div class="entry-card__title-group">
         <h2 class="entry-card__title">
-          <a href="{{ path('app_journal_show', { id: entry.id, slug: entry.slug }) }}">{{ entry.title }}</a>
+          <a href="{{ path(entry_show_route, { id: entry.id, slug: entry.slug }) }}">{{ entry.title }}</a>
         </h2>
         {% if has_categories %}
           <div class="entry-card__categories">
@@ -71,6 +73,16 @@
         </figure>
       {% endfor %}
     </div>
+
+    {# Bouton "Afficher plus" si > 3 médias #}
+    {% if media_count > 3 %}
+      <div class="entry-card__more-media">
+        <a href="{{ path(entry_show_route, { id: entry.id, slug: entry.slug }) }}" class="btn btn-sm btn-light w-100 fw-medium">
+          <i class="ri-image-add-line me-1" aria-hidden="true"></i>
+          Voir {{ media_count - 3 }} média{{ (media_count - 3) > 1 ? 's' : '' }} supplémentaire{{ (media_count - 3) > 1 ? 's' : '' }}
+        </a>
+      </div>
+    {% endif %}
   {% endif %}
 
   {# ── Extrait ───────────────────────────────────────────────────────────── #}

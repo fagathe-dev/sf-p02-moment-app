@@ -88,7 +88,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $entries;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $content_secret = null;
+    private ?string $private_secret = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $vault_token_session = null;
 
     public function __construct()
     {
@@ -397,14 +400,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getContentSecret(): ?string
+    public function getPrivateSecret(): ?string
     {
-        return $this->content_secret;
+        return $this->private_secret;
     }
 
-    public function setContentSecret(?string $content_secret): static
+    public function setPrivateSecret(?string $private_secret): static
     {
-        $this->content_secret = $content_secret;
+        $this->private_secret = $private_secret;
+
+        return $this;
+    }
+
+    public function getVaultTokenSession(): ?string
+    {
+        return $this->vault_token_session;
+    }
+
+    public function setVaultTokenSession(string $vault_token_session): static
+    {
+        $this->vault_token_session = $vault_token_session;
 
         return $this;
     }

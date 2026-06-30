@@ -96,7 +96,7 @@ final class ProfileController extends AbstractController
         }
 
         $confidentialForm = $this->createForm(ConfidentialCodeType::class, null, [
-            'has_existing_code' => $user->getContentSecret() !== null,
+            'has_existing_code' => $user->getPrivateSecret() !== null,
         ]);
         $confidentialForm->handleRequest($request);
 
@@ -106,7 +106,7 @@ final class ProfileController extends AbstractController
             $user = $this->getUser();
 
             $newCode     = $confidentialForm->get('new_code')->getData();
-            $currentCode = $user->getContentSecret() !== null
+            $currentCode = $user->getPrivateSecret() !== null
                 ? $confidentialForm->get('current_code')->getData()
                 : null;
 

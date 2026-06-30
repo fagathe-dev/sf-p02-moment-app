@@ -42,10 +42,8 @@ final class AppViewService
      */
     public function feedView(): array
     {
-        $user = $this->getCurrentUser();
-
         return [
-            'entries'    => $user ? $this->entryRepository->findByOwnerOrderedByDate($user) : [],
+            'entries'    => $this->entryRepository->findByOwnerOrderedByDate(),
             'breadcrumb' => $this->breadcrumb(),
         ];
     }
@@ -81,9 +79,9 @@ final class AppViewService
                 'topCategories'    => [],
                 'topLocations'     => [],
             ];
-        }
+        }   
 
-        $entries   = $this->entryRepository->findByOwnerOrderedByDate($user);
+        $entries   = $this->entryRepository->findByOwnerOrderedByDate();
         $locations = $this->locationRepository->findByOwner($user);
 
         return [

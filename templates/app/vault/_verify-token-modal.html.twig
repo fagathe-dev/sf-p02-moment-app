@@ -1,0 +1,32 @@
+<dialog class="modal vault-modal" id="vault-lock-screen" open>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4 p-md-5 border-0 shadow-lg" style="border-radius: 1.5rem;">
+      
+      <div class="text-center mb-4">
+        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px;">
+          <i class="ri-lock-fill fs-1 text-secondary" aria-hidden="true"></i>
+        </div>
+        <h2 class="h4 fw-medium text-body mb-2">Espace Intime</h2>
+        <p class="text-muted small">Saisissez votre code confidentiel pour déchiffrer vos souvenirs.</p>
+      </div>
+
+      <form id="vault-unlock-form" novalidate>
+        <div class="input-group input-group-lg rounded-3 overflow-hidden border focus-ring-primary mx-auto" style="max-width: 280px;">
+          <input
+            type="password"
+            id="vault-pin-input"
+            class="form-control border-0 bg-light shadow-none text-center fs-4 letter-spacing-2"
+            placeholder="••••"
+            autocomplete="off"
+            required
+          >
+          <button class="btn btn-light border-0 text-primary px-4" type="submit" id="vault-submit-btn">
+            <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div id="vault-error-msg" class="text-danger text-center small mt-3 d-none"></div>
+      </form>
+
+    </div>
+  </div>
+</dialog>

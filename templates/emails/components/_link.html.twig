@@ -1,7 +1,8 @@
 {# Props: url, label, color, custom_style #}
 {% set url = url|default('#') %}
 {% set label = label|default(url) %}
-{% set color = color|default('#4b38b3') %}
+{% set color = color|default('#404040') %} {# ds-link-color #}
 {% set custom_style = custom_style|default('') %}
+{% set font_family = "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" %}
 
-<a href="{{ url }}" target="_blank" style="font-family: 'Roboto', sans-serif; color: {{ color }}; text-decoration: underline; font-size: 14px; {{ custom_style }}">{{ label }}</a>
+<a href="{{ url }}" target="_blank" style="font-family: {{ font_family }}; color: {{ color }}; text-decoration: underline; text-underline-offset: 2px; font-size: 14px; {{ custom_style }}">{{ label }}</a>

@@ -4,13 +4,13 @@
   <h3 class="h5">Mes catégories</h3>
   {% include 'components/_fab.html.twig' with { route: 'app_category_add', label: 'Nouvelle catégorie' } %}
 
-  <div class="row g-4 mt-1">
+  <div class="row g-3 mt-1">
     {% for category in categories %}
-      <div class="col">
+      <div class="col-4">
         {% include 'app/category/_component.html.twig' with { category: category } %}
       </div>
     {% else %}
-      <div class="col">
+      <div class="col-4">
         <p class="text-muted">Aucune catégorie pour le moment.</p>
       </div>
     {% endfor %}

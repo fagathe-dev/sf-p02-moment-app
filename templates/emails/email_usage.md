@@ -1,10 +1,29 @@
 # Guide : Ajouter un nouvel email
 
+## Table des matières
+
+1. [Créer le template Twig](#1-créer-le-template-twig)
+2. [Utiliser les composants](#2-utiliser-les-composants)
+   - [Texte](#texte-_texthtmltwig)
+   - [Bouton](#bouton-_buttonhtmltwig)
+   - [Lien](#lien-_linkhtmltwig)
+   - [Alerte](#alerte-_alerthtmltwig)
+   - [Box](#box-_boxhtmltwig)
+   - [Card](#card-_cardhtmltwig)
+   - [Section](#section-_sectionhtmltwig)
+   - [Liste](#liste-_listhtmltwig)
+   - [Séparateur](#séparateur-_dividerhtmltwig)
+
+---
+
 ## 1. Créer le template Twig
 
 Placez votre fichier dans le dossier correspondant au domaine :
-- `templates/emails/auth/` — emails liés à l'authentification
-- `templates/emails/admin/` — emails liés à l'administration
+
+| Dossier | Usage |
+|---|---|
+| `templates/emails/auth/` | Emails liés à l'authentification |
+| `templates/emails/admin/` | Emails liés à l'administration |
 
 Le template **doit** étendre le layout global :
 
@@ -16,13 +35,19 @@ Le template **doit** étendre le layout global :
 {% endblock %}
 ```
 
-Le layout fournit automatiquement : le logo, la card principale et le footer.
+Le layout fournit automatiquement : le logo, la card principale et le footer avec la typographie système (polices natives).
+
+---
 
 ## 2. Utiliser les composants
 
 Les composants réutilisables sont dans `templates/emails/components/`. On les intègre via `{% include %}` avec passage de variables.
 
+Les couleurs par défaut sont câblées sur le **Design System** (texte principal `#262626`, boutons et accents `#404040`, bordures `#e5e5e5`).
+
 > **Prop commune** : tous les composants acceptent `custom_style` (chaîne vide par défaut) pour injecter du CSS inline supplémentaire (ex : `margin-bottom: 20px; text-align: center;`).
+
+---
 
 ### Texte (`_text.html.twig`)
 
@@ -30,110 +55,163 @@ Les composants réutilisables sont dans `templates/emails/components/`. On les i
 {% include 'emails/components/_text.html.twig' with {
   level: 'h1',
   content: 'Mon titre',
-  color: '#212529',
   align: 'center'
 } %}
 ```
 
-Props : `level` (h1-h6, p, small), `content`, `color`, `size`, `align`, `custom_style`.
+| Prop | Valeurs | Défaut |
+|---|---|---|
+| `level` | `h1`–`h6`, `p`, `small` | — |
+| `content` | string | `''` |
+| `color` | hex | géré par le DS |
+| `size` | string | géré par le DS |
+| `align` | `left` \| `center` \| `right` | `left` |
+| `custom_style` | string | `''` |
+
+---
 
 ### Bouton (`_button.html.twig`)
 
 ```twig
 {% include 'emails/components/_button.html.twig' with {
   url: actionUrl,
-  label: 'Cliquer ici',
-  bg_color: '#0d6efd',
-  text_color: '#ffffff'
+  label: 'Cliquer ici'
 } %}
 ```
 
-Props : `url`, `label`, `bg_color`, `text_color`, `custom_style`.
+| Prop | Défaut |
+|---|---|
+| `url` | — |
+| `label` | — |
+| `bg_color` | `#404040` |
+| `text_color` | `#ffffff` |
+| `custom_style` | `''` |
 
-### Alerte (`_alert.html.twig`)
-
-```twig
-{% include 'emails/components/_alert.html.twig' with {
-  type: 'warning',
-  content: 'Attention, ce lien expire dans <strong>24h</strong>.'
-} %}
-```
-
-Props : `type` (success, danger, info), `content`, `custom_style`.
-
-### Séparateur (`_divider.html.twig`)
-
-```twig
-{% include 'emails/components/_divider.html.twig' %}
-```
-
-Props optionnelles : `color`, `height`, `custom_style`.
-
-### Card (`_card.html.twig`)
-
-```twig
-{% include 'emails/components/_card.html.twig' with {
-  content: '<p>Contenu HTML de la card</p>',
-  padding: '20px'
-} %}
-```
-
-Props : `content`, `background`, `padding`, `custom_style`.
-
-### Box (`_box.html.twig`)
-
-```twig
-{% include 'emails/components/_box.html.twig' with {
-  background: '#f8f9fa',
-  padding: '10px 15px',
-  content: '<p>Bloc avec fond coloré</p>'
-} %}
-```
-
-Props : `background`, `padding`, `radius`, `content`, `custom_style`.
+---
 
 ### Lien (`_link.html.twig`)
 
 ```twig
 {% include 'emails/components/_link.html.twig' with {
   url: 'https://example.com',
-  label: 'Voir le site',
-  color: '#0066ff'
+  label: 'Voir le site'
 } %}
 ```
 
-Props : `url`, `label`, `color`, `custom_style`.
+| Prop | Défaut |
+|---|---|
+| `url` | — |
+| `label` | — |
+| `color` | `#404040` |
+| `custom_style` | `''` |
 
-### Liste (`_list.html.twig`)
+---
+
+### Alerte (`_alert.html.twig`)
 
 ```twig
-{% include 'emails/components/_list.html.twig' with {
-  items: ['Élément 1', 'Élément 2', 'Élément 3'],
-  bullet_color: '#4b38b3'
+{% include 'emails/components/_alert.html.twig' with {
+  type: 'danger',
+  content: '<strong>Action requise</strong><br>Veuillez modifier votre mot de passe.'
 } %}
 ```
 
-Props : `items` (tableau), `bullet_color`, `custom_style`.
+| Prop | Valeurs | Défaut |
+|---|---|---|
+| `type` | `success` \| `danger` \| `warning` \| `info` | `info` |
+| `content` | string (HTML accepté) | `''` |
+| `custom_style` | string | `''` |
+
+---
+
+### Box (`_box.html.twig`)
+
+```twig
+{% include 'emails/components/_box.html.twig' with {
+  background: '#f5f5f5',
+  padding: '10px 15px',
+  radius: '6px',
+  content: '<p>Bloc avec fond gris neutre</p>'
+} %}
+```
+
+| Prop | Défaut |
+|---|---|
+| `background` | `#ffffff` |
+| `padding` | `16px` |
+| `radius` | `4px` |
+| `content` | `''` |
+| `custom_style` | `''` |
+
+---
+
+### Card (`_card.html.twig`)
+
+```twig
+{% include 'emails/components/_card.html.twig' with {
+  content: '<p>Contenu dans une card bordurée</p>'
+} %}
+```
+
+| Prop | Défaut |
+|---|---|
+| `background` | `#ffffff` |
+| `padding` | `24px` |
+| `content` | `''` |
+| `custom_style` | `''` |
+
+> Différence avec `_box` : la card applique toujours une bordure (`1px solid #e5e5e5`) et un `border-radius: 8px`.
+
+---
 
 ### Section (`_section.html.twig`)
 
 ```twig
 {% include 'emails/components/_section.html.twig' with {
   content: '<p>Contenu de la section</p>',
-  bg_color: '#f8f9fa',
+  bg_color: '#fafafa',
   padding: '20px',
   align: 'center'
 } %}
 ```
 
-Props : `bg_color`, `padding`, `content`, `align`, `custom_style`.
+| Prop | Défaut |
+|---|---|
+| `bg_color` | transparent |
+| `padding` | `0` |
+| `align` | `left` |
+| `content` | `''` |
+| `custom_style` | `''` |
 
-## 3. Enregistrer l'email côté PHP
+---
 
-1. Ajouter un case dans `src/Utils/Mailer/Enum/EmailTypeEnum.php`.  
-   La valeur doit correspondre au chemin du template : `domaine.nom-du-fichier`  
-   (les `.` deviennent `/` et les `_` deviennent `-` pour résoudre le template).
+### Liste (`_list.html.twig`)
 
-2. Ajouter le mock correspondant dans `src/Utils/Mailer/Service/EmailMockFactory.php` pour la prévisualisation.
+```twig
+{% include 'emails/components/_list.html.twig' with {
+  items: ['Élément 1', 'Élément 2', 'Élément 3']
+} %}
+```
 
-3. Créer la classe d'email dans `src/Emails/<Domaine>/` en étendant `AbstractEmail`.
+| Prop | Défaut |
+|---|---|
+| `items` | tableau de strings |
+| `bullet_color` | `#404040` |
+| `custom_style` | `''` |
+
+---
+
+### Séparateur (`_divider.html.twig`)
+
+```twig
+{% include 'emails/components/_divider.html.twig' with {
+  color: '#e5e5e5',
+  height: '1px'
+} %}
+```
+
+| Prop | Défaut |
+|---|---|
+| `color` | `#e5e5e5` |
+| `height` | `1px` |
+| `custom_style` | `''` |

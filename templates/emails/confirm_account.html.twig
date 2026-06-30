@@ -1,6 +1,8 @@
 {#
   Template d'email de vérification d'adresse email
 
+  templates/emails/confirm_account.html.twig
+
   Variables requises:
     - confirmation_url: URL de confirmation de l'email
 #}
@@ -14,7 +16,6 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'h1',
     content: 'Vérifiez votre adresse email',
-    color: '#212529',
     align: 'center',
     custom_style: 'margin-bottom: 10px;'
   } %}
@@ -46,14 +47,16 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'small',
     content: 'Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :',
-    color: '#6c757d',
+    color: '#737373',
     align: 'center',
     custom_style: 'margin: 10px 0;'
   } %}
 
   {% include 'emails/components/_box.html.twig' with {
-    background: '#f8f9fa',
+    background: '#f5f5f5',
     padding: '10px 15px',
-    content: '<a href="' ~ confirmation_url|default('#') ~ '" style="color: #0066ff; font-size: 12px; word-break: break-all;">' ~ confirmation_url|default('#') ~ '</a>'
+    radius: '6px',
+    content: '<a href="' ~ confirmation_url|default('#') ~ '" style="color: #404040; font-size: 12px; word-break: break-all;">' ~ confirmation_url|default('#') ~ '</a>'
   } %}
+
 {% endblock %}

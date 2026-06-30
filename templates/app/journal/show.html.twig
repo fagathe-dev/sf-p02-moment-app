@@ -4,147 +4,146 @@
 
 {% block content %}
 <div class="entry-view container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
 
-  {# ── Actions ──────────────────────────────────────────────────────────────── #}
-  <div class="entry-view__toolbar">
-    <a href="{{ path('app_view_feed') }}" class="btn btn-ghost-secondary btn-sm">
-      <i class="ri-arrow-left-line me-1" aria-hidden="true"></i>
-      Retour
-    </a>
-    <a href="{{ path('app_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
-      <i class="ri-pencil-line me-1" aria-hidden="true"></i>
-      Modifier
-    </a>
-  </div>
+      {# ── Actions ──────────────────────────────────────────────────────────────── #}
+      <div class="entry-view__toolbar">
+        <a href="{{ path('app_view_feed') }}" class="btn btn-ghost-secondary btn-sm">
+          <i class="ri-arrow-left-line me-1" aria-hidden="true"></i>
+          Retour
+        </a>
+        <a href="{{ path('app_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
+          <i class="ri-pencil-line me-1" aria-hidden="true"></i>
+          Modifier
+        </a>
+      </div>
 
-  {# ── En-tête ───────────────────────────────────────────────────────────────── #}
-  <header class="entry-view__header">
+      {# ── En-tête ───────────────────────────────────────────────────────────────── #}
+      <header class="entry-view__header">
 
-    {# Date #}
-    <time class="entry-view__date" datetime="{{ entry.createdAt|date('Y-m-d') }}">
-      {{ entry.createdAt|date('d') }} {{ entry.createdAt|date('F Y') }}
-    </time>
+        {# Date #}
+        <time class="entry-view__date" datetime="{{ entry.createdAt|date('Y-m-d') }}">
+          {{ entry.createdAt|date('d') }} {{ entry.createdAt|date('F Y') }}
+        </time>
 
-    {# Titre #}
-    {% if entry.title %}
-      <h1 class="entry-view__title">{{ entry.title }}</h1>
-    {% endif %}
+        {# Titre #}
+        {% if entry.title %}
+          <h1 class="entry-view__title">{{ entry.title }}</h1>
+        {% endif %}
 
-    {# Métadonnées : humeur + lieu + catégories #}
-    <div class="entry-view__meta">
-
-      {% if entry.mood %}
-        <span class="entry-view__meta-item" title="{{ entry.mood.getLabel() }}">
-          <span class="entry-view__mood-emoji">{{ entry.mood.getEmoji() }}</span>
-          <span class="entry-view__meta-label">{{ entry.mood.getLabel() }}</span>
-        </span>
-      {% endif %}
-
-      {% if entry.location %}
-        <span class="entry-view__meta-item">
-          <i class="ri-map-pin-line entry-view__meta-icon" aria-hidden="true"></i>
-          <span class="entry-view__meta-label">
-            {%- set city    = entry.location.city -%}
-            {%- set country = entry.location.country -%}
-            {{- city and country ? city ~ ', ' ~ country : (city ?? entry.location.name) -}}
-          </span>
-        </span>
-      {% endif %}
-
-      {% if entry.categories is not empty %}
-        <div class="entry-view__categories">
-          {% for category in entry.categories %}
-            <span class="entry-view__category-badge">
-              {% if category.color %}
-                <span class="entry-view__category-dot bg-{{ category.color.value }}" aria-hidden="true"></span>
-              {% endif %}
-              {{ category.name }}
+        {# Métadonnées : humeur + lieu + catégories #}
+        <div class="entry-view__meta">
+          {% if entry.mood %}
+            <span class="entry-view__meta-item" title="{{ entry.mood.getLabel() }}">
+              <span class="entry-view__mood-emoji">{{ entry.mood.getEmoji() }}</span>
+              <span class="entry-view__meta-label">{{ entry.mood.getLabel() }}</span>
             </span>
-          {% endfor %}
-        </div>
-      {% endif %}
+          {% endif %}
 
-    </div>
-  </header>
+          {% if entry.location %}
+            <span class="entry-view__meta-item">
+              <i class="ri-map-pin-line entry-view__meta-icon" aria-hidden="true"></i>
+              <span class="entry-view__meta-label">
+                {%- set city    = entry.location.city -%}
+                {%- set country = entry.location.country -%}
+                {{- city and country ? city ~ ', ' ~ country : (city ?? entry.location.name) -}}
+              </span>
+            </span>
+          {% endif %}
 
-
-  {# ── Médias ───────────────────────────────────────────────────────────────── #}
-  {% if entry.entryMedia is not empty %}
-    <div class="entry-view__medias">
-
-      {# Images — grille adaptive selon le nombre #}
-      {% set images = entry.entryMedia|filter(m => m.mimeType starts with 'image/') %}
-      {% if images|length > 0 %}
-        {% set img_count = min(images|length, 3) %}
-        <div class="entry-view__media-grid entry-view__media-grid--count-{{ img_count }}">
-          {% for media in images|slice(0, 3) %}
-            <figure class="entry-view__media-figure">
-              <img
-                src="{{ asset(media.filePath) }}"
-                alt="{{ media.niceName ?? media.originalName }}"
-                loading="lazy"
-              >
-            </figure>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      {# Vidéos #}
-      {% set videos = entry.entryMedia|filter(m => m.mimeType starts with 'video/') %}
-      {% if videos|length > 0 %}
-        <div class="entry-view__media-videos">
-          {% for media in videos %}
-            <figure class="entry-view__media-figure">
-              <video
-                src="{{ asset(media.filePath) }}"
-                controls
-                preload="metadata"
-                aria-label="{{ media.niceName ?? media.originalName }}"
-              ></video>
-              <figcaption class="entry-view__media-caption">
-                <i class="ri-video-line me-1" aria-hidden="true"></i>
-                {{ media.niceName ?? media.originalName }}
-              </figcaption>
-            </figure>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      {# Audios #}
-      {% set audios = entry.entryMedia|filter(m => m.mimeType starts with 'audio/') %}
-      {% if audios|length > 0 %}
-        <div class="entry-view__media-audios">
-          {% for media in audios %}
-            <div class="entry-view__media-audio">
-              <i class="ri-music-line entry-view__audio-icon" aria-hidden="true"></i>
-              <div class="entry-view__audio-info">
-                <span class="entry-view__audio-name">{{ media.niceName ?? media.originalName }}</span>
-                <audio
-                  src="{{ asset(media.filePath) }}"
-                  controls
-                  preload="metadata"
-                  aria-label="{{ media.niceName ?? media.originalName }}"
-                ></audio>
-              </div>
+          {% if entry.categories is not empty %}
+            <div class="entry-view__categories">
+              {% for category in entry.categories %}
+                <span class="entry-view__category-badge">
+                  {% if category.color %}
+                    <span class="entry-view__category-dot bg-{{ category.color.value }}" aria-hidden="true"></span>
+                  {% endif %}
+                  {{ category.name }}
+                </span>
+              {% endfor %}
             </div>
-          {% endfor %}
+          {% endif %}
+        </div>
+      </header>
+
+
+      {# ── Médias ───────────────────────────────────────────────────────────────── #}
+      {% if entry.entryMedia is not empty %}
+        <div class="entry-view__medias">
+
+          {# Images — grille adaptive selon le nombre #}
+          {% set images = entry.entryMedia|filter(m => m.mimeType starts with 'image/') %}
+          {% if images|length > 0 %}
+            {% set img_count = min(images|length, 3) %}
+            <div class="entry-view__media-grid entry-view__media-grid--count-{{ img_count }}">
+              {% for media in images|slice(0, 3) %}
+                <figure class="entry-view__media-figure">
+                  <img
+                    src="{{ asset(media.filePath) }}"
+                    alt="{{ media.niceName ?? media.originalName }}"
+                    loading="lazy"
+                  >
+                </figure>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {# Vidéos #}
+          {% set videos = entry.entryMedia|filter(m => m.mimeType starts with 'video/') %}
+          {% if videos|length > 0 %}
+            <div class="entry-view__media-videos">
+              {% for media in videos %}
+                <figure class="entry-view__media-figure">
+                  <video
+                    src="{{ asset(media.filePath) }}"
+                    controls
+                    preload="metadata"
+                    aria-label="{{ media.niceName ?? media.originalName }}"
+                  ></video>
+                  <figcaption class="entry-view__media-caption">
+                    <i class="ri-video-line me-1" aria-hidden="true"></i>
+                    {{ media.niceName ?? media.originalName }}
+                  </figcaption>
+                </figure>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {# Audios #}
+          {% set audios = entry.entryMedia|filter(m => m.mimeType starts with 'audio/') %}
+          {% if audios|length > 0 %}
+            <div class="entry-view__media-audios">
+              {% for media in audios %}
+                <div class="entry-view__media-audio">
+                  <i class="ri-music-line entry-view__audio-icon" aria-hidden="true"></i>
+                  <div class="entry-view__audio-info">
+                    <span class="entry-view__audio-name">{{ media.niceName ?? media.originalName }}</span>
+                    <audio
+                      src="{{ asset(media.filePath) }}"
+                      controls
+                      preload="metadata"
+                      aria-label="{{ media.niceName ?? media.originalName }}"
+                    ></audio>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
         </div>
       {% endif %}
 
+      {# ── Contenu Markdown rendu ────────────────────────────────────────────────── #}
+      {% if entry.content %}
+        <div
+          class="entry-view__content markdown-body"
+          data-entry-md-content="{{ entry.content|e('html_attr') }}"
+        ></div>
+      {% endif %}
+
     </div>
-  {% endif %}
-
-  {# ── Contenu Markdown rendu ────────────────────────────────────────────────── #}
-  {# Le contenu brut est injecté dans data-entry-md-content.                    #}
-  {# Le JS (entry.ts) parse le Markdown via convertMarkdownToHtml()             #}
-  {# et remplace le textContent par le HTML rendu, puis retire l'attribut.      #}
-  {% if entry.content %}
-    <div
-      class="entry-view__content markdown-body"
-      data-entry-md-content="{{ entry.content|e('html_attr') }}"
-    ></div>
-  {% endif %}
-
+  </div>
 </div>
 {% endblock %}
 

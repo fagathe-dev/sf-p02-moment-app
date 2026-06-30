@@ -1,0 +1,67 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block title %}Souvenir intime{% endblock %}
+
+{% block content %}
+  
+  {# Inclusion de la modale #}
+  {% include 'app/vault/_verify-token-modal.html.twig' %}
+
+  <div class="entry-view container py-4 vault-secure-content" id="vault-show-container" data-entry-id="{{ entry.id }}">
+
+    <div class="entry-view__toolbar">
+      <a href="{{ path('app_vault_journal_index') }}" class="btn btn-ghost-secondary btn-sm">
+        <i class="ri-arrow-left-line me-1" aria-hidden="true"></i> Retour
+      </a>
+      <a href="{{ path('app_vault_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
+        <i class="ri-pencil-line me-1" aria-hidden="true"></i> Modifier
+      </a>
+    </div>
+
+    <header class="entry-view__header">
+      <time class="entry-view__date" datetime="{{ entry.createdAt|date('Y-m-d') }}">
+        {{ entry.createdAt|date('d') }} {{ entry.createdAt|date('F Y') }}
+      </time>
+
+      {# Squelette de chargement du titre #}
+      <h1 class="entry-view__title placeholder-glow" id="vault-entry-title">
+        <span class="placeholder col-6 rounded"></span>
+      </h1>
+
+      {# Métadonnées (Générées par Twig car non confidentielles) #}
+      <div class="entry-view__meta">
+        {% if entry.mood %}
+          <span class="entry-view__meta-item" title="{{ entry.mood.getLabel() }}">
+            <span class="entry-view__mood-emoji">{{ entry.mood.getEmoji() }}</span>
+            <span class="entry-view__meta-label">{{ entry.mood.getLabel() }}</span>
+          </span>
+        {% endif %}
+        
+        {# Lieux et catégories si existants #}
+        {% if entry.location %}
+           <span class="entry-view__meta-item">
+             <i class="ri-map-pin-line entry-view__meta-icon" aria-hidden="true"></i>
+             <span class="entry-view__meta-label">{{ entry.location.name }}</span>
+           </span>
+        {% endif %}
+      </div>
+    </header>
+
+    {# Médias (S'ils existent, à gérer ici de la même manière que ton show.html.twig public) #}
+
+    {# Squelette de chargement du contenu textuel #}
+    <div class="entry-view__content markdown-body" id="vault-entry-content">
+      <div class="placeholder-glow">
+        <span class="placeholder col-12 rounded mb-2"></span>
+        <span class="placeholder col-10 rounded mb-2"></span>
+        <span class="placeholder col-8 rounded"></span>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/app/entry.js') }}"></script>
+  <script src="{{ asset('js/pages/app/vault.js') }}"></script>
+{% endblock %}

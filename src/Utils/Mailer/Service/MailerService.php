@@ -28,6 +28,7 @@ final class MailerService
         private Security $security,
         private string $defaultUri,
         private string $appName,
+        private string $supportEmail,
         private array $defaultContext = [],
     ) {
         $this->request = Request::createFromGlobals();
@@ -135,6 +136,7 @@ final class MailerService
             'domain' => parse_url($baseUrl, PHP_URL_HOST) ?? '',
             'app_name' => $this->appName,
             'logo_url' => $logo,
+            'support_email' => $this->supportEmail,
         ];
     }
 }

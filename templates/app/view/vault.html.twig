@@ -1,0 +1,36 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block title %}Mon coffre-fort{% endblock %}
+
+{% block content %}
+  
+  {# ── Inclusion de la modale de sécurité (S'affiche par défaut via JS) ── #}
+  {% include 'app/vault/_verify-token-modal.html.twig' %}
+
+  {# ── Contenu du coffre-fort (Masqué par le flou de la modale) ────────── #}
+  <div id="vault-content" class="py-4 vault-secure-content">
+    
+    {% include 'components/_fab.html.twig' with { route: 'app_vault_journal_add', label: 'Nouvelle entrée intime' } only %}
+
+    <div class="entry-list__empty" id="vault-entries-empty">
+      <p class="text-muted">Aucune entrée pour l'instant.<br>Commencez à écrire !</p>
+      <a href="{{ path('app_vault_journal_add') }}" class="btn btn-primary mt-3">
+        <i class="ri-add-line me-1"></i> Nouvelle entrée intime
+      </a>
+    </div>
+
+   <div id="vault-entries-container" class="row g-4 entry-list">
+      {# Le HTML compilé par Symfony sera injecté ici par vault.ts #}
+      <div class="col-12 text-center py-5 text-muted">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Déchiffrement en cours...
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/app/vault.js') }}"></script>
+{% endblock %}

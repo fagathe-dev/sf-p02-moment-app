@@ -1,5 +1,7 @@
 {#
   Template d'email de création de compte administrateur
+
+  templates/emails/admin/account-created.html.twig
   
   ⚠️ ATTENTION : Cet email contient des informations sensibles (mot de passe en clair).
   L'utilisateur doit changer son mot de passe et supprimer définitivement cet email.
@@ -24,129 +26,113 @@
   {# Alerte de sécurité CRITIQUE en haut #}
   {% include 'emails/components/_alert.html.twig' with {
     type: 'danger',
-    title: '⚠️ EMAIL CONFIDENTIEL - ACTION REQUISE',
-    content: 'Cet email contient votre <strong>mot de passe en clair</strong>. Pour des raisons de sécurité, vous devez :<br><br>
+    content: '<strong>⚠️ EMAIL CONFIDENTIEL - ACTION REQUISE</strong><br><br>Cet email contient votre <strong>mot de passe en clair</strong>. Pour des raisons de sécurité, vous devez :<br><br>
     <strong>1.</strong> Vous connecter immédiatement<br>
     <strong>2.</strong> Changer votre mot de passe<br>
-    <strong>3.</strong> <span style="color: #dc3545; font-weight: bold;">SUPPRIMER DÉFINITIVEMENT cet email</span> (pas dans la corbeille !)'
+    <strong>3.</strong> <span style="color: #dc2626; font-weight: bold;">SUPPRIMER DÉFINITIVEMENT</span> cet email'
   } %}
-
-  {% include 'emails/components/_divider.html.twig' %}
 
   {# Titre principal #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'h1',
-    content: 'Bienvenue dans l\'équipe ' ~ app_name ~ ' !',
-    color: '#212529',
-    margin: '0 0 20px 0'
+    content: 'Bienvenue dans l\'administration !',
+    custom_style: 'margin-top:20px; margin-bottom:20px;'
   } %}
 
   {# Texte d'introduction #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher administrateur'))) ~ '</strong>,',
-    color: '#495057'
+    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default(''))) ~ '</strong>,'
   } %}
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Un compte administrateur a été créé pour vous sur <strong>' ~ app_name ~ '</strong>' ~ (createdBy == 'command' ? ' via la ligne de commande' : ' depuis le tableau de bord') ~ '. Vous trouverez ci-dessous vos identifiants de connexion.',
-    color: '#495057'
+    content: 'Un compte administrateur a été créé pour vous sur <strong>' ~ app_name ~ '</strong>.'
   } %}
 
   {% include 'emails/components/_divider.html.twig' %}
 
-  {# Récapitulatif des identifiants #}
+  {# Informations du compte #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'h3',
-    content: '🔐 Vos identifiants de connexion',
-    color: '#212529',
-    custom_style: 'margin-bottom: 15px;'
+    content: 'Vos identifiants de connexion :'
   } %}
 
-  {% include 'emails/components/_card.html.twig' with {
+  {% include 'emails/components/_box.html.twig' with {
+    background: '#f5f5f5',
+    padding: '20px',
+    radius: '8px',
     content: '
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 14px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 14px; margin-bottom: 0;">
         <tr>
-          <td style="padding: 12px 0; color: #6c757d; width: 160px; vertical-align: top;"><strong>Nom d\'utilisateur :</strong></td>
-          <td style="padding: 12px 0; color: #212529; font-family: monospace; font-size: 15px; background: #f8f9fa; padding-left: 10px; border-radius: 4px;">' ~ username ~ '</td>
+          <td width="120" style="padding: 8px 0; color: #737373;">Utilisateur :</td>
+          <td style="padding: 8px 0; color: #262626;"><strong>' ~ username ~ '</strong></td>
         </tr>
         <tr>
-          <td style="padding: 12px 0; color: #6c757d; vertical-align: top;"><strong>Adresse email :</strong></td>
-          <td style="padding: 12px 0; color: #212529;">' ~ mail ~ '</td>
+          <td width="120" style="padding: 8px 0; color: #737373;">Email :</td>
+          <td style="padding: 8px 0; color: #262626;"><strong>' ~ mail ~ '</strong></td>
         </tr>
         <tr>
-          <td style="padding: 12px 0; color: #6c757d; vertical-align: top;"><strong>Mot de passe :</strong></td>
-          <td style="padding: 12px 0; color: #dc3545; font-family: monospace; font-size: 15px; font-weight: bold; background: #fff3cd; padding-left: 10px; border-radius: 4px;">' ~ password ~ '</td>
+          <td width="120" style="padding: 8px 0; color: #737373;">Mot de passe :</td>
+          <td style="padding: 8px 0;">
+            <div style="background: #ffffff; border: 1px solid #d4d4d4; padding: 8px 12px; border-radius: 4px; font-family: monospace; font-size: 16px; color: #262626; letter-spacing: 1px;">' ~ password ~ '</div>
+          </td>
         </tr>
         <tr>
-          <td style="padding: 12px 0; color: #6c757d; vertical-align: top;"><strong>Rôle :</strong></td>
-          <td style="padding: 12px 0; color: #0d6efd; font-weight: 600;">' ~ roles ~ '</td>
-        </tr>
-        <tr>
-          <td style="padding: 12px 0; color: #6c757d; vertical-align: top;"><strong>Date de création :</strong></td>
-          <td style="padding: 12px 0; color: #212529;">' ~ createdAt|date('d/m/Y à H:i') ~ '</td>
+          <td width="120" style="padding: 8px 0; color: #737373;">Rôle(s) :</td>
+          <td style="padding: 8px 0; color: #262626;">' ~ roles ~ '</td>
         </tr>
       </table>
-    '
+    ',
+    custom_style: 'margin-bottom: 20px;'
   } %}
+
+  {# Actions #}
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+    <tr>
+      <td align="center">
+        {% include 'emails/components/_button.html.twig' with {
+          url: loginUrl,
+          label: '1. Me connecter',
+          custom_style: 'display: inline-block; margin-right: 10px;'
+        } %}
+        
+        {% include 'emails/components/_button.html.twig' with {
+          url: changePasswordUrl,
+          label: '2. Changer le mot de passe',
+          bg_color: '#16a34a',
+          custom_style: 'display: inline-block;'
+        } %}
+      </td>
+    </tr>
+  </table>
 
   {% include 'emails/components/_divider.html.twig' %}
 
-  {# Boutons d'action #}
+  {# Instructions de sécurité #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'h3',
-    content: '🚀 Prochaines étapes',
-    color: '#212529'
+    content: 'Rappels de sécurité :'
   } %}
 
-  {% include 'emails/components/_text.html.twig' with {
-    level: 'p',
-    content: 'Connectez vous dès maintenant pour accéder à votre espace d\'administration :',
-    color: '#495057',
-    custom_style: 'margin-bottom: 5px;'
-  } %}
-
-  {% include 'emails/components/_button.html.twig' with {
-    url: loginUrl,
-    label: 'Se connecter',
-    background: '#0d6efd',
-    custom_style: 'margin-bottom: 10px;'
-  } %}
-
-  {% include 'emails/components/_text.html.twig' with {
-    level: 'p',
-    content: 'Ou rendez vous sur ce lien pour modifier votre mot de passe directement:',
-    color: '#495057',
-    margin: '25px 0 10px 0',
-    custom_style: 'margin-bottom: 5px;'
-  } %}
-
-  {% include 'emails/components/_button.html.twig' with {
-    url: changePasswordUrl,
-    label: 'Modifier mon mot de passe',
-    background: '#198754',
-  } %}
-
-  {% include 'emails/components/_divider.html.twig' %}
-
-  {# Rappel de sécurité final #}
-  {% include 'emails/components/_alert.html.twig' with {
-    type: 'warning',
-    title: '🛡️ Rappel de sécurité',
-    content: '<ul style="margin: 10px 0; padding-left: 20px;">
+  {% include 'emails/components/_box.html.twig' with {
+    background: '#fafafa',
+    padding: '15px',
+    radius: '6px',
+    content: '<ul style="margin: 0; padding-left: 20px; color: #525252; font-size: 13px; line-height: 1.6;">
       <li style="margin-bottom: 8px;">Ne partagez <strong>jamais</strong> vos identifiants avec quiconque</li>
       <li style="margin-bottom: 8px;">Changez votre mot de passe dès votre première connexion</li>
       <li style="margin-bottom: 8px;">Utilisez un mot de passe fort (min. 12 caractères, majuscules, chiffres, symboles)</li>
-      <li style="margin-bottom: 8px;"><strong style="color: #dc3545;">Supprimez définitivement cet email après avoir noté vos identifiants</strong></li>
+      <li style="margin-bottom: 8px;"><strong style="color: #dc2626;">Supprimez définitivement cet email après avoir noté vos identifiants</strong></li>
     </ul>',
     custom_style: 'margin-bottom: 10px;'
   } %}
 
   {% include 'emails/components/_box.html.twig' with {
-    background: '#f8d7da',
+    background: '#fef2f2',
     padding: '15px 20px',
-    content: '<p style="margin: 0; color: #721c24; font-size: 13px; text-align: center;">
+    radius: '6px',
+    content: '<p style="margin: 0; color: #991b1b; font-size: 13px; text-align: center;">
       <strong>⚠️ IMPORTANT :</strong> Ne placez pas cet email dans la corbeille.<br>
       <strong>Supprimez-le définitivement</strong> pour éviter tout risque de compromission.
     </p>',
@@ -157,15 +143,9 @@
 
   {# Message de fin #}
   {% include 'emails/components/_text.html.twig' with {
-    level: 'p',
+    level: 'small',
     content: 'Si vous n\'êtes pas à l\'origine de cette demande ou si vous pensez avoir reçu cet email par erreur, veuillez contacter immédiatement l\'équipe technique.',
-    color: '#6c757d',
-    size: '13px'
+    color: '#737373'
   } %}
 
-  {% include 'emails/components/_text.html.twig' with {
-    level: 'p',
-    content: 'Bienvenue dans l\'équipe !<br><strong>L\'équipe ' ~ app_name ~ '</strong>',
-    color: '#495057'
-  } %}
 {% endblock %}

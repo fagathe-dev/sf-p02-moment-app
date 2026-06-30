@@ -3,18 +3,21 @@
 {% set content = content|default('') %}
 {% set align = align|default('left') %}
 {% set custom_style = custom_style|default(level == 'small' ? 'display: block;' : '') %}
+{% set font_family = "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" %}
 
 {% set default_sizes = {
-  h1: '32px', h2: '28px', h3: '24px', h4: '20px', h5: '16px', h6: '14px', p: '14px'
+  h1: '30px', h2: '24px', h3: '20px', h4: '18px', h5: '16px', h6: '14px', p: '14px'
 } %}
 {% set size = size|default(default_sizes[level]|default('14px')) %}
 
 {% if level starts with 'h' %}
-  {% set color = color|default('#495057') %}
-  {% set font_weight = '500' %}
+  {% set color = color|default('#262626') %} {# ds-body-color #}
+  {% set font_weight = '600' %} {# ds-font-weight-semibold #}
+  {% set line_height = '1.25' %} {# ds-line-height-tight #}
 {% else %}
-  {% set color = color|default('#878a99') %}
-  {% set font_weight = 'normal' %}
+  {% set color = color|default('#525252') %} {# ds-neutral-600 #}
+  {% set font_weight = '400' %} {# ds-font-weight-normal #}
+  {% set line_height = '1.6' %} {# ds-line-height-base #}
 {% endif %}
 
-<{{ level }} style="font-family: 'Roboto', sans-serif; font-size: {{ size }}; color: {{ color }}; font-weight: {{ font_weight }}; margin: 0; line-height: 1.5; text-align: {{ align }}; {{ custom_style }}">{{ content|raw }}</{{ level }}>
+<{{ level }} style="font-family: {{ font_family }}; font-size: {{ size }}; color: {{ color }}; font-weight: {{ font_weight }}; margin: 0 0 16px 0; line-height: {{ line_height }}; text-align: {{ align }}; {{ custom_style }}">{{ content|raw }}</{{ level }}>

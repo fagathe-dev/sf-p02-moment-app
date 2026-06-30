@@ -1,0 +1,30 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block title %}Nouveau souvenir intime{% endblock %}
+
+{% block content %}
+  
+  {# Inclusion de la modale #}
+  {% include 'app/vault/_verify-token-modal.html.twig' %}
+
+  {# Squelette en arrière-plan (flouté par défaut) #}
+  <div class="container py-4 vault-secure-content">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+
+        <h1 class="mb-4 d-flex align-items-center">
+          <i class="ri-lock-fill text-primary me-2" aria-hidden="true"></i>
+          Nouveau souvenir intime
+        </h1>
+
+        {% include 'app/vault/_form.html.twig' with { entry: null, categories: categories, moods: moods, colors: colors|default([]) } only %}
+      
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script src="{{ asset('js/pages/app/journal.js') }}"></script>
+  <script src="{{ asset('js/pages/app/vault.js') }}"></script>
+{% endblock %}

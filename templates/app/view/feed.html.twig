@@ -3,18 +3,24 @@
 {% block content %}
 
 
-  <div class="container-fluid container-lg">
+  <div class="py-2">
     {% include 'components/_fab.html.twig' with { route: 'app_journal_add', label: 'Nouvelle entrée' } only %}
 
-    <div class="entry-list">
+    {# On ajoute row et g-4 pour la grille #}
+    <div class="row g-4 entry-list">
       {% for entry in entries %}
-        {% include 'app/entry/_component.html.twig' with { entry: entry } only %}
+        {# On enveloppe la carte dans les colonnes #}
+        <div class="col-12 col-lg-6 col-xl-4">
+          {% include 'app/entry/_component.html.twig' with { entry: entry } only %}
+        </div>
       {% else %}
-        <div class="entry-list__empty">
-          <p class="text-muted">Aucune entrée pour l'instant.<br>Commencez à écrire !</p>
-          <a href="{{ path('app_journal_add') }}" class="btn btn-primary mt-3">
-            <i class="ri-add-line me-1"></i> Nouvelle entrée
-          </a>
+        <div class="col-12">
+          <div class="entry-list__empty">
+            <p class="text-muted">Aucune entrée pour l'instant.<br>Commencez à écrire !</p>
+            <a href="{{ path('app_journal_add') }}" class="btn btn-primary mt-3">
+              <i class="ri-add-line me-1"></i> Nouvelle entrée
+            </a>
+          </div>
         </div>
       {% endfor %}
     </div>

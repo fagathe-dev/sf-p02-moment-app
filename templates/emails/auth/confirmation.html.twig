@@ -1,5 +1,7 @@
 {#
   Template d'email de confirmation de compte
+
+  templates/emails/auth/confirmation.html.twig
   
   Variables requises:
     - user: Objet utilisateur avec les propriétés firstname, username, email
@@ -19,57 +21,41 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'h1',
     content: 'Bienvenue sur ' ~ app_name ~ ' !',
-    color: '#212529',
     custom_style: 'margin-bottom:20px'
   } %}
 
   {# Texte d'introduction #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher utilisateur'))) ~ '</strong>,',
-    color: '#495057'
+    content: 'Bonjour <strong>' ~ (user.firstname|default(user.username|default('cher utilisateur'))) ~ '</strong>,'
   } %}
 
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'Merci de vous être inscrit sur <strong>' ~ app_name ~ '</strong>. Pour finaliser la création de votre compte, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :',
-    color: '#495057'
+    content: 'Merci de vous être inscrit sur <strong>' ~ app_name ~ '</strong>. Pour finaliser la création de votre compte et accéder à tous nos services, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :'
   } %}
 
   {# Bouton de confirmation #}
   {% include 'emails/components/_button.html.twig' with {
     url: confirmationUrl,
     label: 'Confirmer mon compte',
-    custom_style: 'margin: 10px auto; text-align: center;'
+    custom_style: 'margin: 30px auto; text-align: center;'
   } %}
 
-  {# Alerte d'expiration #}
-  {% include 'emails/components/_alert.html.twig' with {
-    type: 'warning',
-    title: 'Lien à durée limitée',
-    content: 'Ce lien expire dans <strong>' ~ (expires_in|default('24 heures')) ~ '</strong>. Passé ce délai, vous devrez vous réinscrire.',
-    custom_style: 'margin: 10px auto;'
-  } %}
-
-  {% include 'emails/components/_divider.html.twig' %}
-
-  {# Récapitulatif du compte #}
-  {% include 'emails/components/_text.html.twig' with {
-    level: 'h3',
-    content: 'Récapitulatif de votre compte :',
-    color: '#212529',
-  } %}
-
-  {% include 'emails/components/_card.html.twig' with {
+  {# Info utilisateur #}
+  {% include 'emails/components/_box.html.twig' with {
+    background: '#f5f5f5',
+    padding: '15px 20px',
+    radius: '8px',
     content: '
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 14px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 14px; margin-bottom: 0;">
         <tr>
-          <td style="padding: 8px 0; color: #6c757d; width: 140px;"><strong>Nom d\'utilisateur :</strong></td>
-          <td style="padding: 8px 0; color: #212529;">' ~ user.username ~ '</td>
+          <td width="100" style="padding: 8px 0; color: #737373;">Identifiant :</td>
+          <td style="padding: 8px 0; color: #262626;"><strong>' ~ user.username|default('-') ~ '</strong></td>
         </tr>
         <tr>
-          <td style="padding: 8px 0; color: #6c757d;"><strong>Email :</strong></td>
-          <td style="padding: 8px 0; color: #212529;">' ~ user.email ~ '</td>
+          <td width="100" style="padding: 8px 0; color: #737373;">Email :</td>
+          <td style="padding: 8px 0; color: #262626;">' ~ user.email ~ '</td>
         </tr>
       </table>
     ',
@@ -82,14 +68,15 @@
   {% include 'emails/components/_text.html.twig' with {
     level: 'small',
     content: 'Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :',
-    color: '#6c757d',
+    color: '#737373',
     custom_style: 'margin: 10px 0;'
   } %}
 
   {% include 'emails/components/_box.html.twig' with {
-    background: '#f8f9fa',
+    background: '#fafafa',
     padding: '10px 15px',
-    content: '<a href="' ~ confirmationUrl ~ '" style="color: #0066ff; font-size: 12px; word-break: break-all;">' ~ confirmationUrl ~ '</a>'
+    radius: '6px',
+    content: '<a href="' ~ confirmationUrl ~ '" style="color: #404040; font-size: 12px; word-break: break-all;">' ~ confirmationUrl ~ '</a>'
   } %}
 
   {% include 'emails/components/_divider.html.twig' %}
@@ -97,21 +84,13 @@
   {# Alerte de sécurité #}
   {% include 'emails/components/_alert.html.twig' with {
     type: 'info',
-    title: 'Vous n\'avez pas créé ce compte ?',
-    content: 'Si vous n\'êtes pas à l\'origine de cette inscription, vous pouvez ignorer cet email. Le compte ne sera pas activé et sera automatiquement supprimé.',
+    content: '<strong>Vous n\'avez pas créé ce compte ?</strong><br>Si vous n\'êtes pas à l\'origine de cette inscription, vous pouvez ignorer cet email. Le compte ne sera pas activé et sera automatiquement supprimé.',
     custom_style: 'margin: 10px auto;'
   } %}
 
   {# Message de fin #}
   {% include 'emails/components/_text.html.twig' with {
     level: 'p',
-    content: 'À très bientôt sur <strong>' ~ app_name ~ '</strong> !',
-    color: '#495057'
-  } %}
-
-  {% include 'emails/components/_text.html.twig' with {
-    level: 'p',
-    content: 'L\'équipe ' ~ app_name,
-    color: '#495057'
+    content: 'À très bientôt sur ' ~ app_name ~ ' !'
   } %}
 {% endblock %}

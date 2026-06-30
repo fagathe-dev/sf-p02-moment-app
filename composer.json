@@ -2,7 +2,7 @@
   "type": "project",
   "license": "proprietary",
   "minimum-stability": "stable",
-  "description": "Mon boilerplate pour Symfony 8 - Velzon - Typescript",
+  "description": "Moment App - developed with Symfony 8 & TypeScript & Scss",
   "prefer-stable": true,
   "repositories": [
     {
@@ -47,6 +47,7 @@
     "symfony/string": "8.0.*",
     "symfony/translation": "8.0.*",
     "symfony/twig-bundle": "8.0.*",
+    "symfony/uid": "8.0.*",
     "symfony/validator": "8.0.*",
     "symfony/web-link": "8.0.*",
     "symfony/yaml": "8.0.*",
