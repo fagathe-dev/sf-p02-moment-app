@@ -6,7 +6,7 @@
 
 
   {% set loggedUser = app.user ?? null %}
-  {% if loggedUser and loggedUser.private_secret == null %} 
+  {% if loggedUser and loggedUser.privateSecret == null %} 
     {% include 'app/vault/_redirect-to-private-secret-setup.html.twig' %}
   {% else %}
   
