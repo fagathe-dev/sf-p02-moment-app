@@ -12,6 +12,7 @@
     entry.mood           string|null  (emoji : "😊", "😢"…)
     entry.categories     Collection<Category>
     entry.medias         Collection<Media>  — getUrl() sur chaque média
+    entry.color          ColorEnum|null  (ex: "red", "blue"…)
 #}
 
 {% set has_medias     = entry.entryMedia is defined and entry.entryMedia|length > 0 %}
@@ -20,7 +21,9 @@
 {% set fromVault      = fromVault is defined and fromVault %}
 {% set entry_show_route = fromVault ? 'app_vault_journal_show' : 'app_journal_show' %}
 
-<article class="entry-card" aria-label="{{ entry.title }}">
+<article class="entry-card" aria-label="{{ entry.title }}" style="background-color: {{ entry.color is not null ? 'var(--ds-' ~ entry.color.value ~ '-light)' : 'inherit' }};">
+
+  {# Lien invisible pour rendre la carte cliquable #}
   <a href="{{ path(entry_show_route, { id: entry.id, slug: entry.slug }) }}" class="entry-card__link" tabindex="-1" aria-hidden="true"></a>
 
   {# ── Header ────────────────────────────────────────────────────────────── #}

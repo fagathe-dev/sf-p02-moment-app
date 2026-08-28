@@ -1,6 +1,6 @@
 {% extends 'layouts/app.html.twig' %}
 
-{% block title %}Nouveau souvenir intime{% endblock %}
+{% block title %}Nouveau souvenir privé{% endblock %}
 
 {% block content %}
   
@@ -18,10 +18,10 @@
 
           <h1 class="mb-4 d-flex align-items-center">
             <i class="ri-lock-fill text-primary me-2" aria-hidden="true"></i>
-            Nouveau souvenir intime
+            Nouveau souvenir privé
           </h1>
 
-          {% include 'app/vault/_form.html.twig' with { entry: null, categories: categories, moods: moods, colors: colors|default([]) } only %}
+          {% include 'app/vault/_form.html.twig' with { form: form } only %}
         
         </div>
       </div>

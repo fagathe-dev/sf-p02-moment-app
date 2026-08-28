@@ -23,7 +23,7 @@
             Modifier le souvenir
           </h1>
 
-          {% include 'app/vault/_form.html.twig' with { entry: entry, categories: categories, moods: moods, colors: colors|default([]) } only %}
+          {% include 'app/vault/_form.html.twig' with { form: form } only %}
         
         </div>
       </div>

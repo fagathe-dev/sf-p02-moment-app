@@ -15,12 +15,12 @@
     {# ── Contenu du coffre-fort (Masqué par le flou de la modale) ────────── #}
     <div id="vault-content" class="py-4 vault-secure-content">
       
-      {% include 'components/_fab.html.twig' with { route: 'app_vault_journal_add', label: 'Nouvelle entrée intime' } only %}
+      {% include 'components/_fab.html.twig' with { route: 'app_vault_journal_add', label: 'Nouvelle entrée privée' } only %}
 
       <div class="entry-list__empty" id="vault-entries-empty">
         <p class="text-muted">Aucune entrée pour l'instant.<br>Commencez à écrire !</p>
         <a href="{{ path('app_vault_journal_add') }}" class="btn btn-primary mt-3">
-          <i class="ri-add-line me-1"></i> Nouvelle entrée intime
+          <i class="ri-add-line me-1"></i> Nouvelle entrée privée
         </a>
       </div>
 
