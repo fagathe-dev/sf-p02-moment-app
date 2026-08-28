@@ -450,7 +450,7 @@ final class UserService
     }
 
     /**
-     * Vérifie si le token Base64 correspond à la session intime de l'utilisateur.
+     * Vérifie si le token Base64 correspond à la session privé de l'utilisateur.
      * Cette méthode décode le Base64 et compare avec le token natif en base.
      */
     public function verifyVaultSession(string $base64Token): bool

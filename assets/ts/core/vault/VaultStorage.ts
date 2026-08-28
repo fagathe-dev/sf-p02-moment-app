@@ -21,7 +21,7 @@ export class VaultStorage {
   }
 
   lock(): void {
-    // Supprime l'élément du stockage pour verrouiller l'espace intime[cite: 3]
+    // Supprime l'élément du stockage pour verrouiller l'espace privé[cite: 3]
     this.storage.remove(this.STORAGE_KEY); //[cite: 3]
   }
 

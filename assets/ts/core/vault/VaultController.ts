@@ -18,7 +18,7 @@ export class VaultController {
       this.uiElement.addEventListener('cancel', (e) => e.preventDefault());
     }
 
-    // Verrouille l'espace intime dès que l'onglet n'est plus actif
+    // Verrouille l'espace privé dès que l'onglet n'est plus actif
     this.visibilityObserver = new VisibilityObserver(() => this.lockVault());
     this.visibilityObserver.watch();
 
