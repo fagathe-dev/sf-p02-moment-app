@@ -1,8 +1,7 @@
-
 import { convertMarkdownToHtml, $ } from 'core-ts';
- 
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Vue détail d'une entrée — rendu Markdown
+// Vue détail / Feed — rendu Markdown
 //
 // Principe :
 //   Le Twig injecte le contenu brut dans data-entry-md-content (attribut HTML).
@@ -10,23 +9,31 @@ import { convertMarkdownToHtml, $ } from 'core-ts';
 //   on injecte le HTML résultant comme innerHTML, puis on retire l'attribut
 //   pour ne pas laisser le Markdown brut lisible dans le DOM.
 // ─────────────────────────────────────────────────────────────────────────────
- 
+
 document.addEventListener('DOMContentLoaded', (): void => {
   renderMarkdownContent();
 });
- 
-function renderMarkdownContent(): void {
-  const container = $<HTMLElement>(
+
+export function renderMarkdownContent(context: Document | HTMLElement = document): void {
+  // 🟢 On passe "true" pour récupérer une NodeList (toutes les cartes)
+  const containers = $<HTMLElement>(
     '[data-entry-md-content]',
-    false,
-  ) as HTMLElement | null;
- 
-  if (!container) return;
- 
-  const raw = container.getAttribute('data-entry-md-content') ?? '';
- 
-  if (!raw.trim()) return;
- 
-  container.innerHTML = convertMarkdownToHtml(raw);
-  container.removeAttribute('data-entry-md-content');
+    true,
+    context
+  ) as NodeListOf<HTMLElement> | null;
+
+  console.log('renderMarkdownContent', containers);
+
+  if (!containers) return;
+
+  containers.forEach((container) => {
+    const raw = container.getAttribute('data-entry-md-content') ?? '';
+
+    if (raw.trim()) {
+      container.innerHTML = convertMarkdownToHtml(raw);
+    }
+    
+    // On nettoie l'attribut
+    container.removeAttribute('data-entry-md-content');
+  });
 }

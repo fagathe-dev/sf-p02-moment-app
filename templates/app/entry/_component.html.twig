@@ -90,9 +90,10 @@
 
   {# ── Extrait ───────────────────────────────────────────────────────────── #}
   {% if entry.content %}
-    <p class="entry-card__excerpt">
-      {{ entry.content|striptags|slice(0, 160) }}{% if entry.content|striptags|length > 160 %}…{% endif %}
-    </p>
+    <div 
+      class="entry-card__excerpt" 
+      data-entry-md-content="{{ entry.content|striptags|slice(0, 160) }}{% if entry.content|striptags|length > 160 %}…{% endif %}"
+    ></div>
   {% endif %}
 
 </article>
