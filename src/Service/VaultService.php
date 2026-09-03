@@ -41,7 +41,7 @@ final class VaultService
 
         $html = '';
         foreach ($entries as $entry) {
-            $html .= '<div class="col-12">';
+            $html .= '<div class="entry-masonry-item">';
             $html .= $this->twig->render('app/entry/_component.html.twig', [
                 'entry' => $entry,
                 'fromVault' => true,
