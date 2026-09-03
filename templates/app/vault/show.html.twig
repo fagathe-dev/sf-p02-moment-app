@@ -15,13 +15,29 @@
 
     <div class="entry-view container py-4 vault-secure-content" id="vault-show-container" data-entry-id="{{ entry.id }}">
 
-      <div class="entry-view__toolbar">
+      {# ── Actions ──────────────────────────────────────────────────────────────── #}
+      <div class="entry-view__toolbar d-flex justify-content-between w-100">
         <a href="{{ path('app_vault_journal_index') }}" class="btn btn-ghost-secondary btn-sm">
-          <i class="ri-arrow-left-line me-1" aria-hidden="true"></i> Retour
+          <i class="ri-arrow-left-line me-1" aria-hidden="true"></i>
+          Retour
         </a>
-        <a href="{{ path('app_vault_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
-          <i class="ri-pencil-line me-1" aria-hidden="true"></i> Modifier
-        </a>
+        <div class="d-flex gap-2">
+          {# 🟢 Bouton de suppression avec data-url et data-csrf #}
+          <button 
+            type="button" 
+            class="btn btn-danger btn-sm js-delete-entry-btn"
+            data-url="{{ path('app_journal_api_delete', { id: entry.id }) }}"
+            data-csrf="{{ csrf_token('journal_delete_' ~ entry.id) }}"
+          >
+            <i class="ri-delete-bin-line me-1" aria-hidden="true"></i>
+            Supprimer
+          </button>
+          
+          <a href="{{ path('app_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
+            <i class="ri-pencil-line me-1" aria-hidden="true"></i>
+            Modifier
+          </a>
+        </div>
       </div>
 
       <header class="entry-view__header">

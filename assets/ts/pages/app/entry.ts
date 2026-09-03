@@ -1,28 +1,27 @@
-import { convertMarkdownToHtml, $ } from 'core-ts';
+import { convertMarkdownToHtml, $, fetchAPI } from 'core-ts';
+import { VaultStorage } from '@/core/vault';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Vue détail / Feed — rendu Markdown
-//
-// Principe :
-//   Le Twig injecte le contenu brut dans data-entry-md-content (attribut HTML).
-//   Au chargement, on parse le Markdown via convertMarkdownToHtml() de core-ts,
-//   on injecte le HTML résultant comme innerHTML, puis on retire l'attribut
-//   pour ne pas laisser le Markdown brut lisible dans le DOM.
+// Init
 // ─────────────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', (): void => {
   renderMarkdownContent();
+  initDeleteEntry(); // 🟢 Initialisation de la logique de suppression
 });
 
-export function renderMarkdownContent(context: Document | HTMLElement = document): void {
-  // 🟢 On passe "true" pour récupérer une NodeList (toutes les cartes)
+// ─────────────────────────────────────────────────────────────────────────────
+// 1. Rendu Markdown
+// ─────────────────────────────────────────────────────────────────────────────
+
+const renderMarkdownContent = (
+  context: Document | HTMLElement = document,
+): void => {
   const containers = $<HTMLElement>(
     '[data-entry-md-content]',
     true,
-    context
+    context,
   ) as NodeListOf<HTMLElement> | null;
-
-  console.log('renderMarkdownContent', containers);
 
   if (!containers) return;
 
@@ -32,8 +31,76 @@ export function renderMarkdownContent(context: Document | HTMLElement = document
     if (raw.trim()) {
       container.innerHTML = convertMarkdownToHtml(raw);
     }
-    
-    // On nettoie l'attribut
+
     container.removeAttribute('data-entry-md-content');
   });
-}
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2. Suppression de l'entrée
+// ─────────────────────────────────────────────────────────────────────────────
+
+const initDeleteEntry = (): void => {
+  const deleteBtn = $<HTMLButtonElement>(
+    '.js-delete-entry-btn',
+  ) as HTMLButtonElement | null;
+  if (!deleteBtn) return;
+
+  deleteBtn.addEventListener('click', async () => {
+    // 🟢 Le garde-fou
+    const isConfirmed = confirm(
+      'Êtes-vous sûr de vouloir supprimer ce souvenir ? Cette action est irréversible.',
+    );
+    if (!isConfirmed) return;
+
+    const url = deleteBtn.getAttribute('data-url');
+    const csrf = deleteBtn.getAttribute('data-csrf');
+
+    if (!url || !csrf) return;
+
+    // 🟢 Préparation dynamique des en-têtes
+    const headers: Record<string, string> = {
+      'X-CSRF-Token': csrf,
+    };
+
+    // Vérification de l'URL pour savoir si on est dans le contexte Vault
+    const isVault = window.location.pathname.includes('/app/vault/journal');
+
+    if (isVault) {
+      const vaultStorage = new VaultStorage();
+      const token = vaultStorage.getToken();
+
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+    }
+
+    // État de chargement visuel
+    const originalContent = deleteBtn.innerHTML;
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML =
+      '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span> Suppression...';
+
+    try {
+      const res = await fetchAPI<{ success: boolean; redirectUrl: string }>(
+        url,
+        {
+          method: 'DELETE',
+          headers: headers, // Injection des en-têtes avec ou sans le token Bearer
+          isAPIAuthenticated: false,
+        },
+      );
+
+      if (res.data.success && res.data.redirectUrl) {
+        // Redirection vers le flux une fois supprimé
+        window.location.href = res.data.redirectUrl;
+      }
+    } catch (err) {
+      alert('Une erreur est survenue lors de la suppression.');
+      deleteBtn.disabled = false;
+      deleteBtn.innerHTML = originalContent;
+    }
+  });
+};
+
+export { renderMarkdownContent, initDeleteEntry };

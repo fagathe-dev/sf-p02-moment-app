@@ -1,5 +1,5 @@
 import { $, fetchAPI, convertMarkdownToHtml, router } from 'core-ts';
-import { SelectableField } from 'core-ts'; // 🟢 Import ajouté
+import { SelectableField } from 'core-ts';
 import { ROUTES } from '@/constants';
 import {
   VaultController,
@@ -7,6 +7,7 @@ import {
   VisibilityObserver,
 } from '@/core/vault';
 import { initMarkdownPreview } from '../preview-mardown-editor';
+import { renderMarkdownContent } from './entry';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // État local
@@ -183,7 +184,11 @@ async function hydrateFeed(
       emptyEntriesContainer.classList.remove('d-none');
     }
 
+    // Injection des cartes en HTML brut
     container.innerHTML = res.data.html;
+
+    // 🟢 AJOUT : On force le parsing Markdown -> HTML sur le conteneur fraîchement injecté
+    renderMarkdownContent(container);
   } catch (err) {
     container.innerHTML = `
       <div class="text-center py-5 text-danger">
@@ -192,7 +197,6 @@ async function hydrateFeed(
       </div>`;
   }
 }
-
 async function hydrateShow(entryId: string, token: string): Promise<void> {
   try {
     const res = await fetchAPI<{ data: { title: string; content: string } }>(
@@ -269,4 +273,3 @@ function initVaultTriggersSync(): void {
     });
   });
 }
-

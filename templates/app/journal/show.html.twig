@@ -8,15 +8,28 @@
     <div class="col-12">
 
       {# ── Actions ──────────────────────────────────────────────────────────────── #}
-      <div class="entry-view__toolbar">
+      <div class="entry-view__toolbar d-flex justify-content-between w-100">
         <a href="{{ path('app_view_feed') }}" class="btn btn-ghost-secondary btn-sm">
           <i class="ri-arrow-left-line me-1" aria-hidden="true"></i>
           Retour
         </a>
-        <a href="{{ path('app_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
-          <i class="ri-pencil-line me-1" aria-hidden="true"></i>
-          Modifier
-        </a>
+        <div class="d-flex gap-2">
+          {# 🟢 Bouton de suppression avec data-url et data-csrf #}
+          <button 
+            type="button" 
+            class="btn btn-danger btn-sm js-delete-entry-btn"
+            data-url="{{ path('app_journal_api_delete', { id: entry.id }) }}"
+            data-csrf="{{ csrf_token('journal_delete_' ~ entry.id) }}"
+          >
+            <i class="ri-delete-bin-line me-1" aria-hidden="true"></i>
+            Supprimer
+          </button>
+          
+          <a href="{{ path('app_journal_edit', { id: entry.id }) }}" class="btn btn-primary btn-sm">
+            <i class="ri-pencil-line me-1" aria-hidden="true"></i>
+            Modifier
+          </a>
+        </div>
       </div>
 
       {# ── En-tête ───────────────────────────────────────────────────────────────── #}

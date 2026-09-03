@@ -101,6 +101,8 @@ final class JournalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('OWNER', $entry);
 
+        $fromVault = $request->headers->has('Authorization');
+
         if (!$this->isCsrfTokenValid('journal_delete_' . $entry->getId(), $request->headers->get('X-CSRF-Token'))) {
             return $this->json(['success' => false, 'message' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
         }
@@ -108,7 +110,7 @@ final class JournalController extends AbstractController
         $success = $this->entryService->deleteEntry($entry->getId(), $request);
 
         return $this->json(
-            ['success' => $success, 'redirectUrl' => $this->generateUrl('app_view_feed')],
+            ['success' => $success, 'redirectUrl' => $this->generateUrl($fromVault ? 'app_vault_journal_index' : 'app_view_feed')],
             $success ? Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }

@@ -118,12 +118,11 @@ final class EntryService
     }
 
     /**
-     * Supprime une entrée et ses médias.
+     * Supprime une entrée et ses médias, mais conserve la localisation.
      */
     public function deleteEntry(int $id, Request $request): bool
     {
         $entry = $this->repository->find($id);
-        $user = $this->getCurrentUser();
 
         if ($entry === null) {
             return false;
@@ -142,6 +141,10 @@ final class EntryService
 
         try {
             $this->mediaService->deleteByEntry($entry);
+            
+            // 🟢 On détache la localisation pour s'assurer qu'elle ne soit pas supprimée
+            $entry->setLocation(null);
+
             $this->repository->remove($entry);
 
             $this->generateLog(
