@@ -9,10 +9,8 @@
     {% include 'app/vault/_redirect-to-private-secret-setup.html.twig' %}
   {% else %}
 
-    {# ── Inclusion de la modale de sécurité (S'affiche par défaut via JS) ── #}
     {% include 'app/vault/_verify-token-modal.html.twig' %}
 
-    {# ── Contenu du coffre-fort (Masqué par le flou de la modale) ────────── #}
     <div id="vault-content" class="py-4 vault-secure-content">
       
       {% include 'components/_fab.html.twig' with { route: 'app_vault_journal_add', label: 'Nouvelle entrée privée' } only %}
@@ -24,9 +22,9 @@
         </a>
       </div>
 
-    <div id="vault-entries-container" class="row g-4 entry-list">
-        {# Le HTML compilé par Symfony sera injecté ici par vault.ts #}
-        <div class="col-12 text-center py-5 text-muted">
+      {# 🟢 Remplacement de row g-4 par entry-masonry #}
+      <div id="vault-entries-container" class="entry-masonry entry-list d-none">
+        <div class="text-center py-5 text-muted w-100" style="column-span: all;">
           <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Déchiffrement en cours...
         </div>
@@ -36,7 +34,6 @@
 
   {% endif %}
   
-
 {% endblock %}
 
 {% block js %}

@@ -1,12 +1,4 @@
-{#
-  templates/app/journal/_form.html.twig
-  ─────────────────────────────────────────────────────────────────────────────
-  Paramètres :
-    entry       (Entry|null)    — null en création, entité en édition
-    categories  (Category[])    — catégories de l'utilisateur connecté
-    moods       (array)         — liste des humeurs issues de MoodEnum::cases()
-    colors      (array)         — liste des couleurs issues de EntryColorEnum::cases()
-#}
+{# templates/app/journal/_form.html.twig #}
 
 {% set is_edit = entry is not null and entry.id is not null %}
 {% set api_url = is_edit
@@ -36,123 +28,61 @@
     >
   </div>
 
-  {# ── Contenu Markdown ───────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <textarea
-      id="entry-content"
-      name="content"
-      class="journal-form__editor"
-      placeholder="Écrivez votre entrée… (Markdown supporté)"
-      data-markdown="true"
-    >{{ is_edit ? entry.content : '' }}</textarea>
-  </div>
-
-  {# ── Humeur ─────────────────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <label class="journal-form__label">
-      <i class="ri-emotion-line me-1" aria-hidden="true"></i>
-      Humeur
-    </label>
-    <div class="journal-form__mood-grid js-mood-grid">
-      {% for mood in moods %}
-        <button
-          type="button"
-          class="journal-form__mood-btn js-mood-btn"
-          data-value="{{ mood.value }}"
-          title="{{ mood.label }}"
-          aria-pressed="{{ is_edit and entry.mood and entry.mood.value == mood.value ? 'true' : 'false' }}"
-        >
-          {{ mood.emoji }}
+  {# ── Contenu Markdown (Devient la zone de Drag & Drop) ──────────────────── #}
+  <div class="journal-form__field markdown-editor-wrapper js-upload-zone">
+    
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active js-md-tab" data-md-target="journal-editor-pane" type="button" role="tab" aria-selected="true">
+          Écrire
         </button>
-      {% endfor %}
-      <input type="hidden" name="mood" id="entry-mood" value="{{ is_edit and entry.mood ? entry.mood.value : '' }}">
-    </div>
-  </div>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link js-md-tab js-md-preview-tab" data-md-target="journal-preview-pane" type="button" role="tab" aria-selected="false">
+          Aperçu
+        </button>
+      </li>
+    </ul>
 
-  {# ── Catégories ─────────────────────────────────────────────────────────── #}
-  {% if categories is not empty %}
-    <div class="journal-form__field">
-      <label class="journal-form__label">
-        <i class="ri-folder-line me-1" aria-hidden="true"></i>
-        Catégories
-      </label>
-      <div class="dropdown-select js-dropdown-select"
-        data-dcs-mode="multiple-nullable"
-        data-dcs-placeholder="Ajouter une catégorie…"
-      >
-        <div class="d-none">
-          <select name="categories[]" multiple id="entry-categories">
-            {% for category in categories %}
-              <option
-                value="{{ category.id }}"
-                data-color="{{ category.color ? category.color.value : '' }}"
-                {% if is_edit and entry.categories.contains(category) %}selected{% endif %}
-              >
-                {{ category.name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="dropdown">
-          <button
-            class="btn btn-white border d-flex align-items-center gap-2 w-100 text-start js-selector-button-content shadow-none"
-            type="button"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="outside"
-          >
-            <span class="text-muted">Ajouter une catégorie…</span>
-            <i class="ri-folder-line ms-auto text-muted"></i>
-          </button>
-          <div class="dropdown-menu shadow-lg p-0 border" style="width: 320px;">
-            <div class="p-2 border-bottom bg-light">
-              <div class="search-box">
-                <input type="text" class="form-control form-control-sm js-dropdown-search" placeholder="Rechercher…">
-                <i class="ri-search-line search-icon"></i>
-              </div>
-            </div>
-            <div class="p-1" style="max-height: 280px; overflow-y: auto;">
-              {% for category in categories %}
-                <a href="#"
-                  class="dropdown-item d-flex align-items-center gap-2 py-2 px-2 rounded js-selector-option"
-                  data-value="{{ category.id }}"
-                  aria-selected="{{ is_edit and entry.categories.contains(category) ? 'true' : 'false' }}"
-                >
-                  <div class="custom-checkbox-icon">
-                    <i class="ri-checkbox-blank-line text-muted unchecked-icon fs-16"></i>
-                    <i class="ri-checkbox-fill text-primary checked-icon fs-16" style="display: none;"></i>
-                  </div>
-                  {% if category.color %}
-                    <span class="flex-shrink-0 border bg-{{ category.color.value }}" style="width:14px;height:14px;border-radius:50%;"></span>
-                  {% endif %}
-                  <span class="fw-medium text-body" style="font-size:14px;">{{ category.name }}</span>
-                </a>
-              {% endfor %}
-            </div>
-            <div class="p-2 border-top bg-light text-center rounded-bottom">
-              <a href="{{ path('app_category_index') }}" class="text-decoration-none text-muted fs-13 fw-medium">
-                <i class="ri-edit-line align-bottom me-1"></i> Gérer mes catégories
-              </a>
-            </div>
-          </div>
+    <div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+      <div class="tab-pane fade show active js-md-pane" id="journal-editor-pane" role="tabpanel">
+        <textarea
+          id="entry-content"
+          name="content"
+          class="journal-form__editor js-md-textarea border-0 p-0 shadow-none w-100"
+          style="outline: none; resize: vertical;"
+          placeholder="Écrivez votre entrée… (Markdown supporté)"
+          data-markdown="true"
+          rows="12"
+        >{{ is_edit ? entry.content : '' }}</textarea>
+      </div>
+      <div class="tab-pane fade js-md-pane" id="journal-preview-pane" role="tabpanel">
+        <div class="js-md-preview-container markdown-body" style="min-height: 190px;">
+          <em class="text-muted">Rien à prévisualiser.</em>
         </div>
       </div>
     </div>
-  {% endif %}
+  </div>
 
-  {# ── Localisation ───────────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <label class="journal-form__label">
-      <i class="ri-map-pin-line me-1" aria-hidden="true"></i>
-      Localisation
-    </label>
+  {# ── Toolbar (Boutons d'actions synchronisés) ───────────────────────────── #}
+  <div class="journal-form__toolbar d-flex flex-wrap align-items-center gap-2 mt-2">
+    
+    <!-- Trigger Mood -->
+    <button type="button" class="journal-form__trigger-btn js-mood-trigger" data-bs-toggle="modal" data-bs-target="#journal-form_moodModal">
+      {% if is_edit and entry.mood %}
+        {{ entry.mood.emoji }}
+      {% else %}
+        <i class="ri-emotion-line" aria-hidden="true"></i>
+      {% endif %}
+    </button>
+
+    <!-- Trigger Localisation -->
     <div class="journal-form__location js-location-field">
-      <button type="button" class="btn btn-outline-secondary btn-sm js-location-trigger">
-        <i class="ri-map-pin-add-line me-1" aria-hidden="true"></i>
+      <button type="button" class="journal-form__trigger-btn js-location-trigger">
+        <i class="ri-map-pin-line" aria-hidden="true"></i>
         <span class="js-location-label">
           {% if is_edit and entry.location %}
             {{ entry.location.city ?? entry.location.name }}
-          {% else %}
-            Ajouter ma position
           {% endif %}
         </span>
       </button>
@@ -160,15 +90,55 @@
       <input type="hidden" name="location_lng"  id="entry-location-lng"  value="{{ is_edit and entry.location ? entry.location.longitude : '' }}">
       <input type="hidden" name="location_name" id="entry-location-name" value="{{ is_edit and entry.location ? entry.location.name : '' }}">
     </div>
-  </div>
 
-  {# ── Médias ─────────────────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <label class="journal-form__label">
-      <i class="ri-image-line me-1" aria-hidden="true"></i>
-      Médias
+    <!-- Trigger Catégorie -->
+    <button type="button" class="journal-form__trigger-btn js-category-trigger" data-bs-toggle="modal" data-bs-target="#journal-form_categoryModal">
+      {% if is_edit and entry.categories|length > 0 %}
+        {% set firstCat = entry.categories|first %}
+        {% if firstCat.color %}
+          <span class="flex-shrink-0 border bg-{{ firstCat.color.value }}" style="width:12px;height:12px;border-radius:50%;"></span>
+        {% endif %}
+        <span class="fw-medium">{{ firstCat.name }}</span>
+        {% if entry.categories|length > 1 %}
+          <span class="badge bg-secondary ms-1">+{{ entry.categories|length - 1 }}</span>
+        {% endif %}
+      {% else %}
+        <i class="ri-price-tag-3-line me-1" aria-hidden="true"></i> Catégorie
+      {% endif %}
+    </button>
+
+    <!-- Trigger Couleur -->
+    <button type="button" class="journal-form__trigger-btn p-1 js-color-trigger" data-bs-toggle="modal" data-bs-target="#journal-form_colorModal" title="Modifier la couleur de la card">
+      <span class="color-circle {% if is_edit and entry.color %}bg-soft-{{ entry.color.value }}{% endif %}">
+        <i class="ri-palette-line" aria-hidden="true"></i>
+      </span>
+    </button>
+
+    <!-- 🟢 NOUVEAU Trigger Médias (Ouvre l'explorateur de fichiers sans modale) -->
+    <label class="journal-form__trigger-btn mb-0 js-media-trigger" title="Ajouter des images/vidéos" style="cursor: pointer;">
+      <i class="ri-image-line" aria-hidden="true"></i>
+      <input type="file" id="entry-medias" name="medias[]" class="js-media-input d-none" multiple accept="image/*,video/*,audio/*">
     </label>
 
+    {# ── Confidentialité ─────────────────────────────────────────────────────── #}
+    <div class="form-check ms-auto d-flex align-items-center mb-0">
+      <input
+        type="checkbox"
+        class="form-check-input mt-0 me-2"
+        id="entry-is-private"
+        name="is_private"
+        value="1"
+        {% if is_edit and entry.isPrivate %}checked{% endif %}
+      >
+      <label class="form-check-label mb-0 fw-medium text-body" for="entry-is-private">
+        <i class="ri-lock-line me-1" aria-hidden="true"></i> Entrée confidentielle
+      </label>
+    </div>
+
+  </div>
+
+  {# ── 🟢 Plateau des pièces jointes (Affichés sous la toolbar) ───────────── #}
+  <div class="journal-form__attachments mt-2">
     {% if is_edit and entry.entryMedia is not empty %}
       <div class="journal-form__existing-medias js-existing-medias">
         {% for media in entry.entryMedia %}
@@ -187,89 +157,140 @@
         {% endfor %}
       </div>
     {% endif %}
-
-    <label class="journal-form__upload-zone js-upload-zone" for="entry-medias">
-      <i class="ri-upload-cloud-line journal-form__upload-icon" aria-hidden="true"></i>
-      <span class="journal-form__upload-text">Glissez vos fichiers ou <u>parcourez</u></span>
-      <span class="journal-form__upload-hint">Images, vidéos, audios — 50 Mo max</span>
-      <input
-        type="file"
-        id="entry-medias"
-        name="medias[]"
-        class="journal-form__upload-input js-media-input"
-        multiple
-        accept="image/*,video/*,audio/*"
-      >
-    </label>
     <div class="journal-form__previews js-media-previews"></div>
   </div>
 
-  {# ── Couleur de la card ────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <label class="journal-form__label">
-      <i class="ri-palette-line me-1" aria-hidden="true"></i>
-      Couleur de la card
-    </label>
-    <div class="journal-form__color-grid js-selectable-container form-selectable" data-mode="radio">
-      {% for color in colors %}
-        <div class="form-selectable-item">
-          <input
-            type="radio"
-            class="form-selectable-input d-none"
-            name="color"
-            id="entry-color-{{ color.value }}"
-            value="{{ color.value }}"
-            {% if is_edit and entry.color and entry.color.value == color.value %}checked{% endif %}
-          >
-          <label
-            class="form-selectable-label color-swatch bg-soft-{{ color.value }}"
-            for="entry-color-{{ color.value }}"
-            title="{{ color.value|capitalize }}"
-          ></label>
+
+  {# ── Modale Humeur ──────────────────────────────────────────────────────── #}
+  <div class="modal fade" id="journal-form_moodModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top: 12px; right: 12px; font-size: .8rem;"></button>
+          <div class="journal-form__field">
+            <label class="journal-form__label mb-3">
+              <i class="ri-emotion-line me-1" aria-hidden="true"></i> Mood
+            </label>
+            <div class="journal-form__mood-grid js-mood-grid">
+              {% for mood in moods %}
+                <button
+                  type="button"
+                  class="journal-form__mood-btn js-mood-btn"
+                  data-value="{{ mood.value }}"
+                  title="{{ mood.label }}"
+                  aria-pressed="{{ is_edit and entry.mood and entry.mood.value == mood.value ? 'true' : 'false' }}"
+                >
+                  {{ mood.emoji }}
+                </button>
+              {% endfor %}
+              <input type="hidden" name="mood" id="entry-mood" value="{{ is_edit and entry.mood ? entry.mood.value : '' }}">
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
         </div>
-      {% endfor %}
-      {# Option "aucune couleur" #}
-      <div class="form-selectable-item">
-        <input
-          type="radio"
-          class="form-selectable-input d-none"
-          name="color"
-          id="entry-color-none"
-          value=""
-          {% if not is_edit or not entry.color %}checked{% endif %}
-        >
-        <label
-          class="form-selectable-label color-swatch color-swatch--none"
-          for="entry-color-none"
-          title="Aucune couleur"
-        >
-          <i class="ri-close-line" aria-hidden="true"></i>
-        </label>
       </div>
     </div>
   </div>
 
-  {# ── Confidentialité ─────────────────────────────────────────────────────── #}
-  <div class="journal-form__field">
-    <div class="journal-form__private-toggle">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="entry-is-private"
-        name="is_private"
-        value="1"
-        {% if is_edit and entry.isPrivate %}checked{% endif %}
-      >
-      <label class="journal-form__label mb-0" for="entry-is-private">
-        <i class="ri-lock-line me-1" aria-hidden="true"></i>
-        Entrée confidentielle
-      </label>
+  {# ── Modale Catégorie ───────────────────────────────────────────────────── #}
+  <div class="modal fade" id="journal-form_categoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top: 12px; right: 12px; font-size: .8rem;"></button>
+          {% if categories is not empty %}
+            <div class="journal-form__field" id="journal-form__categories">
+              <label class="journal-form__label d-flex justify-content-between align-items-center mb-3">
+                <span><i class="ri-folder-line me-1" aria-hidden="true"></i> Catégories</span>
+                <a href="{{ path('app_category_index') }}" class="text-decoration-none text-muted fs-13 fw-medium">
+                  <i class="ri-edit-line align-bottom me-1"></i> Gérer
+                </a>
+              </label>
+              <div class="d-flex flex-wrap gap-2 js-selectable-container form-selectable" data-mode="checkbox">
+                {% for category in categories %}
+                  <div class="form-selectable-item">
+                    <input
+                      type="checkbox"
+                      class="form-selectable-input d-none"
+                      name="categories[]"
+                      id="entry-category-{{ category.id }}"
+                      value="{{ category.id }}"
+                      {% if is_edit and entry.categories.contains(category) %}checked{% endif %}
+                    >
+                    <label
+                      class="form-selectable-label border rounded-pill px-3 py-1 d-flex align-items-center gap-2"
+                      for="entry-category-{{ category.id }}"
+                      style="cursor: pointer; user-select: none;"
+                    >
+                      {% if category.color %}
+                        <span class="flex-shrink-0 pill border bg-{{ category.color.value }}" style="width:12px;height:12px;border-radius:50%;"></span>
+                      {% endif %}
+                      <span class="fw-medium text-body" style="font-size:14px;">{{ category.name }}</span>
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <small class="text-muted">Protégée par le code confidentiel défini dans votre profil.</small>
+  </div>
+
+  {# ── Modale Couleur ─────────────────────────────────────────────────────── #}
+  <div class="modal fade" id="journal-form_colorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top: 12px; right: 12px; font-size: .8rem;"></button>
+          <div class="journal-form__field mb-3">
+            <label class="journal-form__label mb-3">
+              <i class="ri-palette-line me-1" aria-hidden="true"></i> Couleur de la card
+            </label>
+            <div class="journal-form__color-grid js-selectable-container form-selectable" data-mode="radio">
+              {% for color in colors %}
+                <div class="form-selectable-item">
+                  <input
+                    type="radio"
+                    class="form-selectable-input d-none"
+                    name="color"
+                    id="entry-color-{{ color.value }}"
+                    value="{{ color.value }}"
+                    {% if is_edit and entry.color and entry.color.value == color.value %}checked{% endif %}
+                  >
+                  <label class="form-selectable-label color-swatch bg-soft-{{ color.value }}" for="entry-color-{{ color.value }}" title="{{ color.value|capitalize }}"></label>
+                </div>
+              {% endfor %}
+              <div class="form-selectable-item">
+                <input
+                  type="radio"
+                  class="form-selectable-input d-none"
+                  name="color"
+                  id="entry-color-none"
+                  value=""
+                  {% if not is_edit or not entry.color %}checked{% endif %}
+                >
+                <label class="form-selectable-label color-swatch color-swatch--none" for="entry-color-none" title="Aucune couleur">
+                  <i class="ri-close-line" aria-hidden="true"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   {# ── Actions ────────────────────────────────────────────────────────────── #}
-  <div class="journal-form__actions">
+  <div class="journal-form__actions mt-4 pt-3 border-top">
     <a href="{{ path('app_view_feed') }}" class="btn btn-light">Annuler</a>
     <button type="submit" class="btn btn-primary js-submit-btn">
       <span class="js-submit-label">{{ is_edit ? 'Mettre à jour' : 'Enregistrer' }}</span>

@@ -1,22 +1,134 @@
-{{ form_start(form, {'attr': {'class': 'vault-form'}}) }}
+{# templates/app/vault/_form.html.twig #}
+
+{{ form_start(form, {'attr': {'class': 'journal-form vault-form', 'novalidate': 'novalidate'}}) }}
 
   {{ form_errors(form) }}
 
-  <div class="mb-3">
-    {{ form_row(form.title) }}
+  {# ── Titre ──────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__field">
+    {{ form_widget(form.title, {
+      'attr': {
+        'class': 'journal-form__title-input',
+        'placeholder': 'Titre du souvenir (optionnel)',
+        'autocomplete': 'off'
+      }
+    }) }}
   </div>
 
-  <div class="mb-3">
-    {{ form_row(form.content) }}
+  {# ── Contenu Markdown ───────────────────────────────────────────────────── #}
+  <div class="journal-form__field markdown-editor-wrapper">
+    <label class="journal-form__label d-none">Secret</label>
+    
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active js-md-tab" data-md-target="vault-editor-pane-{{ form.vars.id }}" type="button" role="tab" aria-selected="true">
+          Écrire
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link js-md-tab js-md-preview-tab" data-md-target="vault-preview-pane-{{ form.vars.id }}" type="button" role="tab" aria-selected="false">
+          Aperçu
+        </button>
+      </li>
+    </ul>
+    
+    <div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+      <div class="tab-pane fade show active js-md-pane" id="vault-editor-pane-{{ form.vars.id }}" role="tabpanel">
+        {{ form_widget(form.content, {
+          attr: {
+            class: 'journal-form__editor js-md-textarea border-0 p-0 shadow-none w-100', 
+            style: 'outline: none; resize: vertical;', 
+            rows: 12
+          }
+        }) }}
+      </div>
+      
+      <div class="tab-pane fade js-md-pane" id="vault-preview-pane-{{ form.vars.id }}" role="tabpanel">
+        <div class="js-md-preview-container markdown-body" style="min-height: 190px;">
+          <em class="text-muted">Rien à prévisualiser.</em>
+        </div>
+      </div>
+    </div>
+    
+    {{ form_errors(form.content) }}
   </div>
 
-  <div class="mb-3">
-    {{ form_row(form.mood) }}
+  {# ── Toolbar (Boutons d'actions) ────────────────────────────────────────── #}
+  <div class="journal-form__toolbar d-flex flex-wrap align-items-center gap-2 mt-2">
+    
+    <!-- Trigger Mood -->
+    <button type="button" class="journal-form__trigger-btn js-mood-trigger" data-bs-toggle="modal" data-bs-target="#vault-form_moodModal">
+      {% set selectedMood = null %}
+      {% for child in form.mood %}
+        {% if child.vars.checked %}
+          {% set selectedMood = child.vars.label %}
+        {% endif %}
+      {% endfor %}
+
+      {% if selectedMood %}
+        {{ selectedMood }}
+      {% else %}
+        <i class="ri-emotion-line" aria-hidden="true"></i>
+      {% endif %}
+    </button>
+
+    {# ── Indicateur de confidentialité ────────────────────────────────────── #}
+    <div class="ms-auto d-flex align-items-center text-muted fs-sm fw-medium">
+      <i class="ri-lock-line me-1" aria-hidden="true"></i> Souvenir protégé
+    </div>
+
   </div>
 
-  <div class="d-flex align-items-center gap-2 mt-4">
-    {{ form_widget(form.save) }}
+  {# ── Modale Humeur ──────────────────────────────────────────────────────── #}
+  <div class="modal fade" id="vault-form_moodModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top: 12px; right: 12px; font-size: .8rem;"></button>
+          
+          <div class="journal-form__field">
+            <label class="journal-form__label mb-3">
+              <i class="ri-emotion-line me-1" aria-hidden="true"></i> Mood
+            </label>
+            
+            <div class="journal-form__mood-grid js-selectable-container form-selectable" data-mode="radio">
+              {% for child in form.mood %}
+                <div class="form-selectable-item">
+                  <input
+                    type="radio"
+                    class="form-selectable-input d-none"
+                    name="{{ child.vars.full_name }}"
+                    id="{{ child.vars.id }}"
+                    value="{{ child.vars.value }}"
+                    {% if child.vars.checked %}checked{% endif %}
+                  >
+                  <label
+                    class="form-selectable-label journal-form__mood-btn m-0"
+                    for="{{ child.vars.id }}"
+                    {# 🟢 Récupération de l'attribut injecté depuis le FormType #}
+                    title="{{ child.vars.attr.title ?? '' }}"
+                  >
+                    {{ child.vars.label == 'None' ? 'X' : child.vars.label }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# ── Actions ────────────────────────────────────────────────────────────── #}
+  <div class="journal-form__actions mt-4 pt-3 border-top">
     <a href="{{ path('app_vault_journal_index') }}" class="btn btn-light">Annuler</a>
+    <button type="submit" class="btn btn-primary js-submit-btn">
+      <span class="js-submit-label">{% if form.vars.value.id %}Mettre à jour{% else %}Sceller le souvenir{% endif %}</span>
+      <span class="js-submit-spinner d-none">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Chiffrement…
+      </span>
+    </button>
   </div>
 
 {{ form_end(form) }}

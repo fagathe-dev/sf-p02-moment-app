@@ -17,7 +17,7 @@ class VaultEntryType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre du souvenir',
+                'label' => false,
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Titre du souvenir (optionnel)',
@@ -36,8 +36,11 @@ class VaultEntryType extends AbstractType
                 'class' => MoodEnum::class,
                 'label' => 'Humeur',
                 'required' => false,
-                'placeholder' => 'Sélectionnez une humeur',
-                'choice_label' => fn(?MoodEnum $mood) => $mood ? $mood->getEmoji() . ' ' . $mood->getLabel() : '',
+                'expanded' => true,
+                'multiple' => false,
+                'choice_label' => fn(?MoodEnum $mood) => $mood ? $mood->getEmoji() : '',
+                // 🟢 Ajout de choice_attr pour mapper getLabel() sur l'attribut HTML title
+                'choice_attr' => fn(?MoodEnum $mood) => $mood ? ['title' => $mood->getLabel()] : [],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Sceller le souvenir',

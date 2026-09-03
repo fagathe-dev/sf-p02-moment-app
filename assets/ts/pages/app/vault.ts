@@ -1,6 +1,12 @@
 import { $, fetchAPI, convertMarkdownToHtml, router } from 'core-ts';
+import { SelectableField } from 'core-ts'; // 🟢 Import ajouté
 import { ROUTES } from '@/constants';
-import { VaultController, VaultStorage, VisibilityObserver } from '@/core/vault';
+import {
+  VaultController,
+  VaultStorage,
+  VisibilityObserver,
+} from '@/core/vault';
+import { initMarkdownPreview } from '../preview-mardown-editor';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // État local
@@ -25,21 +31,46 @@ document.addEventListener('DOMContentLoaded', (): void => {
   // 2. Initialisation de la logique UI de la page
   initUnlockForm(controller, lockScreen);
   initVaultStateObserver(lockScreen, storage);
+
+  // 3. 🟢 Initialisation du SelectableField (Mode Radio pour l'humeur)
+  const selectableContainers = $<HTMLElement>(
+    '.js-selectable-container',
+    true,
+  ) as NodeListOf<HTMLElement> | null;
+
+  if (selectableContainers) {
+    selectableContainers.forEach((container) => {
+      const mode = container.dataset.mode === 'checkbox' ? 'checkbox' : 'radio';
+      new SelectableField(container, { mode } as unknown as {
+        mode: 'radio' | 'nullable';
+      });
+    });
+  }
+
+  initMarkdownPreview();
+  initVaultTriggersSync();
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. Gestion du formulaire de déverrouillage
 // ─────────────────────────────────────────────────────────────────────────────
 
-function initUnlockForm(controller: VaultController, lockScreen: HTMLElement): void {
+const initUnlockForm = (
+  controller: VaultController,
+  lockScreen: HTMLElement,
+): void => {
   const form = $<HTMLFormElement>('#vault-unlock-form');
   const pinInput = $<HTMLInputElement>('#vault-pin-input');
   const errorMsg = $<HTMLElement>('#vault-error-msg');
   const submitBtn = $<HTMLButtonElement>('#vault-submit-btn');
 
-  console.log('form', form, 'pinInput', pinInput, 'errorMsg', errorMsg, 'submitBtn', submitBtn);
-
-  if (!(form instanceof HTMLFormElement) || !(pinInput instanceof HTMLInputElement) || !(submitBtn instanceof HTMLButtonElement) || !(errorMsg instanceof HTMLElement)) return;
+  if (
+    !(form instanceof HTMLFormElement) ||
+    !(pinInput instanceof HTMLInputElement) ||
+    !(submitBtn instanceof HTMLButtonElement) ||
+    !(errorMsg instanceof HTMLElement)
+  )
+    return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -55,7 +86,7 @@ function initUnlockForm(controller: VaultController, lockScreen: HTMLElement): v
 
     if (errorMsg) errorMsg.classList.add('d-none');
     lockScreen.classList.remove('is-error');
-    
+
     if (submitBtn) submitBtn.disabled = true;
 
     await controller.unlockVault(pin);
@@ -63,13 +94,16 @@ function initUnlockForm(controller: VaultController, lockScreen: HTMLElement): v
     if (submitBtn) submitBtn.disabled = false;
     pinInput.value = '';
   });
-}
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. Observation de l'état du Coffre-fort
 // ─────────────────────────────────────────────────────────────────────────────
 
-function initVaultStateObserver(lockScreen: HTMLElement, storage: VaultStorage): void {
+function initVaultStateObserver(
+  lockScreen: HTMLElement,
+  storage: VaultStorage,
+): void {
   const checkState = () => {
     if (lockScreen.classList.contains('is-unlocked')) {
       const token = storage.getToken();
@@ -84,10 +118,9 @@ function initVaultStateObserver(lockScreen: HTMLElement, storage: VaultStorage):
     const errorMsg = $<HTMLElement>('#vault-error-msg');
     if (errorMsg instanceof HTMLElement) {
       if (lockScreen.classList.contains('is-error')) {
+        errorMsg.classList.add('d-none');
         errorMsg.textContent = 'Code confidentiel invalide.';
         errorMsg.classList.remove('d-none');
-      } else {
-        errorMsg.classList.add('d-none');
       }
     }
   };
@@ -111,6 +144,7 @@ function initVaultStateObserver(lockScreen: HTMLElement, storage: VaultStorage):
 async function hydrateCurrentPage(token: string): Promise<void> {
   const feedContainer = $<HTMLElement>('#vault-entries-container');
   if (feedContainer instanceof HTMLElement) {
+    feedContainer.classList.remove('d-none');
     await hydrateFeed(feedContainer, token);
     return;
   }
@@ -130,12 +164,18 @@ async function hydrateCurrentPage(token: string): Promise<void> {
   }
 }
 
-async function hydrateFeed(container: HTMLElement, token: string): Promise<void> {
+async function hydrateFeed(
+  container: HTMLElement,
+  token: string,
+): Promise<void> {
   try {
-    const res = await fetchAPI<{ html: string }>(router(ROUTES.API.VAULT.ENTRIES), {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetchAPI<{ html: string }>(
+      router(ROUTES.API.VAULT.ENTRIES),
+      {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
 
     if (res.data.html.length > 0) {
       emptyEntriesContainer.classList.add('d-none');
@@ -156,11 +196,11 @@ async function hydrateFeed(container: HTMLElement, token: string): Promise<void>
 async function hydrateShow(entryId: string, token: string): Promise<void> {
   try {
     const res = await fetchAPI<{ data: { title: string; content: string } }>(
-      router(ROUTES.API.VAULT.ENTRY_DATA, { id: entryId }), // Injection propre de l'ID
+      router(ROUTES.API.VAULT.ENTRY_DATA, { id: entryId }),
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
 
     const titleEl = $<HTMLElement>('#vault-entry-title');
@@ -185,20 +225,48 @@ async function hydrateShow(entryId: string, token: string): Promise<void> {
 async function hydrateEdit(entryId: string, token: string): Promise<void> {
   try {
     const res = await fetchAPI<{ data: { title: string; content: string } }>(
-      router(ROUTES.API.VAULT.ENTRY_DATA, { id: entryId }), // Injection propre de l'ID
+      router(ROUTES.API.VAULT.ENTRY_DATA, { id: entryId }),
       {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
 
     const titleInput = $<HTMLInputElement>('#entry-title');
     const contentInput = $<HTMLTextAreaElement>('#entry-content');
 
-    if (titleInput instanceof HTMLInputElement) titleInput.value = res.data.data.title || '';
-    if (contentInput instanceof HTMLTextAreaElement) contentInput.value = res.data.data.content || '';
-    
+    if (titleInput instanceof HTMLInputElement)
+      titleInput.value = res.data.data.title || '';
+    if (contentInput instanceof HTMLTextAreaElement)
+      contentInput.value = res.data.data.content || '';
   } catch (err) {
     console.error('Erreur de récupération des données pour édition', err);
   }
 }
+
+function initVaultTriggersSync(): void {
+  const form = document.querySelector<HTMLFormElement>('.vault-form');
+  if (!form) return;
+
+  // Cible les boutons radio générés par le form builder pour le champ 'mood'
+  const moodRadios = form.querySelectorAll<HTMLInputElement>(
+    'input[type="radio"][name*="[mood]"]',
+  );
+  const moodTrigger = form.querySelector<HTMLElement>('.js-mood-trigger');
+
+  moodRadios.forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (!moodTrigger) return;
+      if (radio.checked) {
+        // Trouve le label correspondant pour récupérer l'émoji
+        const label = form.querySelector<HTMLElement>(
+          `label[for="${radio.id}"]`,
+        );
+        if (label) {
+          moodTrigger.innerHTML = label.innerHTML.trim();
+        }
+      }
+    });
+  });
+}
+

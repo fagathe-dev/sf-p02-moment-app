@@ -12,9 +12,8 @@
   border: var(--ds-border-width) solid var(--ds-border-color);
   border-radius: var(--ds-border-radius-2xl);
   overflow: hidden;
-  
-  // Pour que les cartes s'étirent à la même hauteur dans la grille Bootstrap
-  height: 100%;
+
+  height: auto;
   display: flex;
   flex-direction: column;
 
@@ -286,13 +285,35 @@
     line-height: var(--ds-line-height-relaxed);
 
     // Pousse le contenu vers le bas pour remplir la carte de manière homogène
-    flex-grow: 1; 
+    flex-grow: 1;
 
     // Clamp à 3 lignes
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+}
+
+.entry-masonry {
+  column-count: 1;
+  column-gap: 1.5rem;
+  width: 100%;
+
+  @media (min-width: map.get($breakpoints, 'lg')) {
+    column-count: 2;
+  }
+
+  @media (min-width: map.get($breakpoints, 'xl')) {
+    column-count: 3;
+  }
+
+  &-item {
+    break-inside: avoid; // Empêche une carte d'être coupée entre deux colonnes
+    margin-bottom: 1.5rem; // Remplace le gap vertical
+    transform: translateZ(
+      0
+    ); // Fix pour certains bugs de rendu Safari sur le break-inside
   }
 }
 
@@ -453,14 +474,18 @@
 
     // 1. CORRECTION GRILLE : Hauteur fixe pour éviter l'effondrement
     height: 300px;
-    @media (min-width: map.get($breakpoints, 'md')) { height: 400px; }
-    @media (min-width: map.get($breakpoints, 'lg')) { height: 500px; }
+    @media (min-width: map.get($breakpoints, 'md')) {
+      height: 400px;
+    }
+    @media (min-width: map.get($breakpoints, 'lg')) {
+      height: 500px;
+    }
 
     &--count-1 {
       grid-template-columns: 1fr;
       height: auto; // S'adapte à l'image unique
       max-height: 600px;
-      
+
       .entry-view__media-figure {
         height: auto;
       }
@@ -579,7 +604,10 @@
     line-height: var(--ds-line-height-relaxed);
     color: var(--ds-body-color);
 
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       font-weight: var(--ds-font-weight-semibold);
       margin-block: 1.25rem 0.5rem;
       line-height: var(--ds-line-height-tight);
@@ -619,7 +647,8 @@
       padding: 0 2px;
     }
 
-    ul, ol {
+    ul,
+    ol {
       padding-inline-start: 1.5rem;
       margin-block-end: 1rem;
     }
