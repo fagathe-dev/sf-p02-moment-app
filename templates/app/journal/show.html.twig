@@ -5,7 +5,7 @@
 {% block content %}
 <div class="entry-view container py-4">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
+    <div class="col-12">
 
       {# ── Actions ──────────────────────────────────────────────────────────────── #}
       <div class="entry-view__toolbar">
@@ -67,7 +67,6 @@
         </div>
       </header>
 
-
       {# ── Médias ───────────────────────────────────────────────────────────────── #}
       {% if entry.entryMedia is not empty %}
         <div class="entry-view__medias">
@@ -75,9 +74,9 @@
           {# Images — grille adaptive selon le nombre #}
           {% set images = entry.entryMedia|filter(m => m.mimeType starts with 'image/') %}
           {% if images|length > 0 %}
-            {% set img_count = min(images|length, 3) %}
-            <div class="entry-view__media-grid entry-view__media-grid--count-{{ img_count }}">
-              {% for media in images|slice(0, 3) %}
+            {% set grid_class = images|length > 3 ? 'many' : images|length %}
+            <div class="entry-view__media-grid entry-view__media-grid--count-{{ grid_class }}">
+              {% for media in images %}
                 <figure class="entry-view__media-figure">
                   <img
                     src="{{ asset(media.filePath) }}"

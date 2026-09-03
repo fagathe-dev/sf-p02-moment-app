@@ -504,6 +504,23 @@
         grid-row: 1 / 3;
       }
     }
+    
+    &--count-many {
+      grid-template-columns: repeat(2, 1fr);
+      height: auto; // On annule la hauteur globale pour laisser la grille s'étendre
+
+      @media (min-width: map.get($breakpoints, 'md')) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .entry-view__media-figure {
+        height: 200px; // Assure une hauteur fixe par image
+
+        @media (min-width: map.get($breakpoints, 'md')) {
+          height: 250px;
+        }
+      }
+    }
   }
 
   &__media-figure {
